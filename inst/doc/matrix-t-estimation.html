@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Geoffrey Thompson" />
+
+<meta name="date" content="2019-07-25" />
+
+<title>ML estimation of the Matrix Variate t Distribution</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">ML estimation of the Matrix Variate t Distribution</h1>
+<h4 class="author">Geoffrey Thompson</h4>
+<h4 class="date">2019-07-25</h4>
+
+
+
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(MixMatrix)</a></code></pre></div>
+<div id="estimation-of-the-matrix-variate-t-distribution" class="section level2">
+<h2>Estimation of the Matrix Variate <em>t</em> Distribution</h2>
+<p>The parameters of the multivariate <em>t</em> distribution can be estimated using the EM algorithm. An EM algorithm for the multivariate <span class="math inline">\(t\)</span>-distribution with no missing data was provided by <span class="citation">Rubin (<a href="#ref-rubin1983">1983</a>)</span>. This was variously extended and refined, as the EM algorithm can be quite slow to converge. One set of refinements split the M-step into a series of conditional maximization (CM) steps <span class="citation">(Meng and Rubin <a href="#ref-meng1993">1993</a>)</span>, and then a later refinement (called ECME - Expectation/Conditional Maximization Either) allowed for <em>either</em> conditional maximization steps or maximizing the constrained actual likelihood <span class="citation">(Liu and Rubin <a href="#ref-liurubin1994">1994</a>)</span>, which leads to dramatically faster convergence. The matrix variate <span class="math inline">\(t\)</span> is an extension of the multivariate version <span class="citation">(Dickey <a href="#ref-dickey1967">1967</a>)</span>; however, unlike the normal distribution, it cannot be treated as a rearrangement of the multivariate case, so the addition of the extra dimension poses a non-trivial problem for extending the results.</p>
+<p>An <span class="math inline">\(n \times p\)</span> random matrix <span class="math inline">\(\mathbf{X}\)</span> is distributed as a matrix variate <span class="math inline">\(t\)</span> random variable if it has probability density function as follows: <span class="math display">\[f({\mathbf  {X}};\nu,{\mathbf  {M}}, {\boldsymbol  \Omega }, {\boldsymbol  \Sigma }) =  {\frac  {\Gamma _{p}\left({\frac  {\nu +n+p-1}{2}}\right)}{(\pi )^{{\frac  {np}{2}}}\Gamma _{p}\left({\frac  {\nu +p-1}{2}}\right)}}|{\boldsymbol  \Omega }|^{{-{\frac  {n}{2}}}}|{\boldsymbol  \Sigma }|^{{-{\frac  {p}{2}}}}\times \left|{\mathbf  {I}}_{n}+{\boldsymbol  \Sigma }^{{-1}}({\mathbf  {X}}-{\mathbf  {M}}){\boldsymbol  \Omega }^{{-1}}({\mathbf  {X}}-{\mathbf  {M}})^{{{\rm {T}}}}\right|^{{-{\frac  {\nu +n+p-1}{2}}}}\]</span></p>
+<p>With <span class="math inline">\(\Omega\)</span> and <span class="math inline">\(\Sigma\)</span> covariance matrices of appropriate dimension, <span class="math inline">\(\mathbf{M}\)</span> a mean matrix, <span class="math inline">\(\nu\)</span> the degrees of freedom parameter, and <span class="math inline">\(\Gamma_p()\)</span> the multivariate gamma function, which is implemented in the <a href="http://gzt.github.io/CholWishart"><code>CholWishart</code></a> package available on CRAN.</p>
+<p>For <span class="math inline">\(p = 1\)</span> and <span class="math inline">\(\Sigma = \nu\)</span> (or <span class="math inline">\(q = 1\)</span> and <span class="math inline">\(\Omega = \nu\)</span>), this reduces to the familiar multivariate <span class="math inline">\(t\)</span> distribution. If the <span class="math inline">\(p \times q\)</span> dimensional random variable <span class="math inline">\(X\)</span> follows the matrix variate <span class="math inline">\(t\)</span> distribution <span class="math inline">\(t(\nu, M, \Sigma, \Omega)\)</span> with center <span class="math inline">\(M\)</span>, positive definite spread matrices <span class="math inline">\(\Sigma\)</span> (<span class="math inline">\(p \times p\)</span>) and <span class="math inline">\(\Omega\)</span> (<span class="math inline">\(q \times q\)</span>), and degrees of freedom <span class="math inline">\(\nu\)</span>, it can be shown that, given a certain weight matrix <span class="math inline">\(S\)</span>, <span class="math inline">\(X\)</span> has a matrix variate normal distribution and that <span class="math inline">\(S\)</span> is Wishart-distributed. Specifically, <span class="math display">\[\begin{align*}
+X | M, \Sigma, \Omega, \nu, S &amp; \sim  N(M, S^{-1} \otimes \Omega) \\
+S|M, \Omega, \Sigma, \nu &amp; \sim  W_p(\nu + p  -1, \Sigma^{-1})
+\end{align*}\]</span> Additionally, it can be shown the Wishart is the conjugate prior distribution for the parameter <span class="math inline">\(\Sigma\)</span>, and thus the conditional posterior distribution of <span class="math inline">\(S\)</span>, i.e., its distribution given <span class="math inline">\((M, \Omega, \Sigma, \nu, X)\)</span> is <span class="math display">\[S | X, M, \Omega, \Sigma, \nu \sim \mathrm{W}_p(\nu+p+q-1, [(X-M)\Omega^{-1}(X-M)^T + \Sigma]^{-1})   \]</span></p>
+<p>For an observed set of <span class="math inline">\(X_i\)</span>, <span class="math inline">\(i = 1, 2, \ldots, N\)</span>, then, we can construct an ECM-style algorithm by augmenting our data with a set of weights, <span class="math inline">\(S_i\)</span>, and use this to estimate the parameters of the matrix variate <span class="math inline">\(t\)</span> distribution. Briefly, we define a set of complete data sufficient statistics based on the <span class="math inline">\(S_i\)</span> and update them with their expectations in the E-step. Then, the other parameters are maximized in the CM steps.</p>
+<p>The complete data sufficient statistics for the quantities to be estimated are: <span class="math display">\[S_{SX} =\sum_{i = 1}^N S_i X_i; \quad S_S =  \sum_{i = 1}^N S_i; \quad S_{XSX} =  \sum_{i = 1}^N  X_i^T S_i X_i \quad S_{|S|} = \sum_{i = 1}^N \log |Si|\]</span></p>
+<div id="e-step" class="section level3">
+<h3>E-step</h3>
+<p>Define at step <span class="math inline">\(t\)</span> the set <span class="math inline">\(\Theta^{(t)} = (X_{obs},\nu^{(t)}, M^{(t)}, \Sigma^{(t)}, \Omega^{(t)})\)</span>. Then, given these values, we have, based on the properties of the Wishart distribution, <span class="math display">\[S_{i}^{(t+1)} = E(S_i | \Theta^{(t)}) = (\nu^{(t)}+p+q-1)[(X_i-M^{(t)})\Omega^{(t)^{-1 }}(X_i-M^{(t)})^T + \Sigma^{(t)}]^{-1} \]</span> From this we can derive the other expected values: <span class="math display">\[
+ \begin{align*}
+S_{S}^{(t+1)} &amp;= E(S_S | \Theta^{(t)}) = \sum_{i=1}^N S_{i}^{(t+1)} \\
+S_{SX}^{(t+1)} &amp;= E(S_{SX} | \Theta^{(t)}) =  \sum_{i=1}^NE(S_iX_i|\Theta^{(t)}) = \sum_{i=1}^N S_{i}^{(t+1)}X_i \\
+S_{XSX}^{(t+1)} &amp;= E(S_{XSX} | \Theta^{(t)}) =  \sum_{i=1}^NE(X_i^TS_iX_i|\Theta^{(t)}) = \sum_{i=1}^N X_i^TS_{i}^{(t+1)}X_i
+\end{align*}
+\]</span> This last value only needs to be computed if <span class="math inline">\(\nu\)</span> is unknown: <span class="math display">\[
+\begin{align*}
+S_{|S|}^{(t+1)} &amp;= E(S_{|S|} | \Theta^{(t)}) = E \left[\sum_{i = 1}^N \log| S_i|  \big| \Theta^{(t)} \right]\\
+&amp;=N\psi_{p}\left({\frac {\nu^{(t)} + p + q -1}{2}}\right) + Np \log 2 +\sum_{i=1}^N \log \left|\frac{S_{i,obs}^{(t+1)}}{\nu^{(t)} + p + q -1}\right|
+\end{align*}
+\]</span></p>
+</div>
+<div id="cm-steps" class="section level3">
+<h3>CM Steps</h3>
+<p>Similarly to the case of the multivariate <span class="math inline">\(t\)</span>, it is more efficient to partition the maximization step into multiple steps. This is an ECME algorithm that first maximizes the expected log-likelihood for <span class="math inline">\((M, \Sigma, \Omega)\)</span> and then maximizes the actual log-likelihood over <span class="math inline">\(\nu\)</span> given <span class="math inline">\((M, \Sigma, \Omega)\)</span>, similar to .</p>
+<p>Based on the updated weight matrices <span class="math inline">\(S_i^{(t+1)}\)</span> and statistics based on <span class="math inline">\(\Theta^{(t)}\)</span> and <span class="math inline">\(X_{obs}\)</span>,</p>
+<p><span class="math display">\[
+\begin{align*}
+\widehat{M} &amp;= \left(\sum_{i = 1}^NS_i^{(t+1)}\right)^{-1}\sum_{i=1}^NS_iX_i  = {S_{S}^{(t+1)}}^{-1} S_{SX}^{(t+1)} \\
+\widehat{\Omega} &amp;= \frac{1}{Np} \sum_{i = 1}^N (X_i - {M}^{(t)})^T S_i^{(t+1)} (X_i - {M}^{(t)}) =\frac{1}{Np} \left(S_{XSX}^{(t+1)} - {S_{SX}^{(t+1)}}^T {S_{S}^{(t+1)}}^{-1}{S_{SX}^{(t+1)}}  \right) \\
+ \widehat{\Sigma}^{-1} &amp;= \frac{1}{N(\nu^{(t)}+p-1)}\sum_{i = 1}^N S_i^{(t+1)} = \frac{S_S^{(t+1)}}{N(\nu^{(t)}+p-1)}
+\end{align*}
+\]</span> And, again, with the set of <span class="math inline">\(S_i\)</span> observed, the MLE of <span class="math inline">\(\nu\)</span> can be obtained: <span class="math display">\[ N \frac{d}{d\nu}\log \Gamma_p ((\nu+p-1)/2) - \frac{1}{2} (S_{|S|} - Np\log2 + N \log |\widehat{\Sigma}|) = 0\]</span> Note that <span class="math inline">\(\nu &gt; p -1\)</span>. Specifically, we have: <span class="math display">\[
+\begin{align*}
+ 0 &amp;= N \psi_p((\nu+p-1)/2) -  \left(N\psi_{p}\left({\frac {\nu + p + q -1}{2}}\right)  +\sum_{i=1}^N \log \left|\frac{S_{i,obs}^{(t+1)}}{\nu + p + q -1}\right| - N \log \left|\frac{S_S^{(t+1)}}{N(\nu+p-1)}\right|\right) \\*
+ &amp;=  \psi_p((\nu+p-1)/2) - \left(\psi_{p}\left({\frac {\nu + p + q -1}{2}}\right)  +\frac{1}{N}\sum_{i=1}^N \log \left|Z_{i,obs}^{(t+1)}\right| + p \log \frac{N(\nu + p -1)}{\nu + p +q -1} - \log \left|Z_S^{(t+1)}\right|\right)
+\end{align*}\]</span> where <span class="math inline">\(Z_{*}\)</span> is the appropriate <span class="math inline">\(S_{*}\)</span> statistic with <span class="math inline">\((\nu + p + q -1)\)</span> factored out and <span class="math inline">\(\psi_p\)</span> is the <span class="math inline">\(p\)</span>-dimensional digamma function. This can be solved for <span class="math inline">\(\nu\)</span> using a 1-dimensional search.</p>
+</div>
+</div>
+<div id="applications-and-results" class="section level2">
+<h2>Applications and results</h2>
+<div id="with-nu-known" class="section level3">
+<h3>With <span class="math inline">\(\nu\)</span> known</h3>
+<p>If the degrees of freedom parameter, <span class="math inline">\(\nu\)</span> known, the estimation is fairly straightforward. The procedure is similar to the multivariate <span class="math inline">\(t\)</span> or the matrix variate normal. In this case, the interface is just like the interface for the <code>MLmatrixnorm()</code> function:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">set.seed</span>(<span class="dv">20190622</span>)</a>
+<a class="sourceLine" id="cb2-2" title="2">sigma =<span class="st"> </span>(<span class="dv">1</span><span class="op">/</span><span class="dv">7</span>) <span class="op">*</span><span class="st"> </span><span class="kw">rWishart</span>(<span class="dv">1</span>, <span class="dv">7</span>, <span class="dv">1</span><span class="op">*</span><span class="kw">diag</span>(<span class="dv">3</span><span class="op">:</span><span class="dv">1</span>))[,,<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb2-3" title="3">A =<span class="st"> </span><span class="kw">rmatrixt</span>(<span class="dt">n=</span><span class="dv">100</span>,<span class="dt">mean=</span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">100</span>,<span class="dv">0</span>,<span class="op">-</span><span class="dv">100</span>,<span class="dv">0</span>,<span class="dv">25</span>,<span class="op">-</span><span class="dv">1000</span>),<span class="dt">nrow=</span><span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb2-4" title="4">   <span class="dt">V =</span> sigma, <span class="dt">df =</span> <span class="dv">7</span>)</a>
+<a class="sourceLine" id="cb2-5" title="5">results=<span class="kw">MLmatrixt</span>(A, <span class="dt">df =</span> <span class="dv">7</span>)</a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="kw">print</span>(results)</a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="co">#&gt; $mean</span></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="co">#&gt;            [,1]          [,2]        [,3]</span></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="co">#&gt; [1,] 99.8291911 -1.000708e+02    25.01042</span></a>
+<a class="sourceLine" id="cb2-10" title="10"><span class="co">#&gt; [2,] -0.0425028 -8.261356e-03 -1000.02357</span></a>
+<a class="sourceLine" id="cb2-11" title="11"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-12" title="12"><span class="co">#&gt; $U</span></a>
+<a class="sourceLine" id="cb2-13" title="13"><span class="co">#&gt;             [,1]        [,2]</span></a>
+<a class="sourceLine" id="cb2-14" title="14"><span class="co">#&gt; [1,]  1.00000000 -0.08039981</span></a>
+<a class="sourceLine" id="cb2-15" title="15"><span class="co">#&gt; [2,] -0.08039981  0.97069319</span></a>
+<a class="sourceLine" id="cb2-16" title="16"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-17" title="17"><span class="co">#&gt; $V</span></a>
+<a class="sourceLine" id="cb2-18" title="18"><span class="co">#&gt;           [,1]       [,2]       [,3]</span></a>
+<a class="sourceLine" id="cb2-19" title="19"><span class="co">#&gt; [1,] 1.0000000 0.21375613 0.11094767</span></a>
+<a class="sourceLine" id="cb2-20" title="20"><span class="co">#&gt; [2,] 0.2137561 0.14872070 0.04098332</span></a>
+<a class="sourceLine" id="cb2-21" title="21"><span class="co">#&gt; [3,] 0.1109477 0.04098332 0.12860660</span></a>
+<a class="sourceLine" id="cb2-22" title="22"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-23" title="23"><span class="co">#&gt; $var</span></a>
+<a class="sourceLine" id="cb2-24" title="24"><span class="co">#&gt; [1] 5.148569</span></a>
+<a class="sourceLine" id="cb2-25" title="25"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-26" title="26"><span class="co">#&gt; $nu</span></a>
+<a class="sourceLine" id="cb2-27" title="27"><span class="co">#&gt; [1] 7</span></a>
+<a class="sourceLine" id="cb2-28" title="28"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-29" title="29"><span class="co">#&gt; $iter</span></a>
+<a class="sourceLine" id="cb2-30" title="30"><span class="co">#&gt; [1] 44</span></a>
+<a class="sourceLine" id="cb2-31" title="31"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-32" title="32"><span class="co">#&gt; $tol</span></a>
+<a class="sourceLine" id="cb2-33" title="33"><span class="co">#&gt; [1] 1.155396e-08</span></a>
+<a class="sourceLine" id="cb2-34" title="34"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-35" title="35"><span class="co">#&gt; $logLik</span></a>
+<a class="sourceLine" id="cb2-36" title="36"><span class="co">#&gt; [1] -386.7623</span></a>
+<a class="sourceLine" id="cb2-37" title="37"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-38" title="38"><span class="co">#&gt; $convergence</span></a>
+<a class="sourceLine" id="cb2-39" title="39"><span class="co">#&gt; [1] TRUE</span></a>
+<a class="sourceLine" id="cb2-40" title="40"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-41" title="41"><span class="co">#&gt; $call</span></a>
+<a class="sourceLine" id="cb2-42" title="42"><span class="co">#&gt; MLmatrixt(data = A, df = 7)</span></a></code></pre></div>
+<p>There are two restrictions possible for the mean matrices: <code>row.mean = TRUE</code> will force a common mean within a row and <code>col.mean = TRUE</code> will force a common mean within a column. Setting both will ensure a constant mean for the entire system. Restrictions on <span class="math inline">\(\mathbf{U}\)</span> and <span class="math inline">\(\mathbf{V}\)</span>, the row-wise variance and column-wise variance, are possible with <code>row.variance</code> and <code>col.variance</code> commands.</p>
+<p>The options for variance restrictions are the same as for the <code>MLmatrixnorm()</code> function. Currently the options for variance restrictions are to impose an AR(1) structure by providing the <code>AR(1)</code> option, a compound symmetry structure by providing the <code>CS</code> option, to impose a correlation matrix structure by specifying <code>correlation</code> or <code>corr</code>, or to impose an identical and independent structure by specifying <code>Independent</code> or <code>I</code>. This works by using <code>uniroot</code> to find the appropriate <span class="math inline">\(\rho\)</span> which sets the derivative of the log-likelihood to zero for the <code>AR</code> and <code>CS</code> options - it is not fast but if this is the true structure it will be better in some sense than an unstructured variance matrix. The <span class="math inline">\(\rho\)</span> parameter should be <span class="math inline">\(&gt;0\)</span> and is forced to be non-negative. If the data behaves incompatibly with those restrictions, the function will provide a warning and exit with the current model fit.</p>
+</div>
+<div id="with-nu-unknown" class="section level3">
+<h3>With <span class="math inline">\(\nu\)</span> unknown</h3>
+<p>Estimation of <span class="math inline">\(\nu\)</span>, the degrees of freedom parameter, is slow and the principal mathematical difficulty of the matrix-variate <span class="math inline">\(t\)</span> distribution. It is performed using ECME. Generally, a fair amount more data are needed in order to have good convergence properties for the estimator, but they have not been derived analytically. Here you can see the recovery of the parameter for a few sample sizes. Because of the relative slowness of running a longer simulation, this only includes one set of examples. I give code for a longer and larger simulation than what is plotted if you’re really interested below. What is plotted below is only the <code>df = 10</code> example with 75 trials and a maximum number of iterations <code>max.iter =  50</code>. The full simulation may take several minutes.</p>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">samplesize</th>
+<th align="right">min</th>
+<th align="right">max</th>
+<th align="right">median</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">25</td>
+<td align="right">6.132659</td>
+<td align="right">18.44129</td>
+<td align="right">10.807527</td>
+<td align="right">11.19915</td>
+<td align="right">3.088939</td>
+</tr>
+<tr class="even">
+<td align="left">50</td>
+<td align="right">6.466020</td>
+<td align="right">16.67997</td>
+<td align="right">11.006894</td>
+<td align="right">11.04983</td>
+<td align="right">2.455769</td>
+</tr>
+<tr class="odd">
+<td align="left">100</td>
+<td align="right">8.265968</td>
+<td align="right">13.37668</td>
+<td align="right">9.990252</td>
+<td align="right">10.17746</td>
+<td align="right">1.156672</td>
+</tr>
+</tbody>
+</table>
+<p>As expected, increased sample size leads to better results in recovering the parameter. The results for smaller sample sizes would be more divergent if left to run until convergence.</p>
+</div>
+</div>
+<div id="use-for-classification" class="section level2">
+<h2>Use for classification</h2>
+<p>Using the <span class="math inline">\(t\)</span> distribution works in both <code>matrixlda()</code> and <code>matrixqda()</code> as expected by specifying <code>method = &quot;t&quot;</code> and providing either a single parameter (for <code>lda</code> or <code>qda</code>) for the degrees of freedom or a vector as long as the number of classes (for <code>qda</code>). Additional parameters for fitting can be passed through the <code>...</code> to <code>MLmatrixt()</code> just as for the normal case, including estimating the degrees of freedom parameter. The <code>qda</code> will only estimate <code>nu</code> with it varying between groups, it will not estimate a common <code>nu</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">A &lt;-<span class="st"> </span><span class="kw">rmatrixt</span>(<span class="dv">30</span>, <span class="dt">mean =</span> <span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow=</span><span class="dv">2</span>, <span class="dt">ncol=</span><span class="dv">3</span>), <span class="dt">df =</span> <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb3-2" title="2">B &lt;-<span class="st"> </span><span class="kw">rmatrixt</span>(<span class="dv">30</span>, <span class="dt">mean =</span> <span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">0</span>), <span class="dt">nrow=</span><span class="dv">2</span>, <span class="dt">ncol=</span><span class="dv">3</span>), <span class="dt">df =</span> <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb3-3" title="3">C &lt;-<span class="st"> </span><span class="kw">rmatrixt</span>(<span class="dv">30</span>, <span class="dt">mean =</span> <span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">nrow=</span><span class="dv">2</span>, <span class="dt">ncol=</span><span class="dv">3</span>), <span class="dt">df =</span> <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb3-4" title="4">ABC &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="kw">c</span>(A,B,C), <span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">90</span>))</a>
+<a class="sourceLine" id="cb3-5" title="5">groups &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&quot;A&quot;</span>,<span class="dv">30</span>),<span class="kw">rep</span>(<span class="st">&quot;B&quot;</span>,<span class="dv">30</span>),<span class="kw">rep</span>(<span class="st">&quot;C&quot;</span>,<span class="dv">30</span>)))</a>
+<a class="sourceLine" id="cb3-6" title="6">prior =<span class="st"> </span><span class="kw">c</span>(<span class="dv">30</span>,<span class="dv">30</span>,<span class="dv">30</span>)<span class="op">/</span><span class="dv">90</span></a>
+<a class="sourceLine" id="cb3-7" title="7">matlda &lt;-<span class="st"> </span><span class="kw">matrixlda</span>(<span class="dt">x =</span> ABC,<span class="dt">grouping =</span> groups, <span class="dt">prior =</span> prior,</a>
+<a class="sourceLine" id="cb3-8" title="8">                    <span class="dt">method =</span> <span class="st">&#39;t&#39;</span>, <span class="dt">nu =</span> <span class="dv">10</span>, <span class="dt">fixed =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb3-9" title="9"><span class="kw">predict</span>(matlda, <span class="dt">newdata =</span> ABC[,,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">31</span>,<span class="dv">61</span>)])</a>
+<a class="sourceLine" id="cb3-10" title="10"><span class="co">#&gt; $class</span></a>
+<a class="sourceLine" id="cb3-11" title="11"><span class="co">#&gt; [1] A B C</span></a>
+<a class="sourceLine" id="cb3-12" title="12"><span class="co">#&gt; Levels: A B C</span></a>
+<a class="sourceLine" id="cb3-13" title="13"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb3-14" title="14"><span class="co">#&gt; $posterior</span></a>
+<a class="sourceLine" id="cb3-15" title="15"><span class="co">#&gt;              [,1]         [,2]         [,3]</span></a>
+<a class="sourceLine" id="cb3-16" title="16"><span class="co">#&gt; [1,] 9.997064e-01 2.849389e-04 8.693417e-06</span></a>
+<a class="sourceLine" id="cb3-17" title="17"><span class="co">#&gt; [2,] 4.174839e-05 9.999508e-01 7.439619e-06</span></a>
+<a class="sourceLine" id="cb3-18" title="18"><span class="co">#&gt; [3,] 8.908508e-06 4.857627e-06 9.999862e-01</span></a></code></pre></div>
+</div>
+<div id="session-info" class="section level2">
+<h2>Session info</h2>
+<p>This vignette was built using <code>rmarkdown</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">sessionInfo</span>()</a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="co">#&gt; R version 3.6.0 (2019-04-26)</span></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="co">#&gt; Platform: x86_64-redhat-linux-gnu (64-bit)</span></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="co">#&gt; Running under: Fedora 30 (MATE-Compiz)</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="co">#&gt; Matrix products: default</span></a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="co">#&gt; BLAS/LAPACK: /usr/lib64/R/lib/libRblas.so</span></a>
+<a class="sourceLine" id="cb4-8" title="8"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-9" title="9"><span class="co">#&gt; locale:</span></a>
+<a class="sourceLine" id="cb4-10" title="10"><span class="co">#&gt;  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span></a>
+<a class="sourceLine" id="cb4-11" title="11"><span class="co">#&gt;  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=C              </span></a>
+<a class="sourceLine" id="cb4-12" title="12"><span class="co">#&gt;  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   </span></a>
+<a class="sourceLine" id="cb4-13" title="13"><span class="co">#&gt;  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span></a>
+<a class="sourceLine" id="cb4-14" title="14"><span class="co">#&gt;  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span></a>
+<a class="sourceLine" id="cb4-15" title="15"><span class="co">#&gt; [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span></a>
+<a class="sourceLine" id="cb4-16" title="16"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-17" title="17"><span class="co">#&gt; attached base packages:</span></a>
+<a class="sourceLine" id="cb4-18" title="18"><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></a>
+<a class="sourceLine" id="cb4-19" title="19"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-20" title="20"><span class="co">#&gt; other attached packages:</span></a>
+<a class="sourceLine" id="cb4-21" title="21"><span class="co">#&gt; [1] magrittr_1.5    dplyr_0.8.3     ggplot2_3.2.0   MixMatrix_0.2.2</span></a>
+<a class="sourceLine" id="cb4-22" title="22"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-23" title="23"><span class="co">#&gt; loaded via a namespace (and not attached):</span></a>
+<a class="sourceLine" id="cb4-24" title="24"><span class="co">#&gt;  [1] Rcpp_1.0.1        knitr_1.23        tidyselect_0.2.5 </span></a>
+<a class="sourceLine" id="cb4-25" title="25"><span class="co">#&gt;  [4] munsell_0.5.0     colorspace_1.4-1  R6_2.4.0         </span></a>
+<a class="sourceLine" id="cb4-26" title="26"><span class="co">#&gt;  [7] rlang_0.4.0       highr_0.8         stringr_1.4.0    </span></a>
+<a class="sourceLine" id="cb4-27" title="27"><span class="co">#&gt; [10] tools_3.6.0       grid_3.6.0        gtable_0.3.0     </span></a>
+<a class="sourceLine" id="cb4-28" title="28"><span class="co">#&gt; [13] xfun_0.8          withr_2.1.2       htmltools_0.3.6  </span></a>
+<a class="sourceLine" id="cb4-29" title="29"><span class="co">#&gt; [16] assertthat_0.2.1  yaml_2.2.0        lazyeval_0.2.2   </span></a>
+<a class="sourceLine" id="cb4-30" title="30"><span class="co">#&gt; [19] digest_0.6.20     CholWishart_1.0.2 tibble_2.1.3     </span></a>
+<a class="sourceLine" id="cb4-31" title="31"><span class="co">#&gt; [22] crayon_1.3.4      purrr_0.3.2       codetools_0.2-16 </span></a>
+<a class="sourceLine" id="cb4-32" title="32"><span class="co">#&gt; [25] glue_1.3.1        evaluate_0.14     rmarkdown_1.14   </span></a>
+<a class="sourceLine" id="cb4-33" title="33"><span class="co">#&gt; [28] labeling_0.3      stringi_1.4.3     compiler_3.6.0   </span></a>
+<a class="sourceLine" id="cb4-34" title="34"><span class="co">#&gt; [31] pillar_1.4.2      scales_1.0.0      pkgconfig_2.0.2</span></a></code></pre></div>
+</div>
+<div id="all-the-code-for-easy-copying" class="section level2">
+<h2>All the code for easy copying</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">knitr<span class="op">::</span>opts_chunk<span class="op">$</span><span class="kw">set</span>(</a>
+<a class="sourceLine" id="cb5-2" title="2">  <span class="dt">collapse =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb5-3" title="3">  <span class="dt">comment =</span> <span class="st">&quot;#&gt;&quot;</span></a>
+<a class="sourceLine" id="cb5-4" title="4">)</a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="kw">set.seed</span>(<span class="dv">20190622</span>)</a>
+<a class="sourceLine" id="cb5-6" title="6">sigma =<span class="st"> </span>(<span class="dv">1</span><span class="op">/</span><span class="dv">7</span>) <span class="op">*</span><span class="st"> </span><span class="kw">rWishart</span>(<span class="dv">1</span>, <span class="dv">7</span>, <span class="dv">1</span><span class="op">*</span><span class="kw">diag</span>(<span class="dv">3</span><span class="op">:</span><span class="dv">1</span>))[,,<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb5-7" title="7">A =<span class="st"> </span><span class="kw">rmatrixt</span>(<span class="dt">n=</span><span class="dv">100</span>,<span class="dt">mean=</span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">100</span>,<span class="dv">0</span>,<span class="op">-</span><span class="dv">100</span>,<span class="dv">0</span>,<span class="dv">25</span>,<span class="op">-</span><span class="dv">1000</span>),<span class="dt">nrow=</span><span class="dv">2</span>),</a>
+<a class="sourceLine" id="cb5-8" title="8">   <span class="dt">V =</span> sigma, <span class="dt">df =</span> <span class="dv">7</span>)</a>
+<a class="sourceLine" id="cb5-9" title="9">results=<span class="kw">MLmatrixt</span>(A, <span class="dt">df =</span> <span class="dv">7</span>)</a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="kw">print</span>(results)</a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="co">### Here is the long simulation</span></a>
+<a class="sourceLine" id="cb5-12" title="12"><span class="kw">library</span>(ggplot2)</a>
+<a class="sourceLine" id="cb5-13" title="13"></a>
+<a class="sourceLine" id="cb5-14" title="14"><span class="kw">set.seed</span>(<span class="dv">20181102</span>)</a>
+<a class="sourceLine" id="cb5-15" title="15"></a>
+<a class="sourceLine" id="cb5-16" title="16">df =<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb5-17" title="17">df5 &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">200</span>)</a>
+<a class="sourceLine" id="cb5-18" title="18">df10 &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">200</span>)</a>
+<a class="sourceLine" id="cb5-19" title="19">df100 &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">200</span>)</a>
+<a class="sourceLine" id="cb5-20" title="20">df550 &lt;-<span class="st">  </span><span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">200</span>)</a>
+<a class="sourceLine" id="cb5-21" title="21">df1050 &lt;-<span class="st">  </span><span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">200</span>)</a>
+<a class="sourceLine" id="cb5-22" title="22">df2050 &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">200</span>)</a>
+<a class="sourceLine" id="cb5-23" title="23">df5100 &lt;-<span class="st">  </span><span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">200</span>)</a>
+<a class="sourceLine" id="cb5-24" title="24">df10100 &lt;-<span class="st">  </span><span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">200</span>)</a>
+<a class="sourceLine" id="cb5-25" title="25">df20100 &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">200</span>)</a>
+<a class="sourceLine" id="cb5-26" title="26"></a>
+<a class="sourceLine" id="cb5-27" title="27">meanmat =<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>,<span class="dv">5</span>,<span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb5-28" title="28">U =<span class="st"> </span><span class="kw">diag</span>(<span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb5-29" title="29">V =<span class="st"> </span><span class="kw">diag</span>(<span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb5-30" title="30"></a>
+<a class="sourceLine" id="cb5-31" title="31"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">200</span>){</a>
+<a class="sourceLine" id="cb5-32" title="32">    df5[i] =<span class="st"> </span><span class="kw">MLmatrixt</span>(<span class="kw">rmatrixt</span>(<span class="dt">mean =</span> meanmat,</a>
+<a class="sourceLine" id="cb5-33" title="33">        <span class="dt">df =</span> <span class="dv">5</span>, <span class="dt">n =</span> <span class="dv">35</span>, <span class="dt">U =</span>U, <span class="dt">V =</span>V), <span class="dt">fixed =</span> <span class="ot">FALSE</span>)<span class="op">$</span>nu</a>
+<a class="sourceLine" id="cb5-34" title="34">    df10[i] =<span class="st"> </span><span class="kw">MLmatrixt</span>(<span class="kw">rmatrixt</span>(<span class="dt">mean =</span> meanmat,</a>
+<a class="sourceLine" id="cb5-35" title="35">        <span class="dt">df =</span> <span class="dv">10</span>, <span class="dt">n =</span> <span class="dv">35</span>, <span class="dt">U =</span>U, <span class="dt">V =</span>V), <span class="dt">fixed =</span> <span class="ot">FALSE</span>)<span class="op">$</span>nu</a>
+<a class="sourceLine" id="cb5-36" title="36">    df100[i] =<span class="st"> </span><span class="kw">MLmatrixt</span>(<span class="kw">rmatrixt</span>(<span class="dt">mean =</span> meanmat,</a>
+<a class="sourceLine" id="cb5-37" title="37">        <span class="dt">df =</span> <span class="dv">20</span>, <span class="dt">n =</span> <span class="dv">35</span>, <span class="dt">U =</span>U, <span class="dt">V =</span>V), <span class="dt">fixed =</span> <span class="ot">FALSE</span>)<span class="op">$</span>nu</a>
+<a class="sourceLine" id="cb5-38" title="38">    df550[i] =<span class="st"> </span><span class="kw">MLmatrixt</span>(<span class="kw">rmatrixt</span>(<span class="dt">mean =</span> meanmat,</a>
+<a class="sourceLine" id="cb5-39" title="39">        <span class="dt">df =</span> <span class="dv">5</span>, <span class="dt">n =</span> <span class="dv">50</span>, <span class="dt">U =</span>U, <span class="dt">V =</span>V), <span class="dt">fixed =</span> <span class="ot">FALSE</span>)<span class="op">$</span>nu</a>
+<a class="sourceLine" id="cb5-40" title="40">    df1050[i] =<span class="st"> </span><span class="kw">MLmatrixt</span>(<span class="kw">rmatrixt</span>(<span class="dt">mean =</span> meanmat,</a>
+<a class="sourceLine" id="cb5-41" title="41">        <span class="dt">df =</span> <span class="dv">10</span>, <span class="dt">n =</span> <span class="dv">50</span>, <span class="dt">U =</span>U, <span class="dt">V =</span>V), <span class="dt">fixed =</span> <span class="ot">FALSE</span>)<span class="op">$</span>nu</a>
+<a class="sourceLine" id="cb5-42" title="42">    df2050[i] =<span class="st"> </span><span class="kw">MLmatrixt</span>(<span class="kw">rmatrixt</span>(<span class="dt">mean =</span> meanmat,</a>
+<a class="sourceLine" id="cb5-43" title="43">        <span class="dt">df =</span> <span class="dv">20</span>, <span class="dt">n =</span> <span class="dv">50</span>, <span class="dt">U =</span>U, <span class="dt">V =</span>V), <span class="dt">fixed =</span> <span class="ot">FALSE</span>)<span class="op">$</span>nu</a>
+<a class="sourceLine" id="cb5-44" title="44">    df5100[i] =<span class="st"> </span><span class="kw">MLmatrixt</span>(<span class="kw">rmatrixt</span>(<span class="dt">mean =</span> meanmat,</a>
+<a class="sourceLine" id="cb5-45" title="45">        <span class="dt">df =</span> <span class="dv">5</span>, <span class="dt">n =</span> <span class="dv">100</span>, <span class="dt">U =</span>U, <span class="dt">V =</span>V), <span class="dt">fixed =</span> <span class="ot">FALSE</span>)<span class="op">$</span>nu</a>
+<a class="sourceLine" id="cb5-46" title="46">    df10100[i] =<span class="st"> </span><span class="kw">MLmatrixt</span>(<span class="kw">rmatrixt</span>(<span class="dt">mean =</span> meanmat,</a>
+<a class="sourceLine" id="cb5-47" title="47">        <span class="dt">df =</span> <span class="dv">10</span>, <span class="dt">n =</span> <span class="dv">100</span>, <span class="dt">U =</span>U, <span class="dt">V =</span>V), <span class="dt">fixed =</span> <span class="ot">FALSE</span>)<span class="op">$</span>nu</a>
+<a class="sourceLine" id="cb5-48" title="48">    df20100[i] =<span class="st"> </span><span class="kw">MLmatrixt</span>(<span class="kw">rmatrixt</span>(<span class="dt">mean =</span> meanmat,</a>
+<a class="sourceLine" id="cb5-49" title="49">        <span class="dt">df =</span> <span class="dv">20</span>, <span class="dt">n =</span> <span class="dv">100</span>, <span class="dt">U =</span>U, <span class="dt">V =</span>V), <span class="dt">fixed =</span> <span class="ot">FALSE</span>)<span class="op">$</span>nu</a>
+<a class="sourceLine" id="cb5-50" title="50">}</a>
+<a class="sourceLine" id="cb5-51" title="51"></a>
+<a class="sourceLine" id="cb5-52" title="52">truedataframe =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">truedf =</span> <span class="kw">factor</span>(<span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">10</span>,<span class="dv">20</span>), </a>
+<a class="sourceLine" id="cb5-53" title="53">                                           <span class="dt">label =</span> <span class="kw">c</span>(<span class="st">&#39;5 df&#39;</span>, <span class="st">&#39;10 df&#39;</span>, <span class="st">&#39;20 df&#39;</span>)), </a>
+<a class="sourceLine" id="cb5-54" title="54">                           <span class="dt">estdf =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">10</span>,<span class="dv">20</span>))</a>
+<a class="sourceLine" id="cb5-55" title="55"></a>
+<a class="sourceLine" id="cb5-56" title="56">dfdataframe =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">truedf =</span> <span class="kw">factor</span>(<span class="kw">rep</span>(<span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">10</span>,<span class="dv">20</span>), <span class="dt">each =</span> <span class="dv">200</span>),<span class="dv">3</span>), </a>
+<a class="sourceLine" id="cb5-57" title="57">                                         <span class="dt">label =</span> <span class="kw">c</span>(<span class="st">&#39;5 df&#39;</span>, <span class="st">&#39;10 df&#39;</span>, <span class="st">&#39;20 df&#39;</span>)),</a>
+<a class="sourceLine" id="cb5-58" title="58">                         <span class="dt">estdf =</span> <span class="kw">c</span>(df5, df10, df100, df550, df1050, df2050, df5100, df10100, df20100),</a>
+<a class="sourceLine" id="cb5-59" title="59">                         <span class="dt">samplesize =</span> <span class="kw">factor</span>(<span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">35</span>,<span class="dv">50</span>,<span class="dv">100</span>), <span class="dt">each =</span> <span class="dv">600</span>)))</a>
+<a class="sourceLine" id="cb5-60" title="60"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb5-61" title="61"></a>
+<a class="sourceLine" id="cb5-62" title="62">denseplot &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">data =</span> <span class="kw">subset</span>(dfdataframe, estdf <span class="op">&lt;</span><span class="st"> </span><span class="dv">200</span>),</a>
+<a class="sourceLine" id="cb5-63" title="63">                    <span class="kw">aes</span>(<span class="dt">x=</span>estdf, <span class="dt">fill=</span>samplesize)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-64" title="64"><span class="st">    </span><span class="kw">geom_density</span>(<span class="dt">alpha =</span> <span class="fl">.5</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-65" title="65"><span class="st">    </span><span class="kw">geom_vline</span>(<span class="dt">data =</span> truedataframe,</a>
+<a class="sourceLine" id="cb5-66" title="66">               <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">xintercept =</span> estdf),</a>
+<a class="sourceLine" id="cb5-67" title="67">               <span class="dt">size =</span> <span class="fl">.5</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-68" title="68"><span class="st">    </span><span class="kw">theme_bw</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-69" title="69"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.ticks.y=</span><span class="kw">element_blank</span>(), <span class="dt">axis.text.y=</span><span class="kw">element_blank</span>(), </a>
+<a class="sourceLine" id="cb5-70" title="70">          <span class="dt">strip.text =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">8</span>), </a>
+<a class="sourceLine" id="cb5-71" title="71">          <span class="dt">legend.justification=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">0</span>), <span class="dt">legend.position=</span><span class="kw">c</span>(.<span class="dv">95</span>,.<span class="dv">4</span>),</a>
+<a class="sourceLine" id="cb5-72" title="72">          <span class="dt">legend.background =</span> <span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb5-73" title="73">          <span class="dt">legend.text =</span><span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">8</span>), <span class="dt">legend.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">8</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-74" title="74"><span class="st">    </span><span class="kw">ggtitle</span>(<span class="st">&quot;Density plot of estimated degrees of freedom compared to actual&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-75" title="75"><span class="st">    </span><span class="kw">xlab</span>(<span class="ot">NULL</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-76" title="76"><span class="st">    </span><span class="kw">ylab</span>(<span class="ot">NULL</span>) <span class="op">+</span><span class="st">     </span></a>
+<a class="sourceLine" id="cb5-77" title="77"><span class="st">    </span><span class="kw">scale_fill_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;#050505&quot;</span>, <span class="st">&quot;#E69F00&quot;</span>, <span class="st">&quot;#56B4E9&quot;</span>), </a>
+<a class="sourceLine" id="cb5-78" title="78">        <span class="dt">name =</span> <span class="st">&quot;Sample Size&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-79" title="79"><span class="st">    </span><span class="kw">facet_wrap</span>(<span class="kw">factor</span>(truedf)<span class="op">~</span>.,  <span class="dt">scales=</span><span class="st">&quot;free&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-80" title="80"><span class="st">    </span><span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb5-81" title="81">denseplot</a>
+<a class="sourceLine" id="cb5-82" title="82"></a>
+<a class="sourceLine" id="cb5-83" title="83"></a>
+<a class="sourceLine" id="cb5-84" title="84">knitr<span class="op">::</span><span class="kw">kable</span>(dfdataframe <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(truedf, samplesize) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-85" title="85"><span class="st">    </span><span class="kw">summarize</span>(<span class="dt">min =</span> <span class="kw">min</span>(estdf), <span class="dt">max =</span> <span class="kw">max</span>(estdf),</a>
+<a class="sourceLine" id="cb5-86" title="86">    <span class="dt">median =</span> <span class="kw">median</span>(estdf),</a>
+<a class="sourceLine" id="cb5-87" title="87">    <span class="dt">mean=</span><span class="kw">mean</span>(estdf),</a>
+<a class="sourceLine" id="cb5-88" title="88">    <span class="dt">sd =</span> <span class="kw">sd</span>(estdf)))</a>
+<a class="sourceLine" id="cb5-89" title="89"><span class="co">### Here ends the long simulation</span></a>
+<a class="sourceLine" id="cb5-90" title="90"></a>
+<a class="sourceLine" id="cb5-91" title="91"><span class="co">##### Here is what is really run</span></a>
+<a class="sourceLine" id="cb5-92" title="92"></a>
+<a class="sourceLine" id="cb5-93" title="93"><span class="kw">set.seed</span>(<span class="dv">20190621</span>)</a>
+<a class="sourceLine" id="cb5-94" title="94">df10 &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">50</span>)</a>
+<a class="sourceLine" id="cb5-95" title="95">df1050 &lt;-<span class="st">  </span><span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">50</span>)</a>
+<a class="sourceLine" id="cb5-96" title="96">df10100 &lt;-<span class="st">  </span><span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">50</span>)</a>
+<a class="sourceLine" id="cb5-97" title="97"></a>
+<a class="sourceLine" id="cb5-98" title="98"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">50</span>){</a>
+<a class="sourceLine" id="cb5-99" title="99">   df10[i] =<span class="st"> </span><span class="kw">MLmatrixt</span>(<span class="kw">rmatrixt</span>(<span class="dt">mean =</span> <span class="kw">matrix</span>(<span class="dv">0</span>,<span class="dv">5</span>,<span class="dv">3</span>),<span class="dt">df =</span> <span class="dv">10</span>, <span class="dt">n =</span> <span class="dv">25</span>), <span class="dt">fixed =</span> <span class="ot">FALSE</span>, <span class="dt">df =</span> <span class="dv">5</span>, <span class="dt">max.iter =</span> <span class="dv">50</span>)<span class="op">$</span>nu</a>
+<a class="sourceLine" id="cb5-100" title="100">   df1050[i] =<span class="st"> </span><span class="kw">MLmatrixt</span>(<span class="kw">rmatrixt</span>(<span class="dt">mean =</span> <span class="kw">matrix</span>(<span class="dv">0</span>,<span class="dv">5</span>,<span class="dv">3</span>),<span class="dt">df =</span> <span class="dv">10</span>, <span class="dt">n =</span> <span class="dv">50</span>), <span class="dt">fixed =</span> <span class="ot">FALSE</span>, <span class="dt">df =</span> <span class="dv">5</span>, <span class="dt">max.iter =</span> <span class="dv">50</span>)<span class="op">$</span>nu</a>
+<a class="sourceLine" id="cb5-101" title="101">   df10100[i] =<span class="st"> </span><span class="kw">MLmatrixt</span>(<span class="kw">rmatrixt</span>(<span class="dt">mean =</span> <span class="kw">matrix</span>(<span class="dv">0</span>,<span class="dv">5</span>,<span class="dv">3</span>),<span class="dt">df =</span> <span class="dv">10</span>, <span class="dt">n =</span> <span class="dv">100</span>), <span class="dt">fixed =</span> <span class="ot">FALSE</span>, <span class="dt">df =</span> <span class="dv">5</span>, <span class="dt">max.iter =</span> <span class="dv">50</span>)<span class="op">$</span>nu</a>
+<a class="sourceLine" id="cb5-102" title="102">}</a>
+<a class="sourceLine" id="cb5-103" title="103"></a>
+<a class="sourceLine" id="cb5-104" title="104"></a>
+<a class="sourceLine" id="cb5-105" title="105">dfdataframe =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">label =</span> <span class="kw">c</span>(<span class="st">&#39;10 df&#39;</span>),</a>
+<a class="sourceLine" id="cb5-106" title="106">                         <span class="dt">estdf =</span> <span class="kw">c</span>(df10, df1050, df10100),</a>
+<a class="sourceLine" id="cb5-107" title="107">                         <span class="dt">samplesize =</span> <span class="kw">factor</span>(<span class="kw">rep</span>(<span class="kw">c</span>(<span class="dv">25</span>,<span class="dv">50</span>,<span class="dv">100</span>), <span class="dt">each =</span> <span class="dv">50</span>)))</a>
+<a class="sourceLine" id="cb5-108" title="108"><span class="kw">library</span>(ggplot2)</a>
+<a class="sourceLine" id="cb5-109" title="109"><span class="kw">library</span>(dplyr)</a>
+<a class="sourceLine" id="cb5-110" title="110"><span class="kw">library</span>(magrittr)</a>
+<a class="sourceLine" id="cb5-111" title="111">denseplot &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">data =</span> <span class="kw">subset</span>(dfdataframe, estdf <span class="op">&lt;</span><span class="st"> </span><span class="dv">200</span>),<span class="kw">aes</span>(<span class="dt">x=</span>estdf, <span class="dt">fill=</span>samplesize)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-112" title="112"><span class="st">    </span><span class="kw">geom_density</span>(<span class="dt">alpha =</span> <span class="fl">.5</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-113" title="113"><span class="st">    </span><span class="kw">geom_vline</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">xintercept =</span> <span class="dv">10</span>),</a>
+<a class="sourceLine" id="cb5-114" title="114">               <span class="dt">size =</span> <span class="fl">.5</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-115" title="115"><span class="st">    </span><span class="kw">theme_bw</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-116" title="116"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.ticks.y=</span><span class="kw">element_blank</span>(), <span class="dt">axis.text.y=</span><span class="kw">element_blank</span>(), <span class="dt">strip.text =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">8</span>), </a>
+<a class="sourceLine" id="cb5-117" title="117">          <span class="dt">legend.justification=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">0</span>), <span class="dt">legend.position=</span><span class="kw">c</span>(.<span class="dv">95</span>,.<span class="dv">4</span>),</a>
+<a class="sourceLine" id="cb5-118" title="118">          <span class="dt">legend.background =</span> <span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb5-119" title="119">          <span class="dt">legend.text =</span><span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">8</span>), <span class="dt">legend.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">8</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-120" title="120"><span class="st">    </span><span class="kw">ggtitle</span>(<span class="st">&quot;Density plot of estimated degrees of freedom compared to actual&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-121" title="121"><span class="st">    </span><span class="kw">xlab</span>(<span class="ot">NULL</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-122" title="122"><span class="st">    </span><span class="kw">ylab</span>(<span class="ot">NULL</span>) <span class="op">+</span><span class="st">     </span></a>
+<a class="sourceLine" id="cb5-123" title="123"><span class="st">    </span><span class="kw">scale_fill_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;#050505&quot;</span>, <span class="st">&quot;#E69F00&quot;</span>, <span class="st">&quot;#56B4E9&quot;</span>), <span class="dt">name =</span> <span class="st">&quot;Sample Size&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-124" title="124"><span class="st"> </span><span class="co">#   facet_wrap(factor(truedf)~.,  scales=&quot;free&quot;) +</span></a>
+<a class="sourceLine" id="cb5-125" title="125"><span class="st">    </span><span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb5-126" title="126">denseplot</a>
+<a class="sourceLine" id="cb5-127" title="127"></a>
+<a class="sourceLine" id="cb5-128" title="128"></a>
+<a class="sourceLine" id="cb5-129" title="129">knitr<span class="op">::</span><span class="kw">kable</span>(dfdataframe <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(samplesize) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-130" title="130"><span class="st">    </span><span class="kw">summarize</span>(<span class="dt">min =</span> <span class="kw">min</span>(estdf), <span class="dt">max =</span> <span class="kw">max</span>(estdf),</a>
+<a class="sourceLine" id="cb5-131" title="131">    <span class="dt">median =</span> <span class="kw">median</span>(estdf),</a>
+<a class="sourceLine" id="cb5-132" title="132">    <span class="dt">mean=</span><span class="kw">mean</span>(estdf),</a>
+<a class="sourceLine" id="cb5-133" title="133">    <span class="dt">sd =</span> <span class="kw">sd</span>(estdf)))</a>
+<a class="sourceLine" id="cb5-134" title="134"></a>
+<a class="sourceLine" id="cb5-135" title="135"><span class="co">#### Here ends what is really run</span></a>
+<a class="sourceLine" id="cb5-136" title="136"></a>
+<a class="sourceLine" id="cb5-137" title="137">A &lt;-<span class="st"> </span><span class="kw">rmatrixt</span>(<span class="dv">30</span>, <span class="dt">mean =</span> <span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow=</span><span class="dv">2</span>, <span class="dt">ncol=</span><span class="dv">3</span>), <span class="dt">df =</span> <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb5-138" title="138">B &lt;-<span class="st"> </span><span class="kw">rmatrixt</span>(<span class="dv">30</span>, <span class="dt">mean =</span> <span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">0</span>), <span class="dt">nrow=</span><span class="dv">2</span>, <span class="dt">ncol=</span><span class="dv">3</span>), <span class="dt">df =</span> <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb5-139" title="139">C &lt;-<span class="st"> </span><span class="kw">rmatrixt</span>(<span class="dv">30</span>, <span class="dt">mean =</span> <span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">nrow=</span><span class="dv">2</span>, <span class="dt">ncol=</span><span class="dv">3</span>), <span class="dt">df =</span> <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb5-140" title="140">ABC &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="kw">c</span>(A,B,C), <span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">90</span>))</a>
+<a class="sourceLine" id="cb5-141" title="141">groups &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&quot;A&quot;</span>,<span class="dv">30</span>),<span class="kw">rep</span>(<span class="st">&quot;B&quot;</span>,<span class="dv">30</span>),<span class="kw">rep</span>(<span class="st">&quot;C&quot;</span>,<span class="dv">30</span>)))</a>
+<a class="sourceLine" id="cb5-142" title="142">prior =<span class="st"> </span><span class="kw">c</span>(<span class="dv">30</span>,<span class="dv">30</span>,<span class="dv">30</span>)<span class="op">/</span><span class="dv">90</span></a>
+<a class="sourceLine" id="cb5-143" title="143">matlda &lt;-<span class="st"> </span><span class="kw">matrixlda</span>(<span class="dt">x =</span> ABC,<span class="dt">grouping =</span> groups, <span class="dt">prior =</span> prior,</a>
+<a class="sourceLine" id="cb5-144" title="144">                    <span class="dt">method =</span> <span class="st">&#39;t&#39;</span>, <span class="dt">nu =</span> <span class="dv">10</span>, <span class="dt">fixed =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb5-145" title="145"><span class="kw">predict</span>(matlda, <span class="dt">newdata =</span> ABC[,,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">31</span>,<span class="dv">61</span>)])</a>
+<a class="sourceLine" id="cb5-146" title="146"></a>
+<a class="sourceLine" id="cb5-147" title="147"><span class="kw">sessionInfo</span>()</a></code></pre></div>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references">
+<div id="ref-dickey1967">
+<p>Dickey, James M. 1967. “Matricvariate Generalizations of the Multivariate <span class="math inline">\(t\)</span> Distribution and the Inverted Multivariate <span class="math inline">\(t\)</span> Distribution.” <em>Ann. Math. Statist.</em> 38 (2): 511–18. <a href="https://doi.org/10.1214/aoms/1177698967" class="uri">https://doi.org/10.1214/aoms/1177698967</a>.</p>
+</div>
+<div id="ref-liurubin1994">
+<p>Liu, Chuanhai, and Donald B. Rubin. 1994. “The ECME Algorithm: A Simple Extension of EM and ECM with Faster Monotone Convergence.” <em>Biometrika</em> 81 (4): 633–48. <a href="https://doi.org/10.2307/2337067" class="uri">https://doi.org/10.2307/2337067</a>.</p>
+</div>
+<div id="ref-meng1993">
+<p>Meng, Xiao-Li, and Donald B. Rubin. 1993. “Maximum Likelihood Estimation via the ECM Algorithm: A General Framework.” <em>Biometrika</em> 80 (2): 267–78. <a href="https://doi.org/10.1093/biomet/80.2.267" class="uri">https://doi.org/10.1093/biomet/80.2.267</a>.</p>
+</div>
+<div id="ref-rubin1983">
+<p>Rubin, D.B. 1983. “Encyclopedia of Statistical Sciences.” In, 4th ed., 272–5. John Wiley.</p>
+</div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
