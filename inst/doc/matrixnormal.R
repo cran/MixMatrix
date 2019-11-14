@@ -43,14 +43,14 @@ dmatrixnorm(A,mean=matrix(c(100,0,-100,0,25,-1000),nrow=2),
   L=matrix(c(2,1,0,.1),nrow=2),log=TRUE )
 
 
-## ----mleone, cache=T-----------------------------------------------------
+## ----mleone--------------------------------------------------------------
 set.seed(20180202)
 A = rmatrixnorm(n=100,mean=matrix(c(100,0,-100,0,25,-1000),nrow=2),
    L=matrix(c(2,1,0,.1),nrow=2),list=TRUE)
 results=MLmatrixnorm(A)
 print(results)
 
-## ----mlerow, cache = T---------------------------------------------------
+## ----mlerow--------------------------------------------------------------
 results.fixrows = MLmatrixnorm(A, row.mean = TRUE, max.iter = 5)
 print(results.fixrows)
 # this failure is expected with misspecification! The number of iterations is also 

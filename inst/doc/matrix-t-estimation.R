@@ -7,7 +7,7 @@ knitr::opts_chunk$set(
 ## ----setup---------------------------------------------------------------
 library(MixMatrix)
 
-## ----mleone, cache=T-----------------------------------------------------
+## ----mleone--------------------------------------------------------------
 set.seed(20190622)
 sigma = (1/7) * rWishart(1, 7, 1*diag(3:1))[,,1]
 A = rmatrixt(n=100,mean=matrix(c(100,0,-100,0,25,-1000),nrow=2),
@@ -97,7 +97,7 @@ print(results)
 #  ### Here ends the long simulation
 #  
 
-## ----dftenexample, echo = FALSE, cache = TRUE, message = FALSE, warning = FALSE----
+## ----dftenexample, echo = FALSE, message = FALSE, warning = FALSE--------
 ##### Here is what is really run
 
 set.seed(20190621)
@@ -106,9 +106,9 @@ df1050 <-  rep(0,50)
 df10100 <-  rep(0,50)
 
 for(i in 1:50){
-   df10[i] = MLmatrixt(rmatrixt(mean = matrix(0,5,3),df = 10, n = 25), fixed = FALSE, df = 5, max.iter = 50)$nu
-   df1050[i] = MLmatrixt(rmatrixt(mean = matrix(0,5,3),df = 10, n = 50), fixed = FALSE, df = 5, max.iter = 50)$nu
-   df10100[i] = MLmatrixt(rmatrixt(mean = matrix(0,5,3),df = 10, n = 100), fixed = FALSE, df = 5, max.iter = 50)$nu
+   df10[i] = suppressWarnings(MLmatrixt(rmatrixt(mean = matrix(0,5,3),df = 10, n = 25), fixed = FALSE, df = 5, max.iter = 20)$nu)
+   df1050[i] = suppressWarnings(MLmatrixt(rmatrixt(mean = matrix(0,5,3),df = 10, n = 50), fixed = FALSE, df = 5, max.iter = 20)$nu)
+   df10100[i] = suppressWarnings(MLmatrixt(rmatrixt(mean = matrix(0,5,3),df = 10, n = 100), fixed = FALSE, df = 5, max.iter = 20)$nu)
 }
 
 
@@ -145,7 +145,7 @@ knitr::kable(dfdataframe %>% group_by(samplesize) %>%
 #### Here ends what is really run
 
 
-## ----genlda, cache = TRUE------------------------------------------------
+## ----genlda--------------------------------------------------------------
 A <- rmatrixt(30, mean = matrix(0, nrow=2, ncol=3), df = 10)
 B <- rmatrixt(30, mean = matrix(c(1,0), nrow=2, ncol=3), df = 10)
 C <- rmatrixt(30, mean = matrix(c(0,1), nrow=2, ncol=3), df = 10)
@@ -263,9 +263,9 @@ labs = labs[!labs %in% c("setup", "toc", "getlabels", "allcode")]
 #  df10100 <-  rep(0,50)
 #  
 #  for(i in 1:50){
-#     df10[i] = MLmatrixt(rmatrixt(mean = matrix(0,5,3),df = 10, n = 25), fixed = FALSE, df = 5, max.iter = 50)$nu
-#     df1050[i] = MLmatrixt(rmatrixt(mean = matrix(0,5,3),df = 10, n = 50), fixed = FALSE, df = 5, max.iter = 50)$nu
-#     df10100[i] = MLmatrixt(rmatrixt(mean = matrix(0,5,3),df = 10, n = 100), fixed = FALSE, df = 5, max.iter = 50)$nu
+#     df10[i] = suppressWarnings(MLmatrixt(rmatrixt(mean = matrix(0,5,3),df = 10, n = 25), fixed = FALSE, df = 5, max.iter = 20)$nu)
+#     df1050[i] = suppressWarnings(MLmatrixt(rmatrixt(mean = matrix(0,5,3),df = 10, n = 50), fixed = FALSE, df = 5, max.iter = 20)$nu)
+#     df10100[i] = suppressWarnings(MLmatrixt(rmatrixt(mean = matrix(0,5,3),df = 10, n = 100), fixed = FALSE, df = 5, max.iter = 20)$nu)
 #  }
 #  
 #  

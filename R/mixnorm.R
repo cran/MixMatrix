@@ -52,7 +52,9 @@
 ##' @param miniter minimum number of iterations
 ##' @param convergence By default, \code{TRUE}. Whether to use Aitken acceleration to
 ##'     determine convergence. If false, it instead checks if the change in
-##'     log-likelihood is less than \code{tolerance}.
+##'     log-likelihood is less than \code{tolerance}. Aitken acceleration may
+##'     prematurely end in the first few steps, so you may wish to set \code{miniter}
+##'     or select \code{FALSE} if this is an issue.
 ##' @return A list of class \code{MixMatrixModel} containing the following
 ##'     components:
 ##' \describe{
@@ -105,7 +107,7 @@
 ##' A <- rmatrixt(20,mean=matrix(0,nrow=3,ncol=4), df = 5)
 ##' # 3x4 matrices with mean 0
 ##' B <- rmatrixt(20,mean=matrix(1,nrow=3,ncol=4), df = 5)
-##' # 3x4 matrices with mean 2
+##' # 3x4 matrices with mean 1
 ##' C <- array(c(A,B), dim=c(3,4,40)) # combine into one array
 ##' prior <- c(.5,.5) # equal probability prior
 ##' # create an intialization object, starts at the true parameters
@@ -115,7 +117,7 @@
 ##'  )
 ##' # fit model
 ##'  res<-matrixmixture(C, init = init, prior = prior, nu = 5,
-##'                     model = "t", tolerance = 1e-1)
+##'                     model = "t", tolerance = 1e-3, convergence = FALSE)
 ##' print(res$centers) # the final centers
 ##' print(res$pi) # the final mixing proportion
 ##' plot(res) # the log likelihood by iteration
@@ -124,7 +126,7 @@
 ##' predict(res, newdata = C[,,c(1,21)]) # predicted class membership
 matrixmixture <- function(x, init = NULL, prior = NULL, K = length(prior), iter=1000,
                           model = "normal", method = NULL, row.mean = FALSE, col.mean = FALSE,
-                          tolerance = 1e-1, nu=NULL, ..., verbose = 0, miniter = 5, convergence = TRUE){
+                          tolerance = 1e-1, nu=NULL,..., verbose = 0, miniter = 5, convergence = TRUE){
     if (class(x) == "list")
         x <- array(unlist(x),
                    dim = c(nrow(x[[1]]),
@@ -302,33 +304,32 @@ matrixmixture <- function(x, init = NULL, prior = NULL, K = length(prior), iter=
         
 ### Fit NU:
 ### doesn't work yet
-        new.df = df
-        ## if(model == "t" && fixdf == FALSE){
-        ##     ######## THIS DOES NOT WORK.
-        ##     for(j in 1:nclass){
-        ##         detSS = determinant(SS[,,j], logarithm = TRUE)$modulus[1]
-        ##         nuLL = function(nus) {(CholWishart::mvdigamma((nus + p - 1)/2, p) -
-        ##                               CholWishart::mvdigamma((nus + p + q - 1)/2, p) -
-        ##                               #(SSD[j]/sumzig[j] - (detSS - p*log(sumzig[j]*(nus + p - 1))+p*log(nus + p + q - 1))))
-        ##                                 # this latest ECME-ish one gives SLIGHTLY different results but is faster
-        ##                                 (SSD[j]/sumzig[j] +  determinant(newU[,,j], logarithm = TRUE)$modulus[1]))
-                                      
-        ##         }
-        ##         if (!isTRUE(sign(nuLL(2)) * sign(nuLL(1000)) <= 0)) {
-        ##             warning("Endpoints of derivative of df likelihood do not have opposite sign. Check df specification.")
-        ##             varflag = TRUE
-        ##             ## print(nuLL(3))
-        ##             ## print(SSD[j])
-        ##             ## print(nuLL(1000))
-        ##             ## print(sumzig[j])
-        ##         }else{
-        ##             fit0 <- stats::uniroot(nuLL, c(2, 1000),...)
-        ##             new.df[j] = fit0$root
-        ##         }
-                
-        ##     }
-            
-        ##}
+        new.df = df 
+ ###       if(model == "t" && fixdf == FALSE && iter > 1){
+ ###           ######## THIS DOES NOT WORK.
+ ###           for(j in 1:nclass){
+ ###               detSS = determinant(SS[,,j], logarithm = TRUE)$modulus[1]
+ ###               nuLL = function(nus) {(CholWishart::mvdigamma((nus + p - 1)/2, p) -
+ ###                                     CholWishart::mvdigamma((nus + p + q - 1)/2, p) -
+ ###                                    # (SSD[j]/sumzig[j] - (detSS - p*log(sumzig[j]*(nus + p - 1))+p*log(nus + p + q - 1))))
+ ###                                       # this latest ECME-ish one gives SLIGHTLY different results but is faster
+ ###                                       (SSD[j]/sumzig[j] +  determinant(newU[,,j], logarithm = TRUE)$modulus[1]))
+ ###                                     
+ ###               }
+ ###               if (!isTRUE(sign(nuLL(2)) * sign(nuLL(1000)) <= 0)) {
+ ###                   warning("Endpoints of derivative of df likelihood do not have opposite sign. Check df specification.")
+ ###                   varflag = TRUE
+ ###                   ## print(nuLL(3))
+ ###                   ## print(SSD[j])
+ ###                   
+ ###               }else{
+ ###                   fit0 <- stats::uniroot(nuLL, c(2, 1000),...)
+ ###                   new.df[j] = fit0$root
+ ###               }
+ ###               
+ ###           }
+ ###           
+ ###       }
             
 ####### Eval convergence
         if(verbose > 1){
@@ -347,17 +348,18 @@ matrixmixture <- function(x, init = NULL, prior = NULL, K = length(prior), iter=
         for(j in 1:nclass){
             if(model == "normal" || new.df[j] == 0 || new.df[j] == Inf){
                 logLik = logLik +sum( newposterior[,j]*(log(pi[j]) +
-                         dmatnorm_calc(x = x, mean = newcenters[,,j],
+                          newposterior[,j]*dmatnorm_calc(x = x, mean = newcenters[,,j],
                             U = newU[,,j], V = newV[,,j])))
                 } else {
                 logLik = logLik + sum(newposterior[,j]*(log(pi[j]) +
-                dmat_t_calc(x = x, df = new.df[j], mean = newcenters[,,j],
+                 newposterior[,j]*dmat_t_calc(x = x, df = new.df[j], mean = newcenters[,,j],
                             U = newU[,,j], V = newV[,,j])))
                 }
             }
         #}
         if(verbose) cat("\nLog likelihood:", logLik)
         if(i == 0) {
+            oldlogLik = logLik-.3*abs(logLik)
             ## initialize to some not-so-bad values so that doesn't immediately "converge"
             olderlogLik = oldlogLik - .2*abs(oldlogLik)
             }
@@ -450,7 +452,7 @@ logLik.MixMatrixModel <- function(object, ...){
 ### insert here logic for parsing out different values for this later
 ### as ways of restricting variances and means are added
     
-    df = numgroups*(vpars + upars + nupar + meanpars - 1)
+    df = numgroups*(vpars + upars + meanpars - 1)+nupar
     logLik = object$logLik[length(object$logLik)]
     
     class(logLik) = "logLik"

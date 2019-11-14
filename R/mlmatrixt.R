@@ -209,7 +209,7 @@ n = dims[3]
     dfmult = df + p + q - 1
 
 ### E step
-      Slist = .SStep(data,mu,U,V,rep(1,n))
+      Slist = .SStep(data,mu,U,V,rep(1.0,n))
       SS = Slist$SS
       SSX = Slist$SSX
       SSXX = Slist$SSXX
@@ -218,10 +218,10 @@ n = dims[3]
  
 ### CM STEP
       ### MEANS:
-      new.Mu = .MeansFunction(data, V=V, SS, SSX, rep(1,n), row.mean, col.mean, "t")
+      new.Mu = .MeansFunction(data, V=V, SS, SSX, rep(1.0,n), row.mean, col.mean, "t")
 
       ### VARS:
-      new.V = .colVars(data,new.Mu, df, rep(1,n),SS, SSX, SSXX,
+      new.V = .colVars(data,new.Mu, df, rep(1.0,n),SS, SSX, SSXX,
                        col.variance, col.set.var)
 
 
@@ -243,11 +243,11 @@ n = dims[3]
                             #(SSDtmp/n +  determinant(new.U, logarithm = TRUE)$modulus[1]))
 
     }
-    if (!isTRUE(sign(nuLL(2)) * sign(nuLL(1000)) <= 0)) {
+    if (!isTRUE(sign(nuLL(1e-6)) * sign(nuLL(1000)) <= 0)) {
       warning("Endpoints of derivative of df likelihood do not have opposite sign. Check df specification.")
       varflag = TRUE
     }else{
-    fit0 <- stats::uniroot(nuLL, c(2, 1000),...)
+    fit0 <- stats::uniroot(nuLL, c(1e-6, 1000),...)
     new.df = fit0$root
     }
     #print(new.df)

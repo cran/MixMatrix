@@ -1,8 +1,7 @@
 Package: MixMatrix
 Type: Package
 Title: Classification with Matrix Variate Normal and t Distributions
-Version: 0.2.2
-Date: 2019-07-24
+Version: 0.2.4
 Authors@R: c(person(c("Geoffrey", "Thompson"),email="gzthompson@gmail.com",
           role = c("aut", "cre"), comment = c(ORCID = '0000-0003-2436-8822')),
 	  person(c("B. D.", "Ripley",
@@ -32,10 +31,10 @@ RoxygenNote: 6.1.1
 Encoding: UTF-8
 LinkingTo: Rcpp, RcppArmadillo
 NeedsCompilation: yes
-Packaged: 2019-07-25 05:23:19 UTC; gzt
+Packaged: 2019-11-14 22:11:50 UTC; gzt
 Author: Geoffrey Thompson [aut, cre] (<https://orcid.org/0000-0003-2436-8822>),
   B. D. Ripley author of original lda and qda functions [ctb, cph],
   W. N. Venables author of original lda and qda functions [ctb, cph]
 Maintainer: Geoffrey Thompson <gzthompson@gmail.com>
 Repository: CRAN
-Date/Publication: 2019-07-28 08:20:05 UTC
+Date/Publication: 2019-11-14 22:30:03 UTC
