@@ -4,9 +4,18 @@
 \alias{MLmatrixnorm}
 \title{Maximum likelihood estimation for matrix normal distributions}
 \usage{
-MLmatrixnorm(data, row.mean = FALSE, col.mean = FALSE,
-  row.variance = "none", col.variance = "none", tol = 10 *
-  .Machine$double.eps^0.5, max.iter = 100, U, V, ...)
+MLmatrixnorm(
+  data,
+  row.mean = FALSE,
+  col.mean = FALSE,
+  row.variance = "none",
+  col.variance = "none",
+  tol = 10 * .Machine$double.eps^0.5,
+  max.iter = 100,
+  U,
+  V,
+  ...
+)
 }
 \arguments{
 \item{data}{Either a list of matrices or a 3-D array with matrices in
@@ -51,18 +60,18 @@ if using restrictions on the variance.}
 \value{
 Returns a list with a the following elements:
 \describe{
-      \item{\code{mean}}{the mean matrix}
-      \item{\code{scaling}}{the scalar variance parameter
-           (the first entry of the covariances are restricted to unity)}
-      \item{\code{U}}{the between-row covariance matrix}
-      \item{\code{V}}{the between-column covariance matrix}
-      \item{\code{iter}}{the number of iterations}
-      \item{\code{tol}}{the squared difference between iterations of
-           the variance matrices at the time of stopping}
-      \item{\code{logLik}}{vector of log likelihoods at each iteration.}
-      \item{\code{convergence}}{a convergence flag, \code{TRUE} if converged.}
-      \item{\code{call}}{The (matched) function call.}
-   }
+\item{\code{mean}}{the mean matrix}
+\item{\code{scaling}}{the scalar variance parameter
+(the first entry of the covariances are restricted to unity)}
+\item{\code{U}}{the between-row covariance matrix}
+\item{\code{V}}{the between-column covariance matrix}
+\item{\code{iter}}{the number of iterations}
+\item{\code{tol}}{the squared difference between iterations of
+the variance matrices at the time of stopping}
+\item{\code{logLik}}{vector of log likelihoods at each iteration.}
+\item{\code{convergence}}{a convergence flag, \code{TRUE} if converged.}
+\item{\code{call}}{The (matched) function call.}
+}
 }
 \description{
 Maximum likelihood estimates exist for \eqn{N > max(p/q,q/p)+1} and are
@@ -75,21 +84,21 @@ they are inappropriate for the data, they may fail with a warning.
 \examples{
 set.seed(20180202)
 # simulating from a given density
-A <- rmatrixnorm(n=100,mean=matrix(c(100,0,-100,0,25,-1000),nrow=2),
-   L=matrix(c(2,1,0,.1),nrow=2),list=TRUE)
+A <- rmatrixnorm(
+  n = 100, mean = matrix(c(100, 0, -100, 0, 25, -1000), nrow = 2),
+  L = matrix(c(2, 1, 0, .1), nrow = 2), list = TRUE
+)
 # finding the parameters by ML estimation
-results=MLmatrixnorm(A, tol = 1e-5)
+results <- MLmatrixnorm(A, tol = 1e-5)
 print(results)
-
-
 }
 \references{
-Pierre Dutilleul.  The MLE algorithm for the matrix normal distribution.
-    Journal of Statistical Computation and Simulation, (64):105–123, 1999.
-
-    Gupta, Arjun K, and Daya K Nagar. 1999. Matrix Variate Distributions.
-    Vol. 104. CRC Press. ISBN:978-1584880462
+Pierre Dutilleul.  The MLE algorithm for the matrix normal
+distribution.
+Journal of Statistical Computation and Simulation, (64):105–123, 1999.\preformatted{Gupta, Arjun K, and Daya K Nagar. 1999. Matrix Variate Distributions.
+Vol. 104. CRC Press. ISBN:978-1584880462
+}
 }
 \seealso{
-\code{\link{rmatrixnorm}} and \code{\link{MLmatrixt}}
+\code{\link[=rmatrixnorm]{rmatrixnorm()}} and \code{\link[=MLmatrixt]{MLmatrixt()}}
 }

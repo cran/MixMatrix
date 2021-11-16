@@ -4,8 +4,16 @@
 \alias{matrixlda}
 \title{LDA for matrix variate distributions}
 \usage{
-matrixlda(x, grouping, prior, tol = 1e-04, method = "normal",
-  nu = 10, ..., subset)
+matrixlda(
+  x,
+  grouping,
+  prior,
+  tol = 1e-04,
+  method = "normal",
+  nu = 10,
+  ...,
+  subset
+)
 }
 \arguments{
 \item{x}{3-D array of matrix data indexed by the third dimension}
@@ -34,28 +42,28 @@ named.)}
 }
 \value{
 Returns a list of class \code{matrixlda} containing
-   the following components:
-   \describe{
-      \item{\code{prior}}{the prior probabilities used.}
-      \item{\code{counts}}{the counts of group membership}
-      \item{\code{means}}{the group means.}
-      \item{\code{scaling}}{the scalar variance parameter}
-      \item{\code{U}}{the between-row covariance matrix}
-      \item{\code{V}}{the between-column covariance matrix}
-      \item{\code{lev}}{levels of the grouping factor}
-      \item{\code{N}}{The number of observations used.}
-      \item{\code{method}}{The method used.}
-      \item{\code{nu}}{The degrees of freedom parameter if the t distribution
-           was used.}
-      \item{\code{call}}{The (matched) function call.}
-   }
+the following components:
+\describe{
+\item{\code{prior}}{the prior probabilities used.}
+\item{\code{counts}}{the counts of group membership}
+\item{\code{means}}{the group means.}
+\item{\code{scaling}}{the scalar variance parameter}
+\item{\code{U}}{the between-row covariance matrix}
+\item{\code{V}}{the between-column covariance matrix}
+\item{\code{lev}}{levels of the grouping factor}
+\item{\code{N}}{The number of observations used.}
+\item{\code{method}}{The method used.}
+\item{\code{nu}}{The degrees of freedom parameter if the t distribution
+was used.}
+\item{\code{call}}{The (matched) function call.}
+}
 }
 \description{
 Performs linear discriminant analysis on matrix variate data.
 This works slightly differently from the LDA function in MASS:
 it does not sphere the data or otherwise normalize it. It presumes
 equal variance matrices and probabilities are given as if
-the data are from a matrix variate normal distribution. 
+the data are from a matrix variate normal distribution.
 The estimated variance matrices are weighted by the prior. However,
 if there are not enough members of a class to estimate a variance,
 this may be a problem.
@@ -66,34 +74,35 @@ distribution, presuming equal covariances between classes.
 \examples{
 set.seed(20180221)
 # construct two populations of 3x4 random matrices with different means
-A <- rmatrixnorm(30,mean=matrix(0,nrow=3,ncol=4))
-B <- rmatrixnorm(30,mean=matrix(1,nrow=3,ncol=4))
-C <- array(c(A,B), dim=c(3,4,60)) #combine together
-groups <- c(rep(1,30),rep(2,30)) # define groups
-prior <- c(.5,.5) # set prior
-D<-matrixlda(C, groups, prior) # fit model
+A <- rmatrixnorm(30, mean = matrix(0, nrow = 3, ncol = 4))
+B <- rmatrixnorm(30, mean = matrix(1, nrow = 3, ncol = 4))
+C <- array(c(A, B), dim = c(3, 4, 60)) # combine together
+groups <- c(rep(1, 30), rep(2, 30)) # define groups
+prior <- c(.5, .5) # set prior
+D <- matrixlda(C, groups, prior) # fit model
 logLik(D)
 print(D)
 }
 \references{
-G Z Thompson, R Maitra, W Q Meeker, A Bastawros (2019),
-    "Classification with the matrix-variate-t distribution", arXiv
-    e-prints arXiv:1907.09565 \url{https://arxiv.org/abs/1907.09565}
+\preformatted{G Z Thompson, R Maitra, W Q Meeker, A Bastawros (2019),
+"Classification with the matrix-variate-t distribution", arXiv
+e-prints arXiv:1907.09565 <https://arxiv.org/abs/1907.09565>
 
-    Ming Li, Baozong Yuan, "2D-LDA: A statistical linear discriminant
-      analysis for image matrix", Pattern Recognition Letters, Volume 26,
-      Issue 5, 2005, Pages 527-532, ISSN 0167-8655.
+Ming Li, Baozong Yuan, "2D-LDA: A statistical linear discriminant
+  analysis for image matrix", Pattern Recognition Letters, Volume 26,
+  Issue 5, 2005, Pages 527-532, ISSN 0167-8655.
+}
 
-  Aaron Molstad & Adam J. Rothman (2019), "A Penalized Likelihood
-       Method for Classification With Matrix-Valued Predictors", Journal of
-       Computational and Graphical Statistics, 28:1, 11-22,
-       \doi{10.1080/10618600.2018.1476249}  \CRANpkg{MatrixLDA}
+Aaron Molstad & Adam J. Rothman (2019), "A Penalized Likelihood
+Method for Classification With Matrix-Valued Predictors", Journal of
+Computational and Graphical Statistics, 28:1, 11-22,
+\doi{10.1080/10618600.2018.1476249}  \CRANpkg{MatrixLDA}
 
-  Venables, W. N. & Ripley, B. D. (2002) Modern Applied Statistics with
-  S. Fourth Edition. Springer, New York. ISBN 0-387-95457-0 \CRANpkg{MASS}
+Venables, W. N. & Ripley, B. D. (2002) Modern Applied Statistics with
+S. Fourth Edition. Springer, New York. ISBN 0-387-95457-0 \CRANpkg{MASS}
 }
 \seealso{
-\code{\link{predict.matrixlda}}, \code{\link[MASS]{lda}},
-    \code{\link{MLmatrixnorm}} and \code{\link{MLmatrixt}}
-    \code{\link{matrixqda}}, and \code{\link{matrixmixture}}
+\code{\link[=predict.matrixlda]{predict.matrixlda()}}, \code{\link[MASS:lda]{MASS::lda()}},
+\code{\link[=MLmatrixnorm]{MLmatrixnorm()}} and \code{\link[=MLmatrixt]{MLmatrixt()}}
+\code{\link[=matrixqda]{matrixqda()}}, and \code{\link[=matrixmixture]{matrixmixture()}}
 }

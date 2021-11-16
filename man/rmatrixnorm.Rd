@@ -5,28 +5,46 @@
 \alias{dmatrixnorm}
 \title{Matrix variate Normal distribution functions}
 \usage{
-rmatrixnorm(n, mean, L = diag(dim(as.matrix(mean))[1]),
-  R = diag(dim(as.matrix(mean))[2]), U = L \%*\% t(L), V = t(R) \%*\%
-  R, list = FALSE, array = NULL, force = FALSE)
+rmatrixnorm(
+  n,
+  mean,
+  L = diag(dim(as.matrix(mean))[1]),
+  R = diag(dim(as.matrix(mean))[2]),
+  U = L \%*\% t(L),
+  V = t(R) \%*\% R,
+  list = FALSE,
+  array = NULL,
+  force = FALSE
+)
 
-dmatrixnorm(x, mean = matrix(0, p, n), L = diag(p), R = diag(n),
-  U = L \%*\% t(L), V = t(R) \%*\% R, log = FALSE)
+dmatrixnorm(
+  x,
+  mean = matrix(0, p, n),
+  L = diag(p),
+  R = diag(n),
+  U = L \%*\% t(L),
+  V = t(R) \%*\% R,
+  log = FALSE
+)
 }
 \arguments{
 \item{n}{number of observations to generate - must be a positive integer.}
 
 \item{mean}{\eqn{p \times q}{p * q}  matrix of means}
 
-\item{L}{\eqn{p \times p}{p * p}  matrix specifying relations among the rows.
+\item{L}{\eqn{p \times p}{p * p}  matrix specifying relations
+among the rows.
 By default, an identity matrix.}
 
-\item{R}{\eqn{q \times q}{q * q}  matrix specifying relations among the columns.
-By default, an identity matrix.}
+\item{R}{\eqn{q \times q}{q * q}  matrix specifying relations among the
+columns.  By default, an identity matrix.}
 
-\item{U}{\eqn{LL^T}  - \eqn{p \times p}{p * p}  positive definite variance-covariance
+\item{U}{\eqn{LL^T}  - \eqn{p \times p}{p * p}
+positive definite variance-covariance
 matrix for rows, computed from \eqn{L} if not specified.}
 
-\item{V}{\eqn{R^T R}  - \eqn{q \times q}{q * q}  positive definite variance-covariance
+\item{V}{\eqn{R^T R}  - \eqn{q \times q}{q * q}
+positive definite variance-covariance
 matrix for columns, computed from \eqn{R}  if not specified.}
 
 \item{list}{Defaults to \code{FALSE} . If this is \code{TRUE} , then the
@@ -48,35 +66,43 @@ unless they are not, in fact, invertible.}
 \item{log}{logical; if TRUE, probabilities p are given as log(p).}
 }
 \value{
-\code{rmatrixnorm} returns either a list of \eqn{n}  \eqn{p \times q}{p * q}  matrices or
-   a \eqn{p \times q \times n}{p * q * n}  array.
+\code{rmatrixnorm} returns either a list of
+\eqn{n}  \eqn{p \times q}{p * q}  matrices or
+a \eqn{p \times q \times n}{p * q * n}  array.
 
-   \code{dmatrixnorm} returns the density at \code{x}.
+\code{dmatrixnorm} returns the density at \code{x}.
 }
 \description{
-Density and random generation for the matrix variate normal distribution
+Density and random generation for the matrix variate
+normal distribution
 }
 \examples{
 set.seed(20180202)
 # a draw from a matrix variate normal with a certain mean
 # and row-wise covariance
-rmatrixnorm(n=1,mean=matrix(c(100,0,-100,0,25,-1000),nrow=2),
-   L=matrix(c(2,1,0,.1),nrow=2),list=FALSE)
+rmatrixnorm(
+  n = 1, mean = matrix(c(100, 0, -100, 0, 25, -1000), nrow = 2),
+  L = matrix(c(2, 1, 0, .1), nrow = 2), list = FALSE
+)
 set.seed(20180202)
 # another way of specifying this - note the output is equivalent
-A <- rmatrixnorm(n=10,mean=matrix(c(100,0,-100,0,25,-1000),nrow=2),
-   L=matrix(c(2,1,0,.1),nrow=2),list=TRUE)
+A <- rmatrixnorm(
+  n = 10, mean = matrix(c(100, 0, -100, 0, 25, -1000), nrow = 2),
+  L = matrix(c(2, 1, 0, .1), nrow = 2), list = TRUE
+)
 A[[1]]
 # demonstrating the dmatrixnorm function
-dmatrixnorm(A[[1]],mean=matrix(c(100,0,-100,0,25,-1000),nrow=2),
-  L=matrix(c(2,1,0,.1),nrow=2),log=TRUE )
-
+dmatrixnorm(A[[1]],
+  mean = matrix(c(100, 0, -100, 0, 25, -1000), nrow = 2),
+  L = matrix(c(2, 1, 0, .1), nrow = 2), log = TRUE
+)
 }
 \references{
-Gupta, Arjun K, and Daya K Nagar. 1999. Matrix Variate Distributions.
-    Vol. 104. CRC Press. ISBN:978-1584880462
+Gupta, Arjun K, and Daya K Nagar. 1999.
+Matrix Variate Distributions.
+Vol. 104. CRC Press. ISBN:978-1584880462
 }
 \seealso{
-\code{\link{rmatrixt}}, \code{\link{rmatrixinvt}},
-    \code{\link{rnorm}} and \code{\link[stats]{Distributions}}
+\code{\link[=rmatrixt]{rmatrixt()}}, \code{\link[=rmatrixinvt]{rmatrixinvt()}},
+\code{\link[=rnorm]{rnorm()}} and \code{\link[stats:Distributions]{stats::Distributions()}}
 }

@@ -1,13 +1,13 @@
-## ---- include = FALSE----------------------------------------------------
+## ---- include = FALSE---------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
-## ----setup---------------------------------------------------------------
+## ----setup--------------------------------------------------------------------
 library(MixMatrix)
 
-## ----demo----------------------------------------------------------------
+## ----demo---------------------------------------------------------------------
 library(MixMatrix)
  set.seed(20180221)
  A <- rmatrixt(30,mean=matrix(0,nrow=3,ncol=4), df = 10) # 3x4 matrices with mean 0
@@ -29,22 +29,22 @@ library(MixMatrix)
  plot(res) # the log likelihood by iteration
 
 
-## ----initializer---------------------------------------------------------
+## ----initializer--------------------------------------------------------------
 
 init_matrixmixture(C, prior = c(.5,.5), centermethod = 'kmeans')
 
 init_matrixmixture(C, K = 2, centermethod = 'random')
 
 
-## ----final---------------------------------------------------------------
+## ----final--------------------------------------------------------------------
 sessionInfo()
 
 
-## ----getlabels, echo = FALSE---------------------------------------------
+## ----getlabels, echo = FALSE--------------------------------------------------
 labs = knitr::all_labels()
 labs = labs[!labs %in% c("setup", "toc", "getlabels", "allcode")]
 
-## ----allcode, ref.label = labs, eval = FALSE-----------------------------
+## ----allcode, ref.label = labs, eval = FALSE----------------------------------
 #  knitr::opts_chunk$set(
 #    collapse = TRUE,
 #    comment = "#>"

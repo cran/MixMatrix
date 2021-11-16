@@ -1,61 +1,132 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Geoffrey Thompson" />
 
-<meta name="date" content="2019-11-14" />
+<meta name="date" content="2021-11-15" />
 
 <title>Matrix Variate Mixture Models with the t distribution</title>
 
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 
-<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 
 </style>
 <script>
@@ -82,7 +153,188 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 
-<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
 
 
 
@@ -96,16 +348,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Matrix Variate Mixture Models with the t distribution</h1>
 <h4 class="author">Geoffrey Thompson</h4>
-<h4 class="date">2019-11-14</h4>
+<h4 class="date">2021-11-15</h4>
 
 
 
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(MixMatrix)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">library</span>(MixMatrix)</span></code></pre></div>
 <div id="matrix-variate-mixture-modeling-with-the-t-distribution" class="section level2">
 <h2>Matrix Variate Mixture Modeling with the <span class="math inline">\(t\)</span> Distribution</h2>
 <p>The matrix variate <em>t</em> distribution was introduced in a previous vignette along with an EM algorithm for maximum likelihood fitting of the parameters. This can be extended rather easily to the case of mixture models for model-based clustering.</p>
-<p>As in the case of mixture modeling in general <span class="citation">(Fraley and Raftery <a href="#ref-fraley2002model">2002</a>; McLachlan, Lee, and Rathnayake <a href="#ref-mclachlan2019finite">2019</a>)</span>, the difference in the EM algorithm is that one is now including estimates of <span class="math inline">\(\pi_{j}\)</span> for <span class="math inline">\(j\)</span> in <span class="math inline">\(1,2, \ldots, g\)</span>, the estimated probabilities of group membership for the <span class="math inline">\(g\)</span> groups in each step and weights <span class="math inline">\(\tau_{ij}\)</span>, weights for each observation <span class="math inline">\(i\)</span> and group <span class="math inline">\(j\)</span>, where <span class="math display">\[\pi_j = \frac{1}{n}\sum_{i = 1}^n \tau_{ij}\]</span> and <span class="math display">\[ \tau_{ij} = \frac{\pi_j f(x_i, \Theta_j)}{\sum_{l=1}^g \pi_l f(x_i, \Theta_l)}\]</span></p>
-<p>The case of the matrix variate normal distribution can be seen in <span class="citation">Viroli (<a href="#ref-viroliclass2011">2011</a>)</span>, while the case of the multivariate <em>t</em> can be seen in <span class="citation">Andrews, McNicholas, and Subedi (<a href="#ref-ANDREWS2011520">2011</a>)</span>.</p>
+<p>As in the case of mixture modeling in general <span class="citation">(Fraley and Raftery <a href="#ref-fraley2002model" role="doc-biblioref">2002</a>; McLachlan, Lee, and Rathnayake <a href="#ref-mclachlan2019finite" role="doc-biblioref">2019</a>)</span>, the difference in the EM algorithm is that one is now including estimates of <span class="math inline">\(\pi_{j}\)</span> for <span class="math inline">\(j\)</span> in <span class="math inline">\(1,2, \ldots, g\)</span>, the estimated probabilities of group membership for the <span class="math inline">\(g\)</span> groups in each step and weights <span class="math inline">\(\tau_{ij}\)</span>, weights for each observation <span class="math inline">\(i\)</span> and group <span class="math inline">\(j\)</span>, where <span class="math display">\[\pi_j = \frac{1}{n}\sum_{i = 1}^n \tau_{ij}\]</span> and <span class="math display">\[ \tau_{ij} = \frac{\pi_j f(x_i, \Theta_j)}{\sum_{l=1}^g \pi_l f(x_i, \Theta_l)}\]</span></p>
+<p>The case of the matrix variate normal distribution can be seen in <span class="citation">Viroli (<a href="#ref-viroliclass2011" role="doc-biblioref">2011</a>)</span>, while the case of the multivariate <em>t</em> can be seen in <span class="citation">Andrews, McNicholas, and Subedi (<a href="#ref-ANDREWS2011520" role="doc-biblioref">2011</a>)</span>.</p>
 <p>The updates on the parameters <span class="math inline">\(\Theta\)</span> are weighted by <span class="math inline">\(\tau_{ij}\)</span> in an Expectation/Conditional Maximization algorithm.</p>
 </div>
 <div id="usage" class="section level2">
@@ -115,233 +367,203 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="matrixmixture-function" class="section level3">
 <h3><code>matrixmixture</code> function</h3>
 <p>The function takes data array <code>x</code>, either an argument <code>K</code> for how many groups there are or an initialization of a vector of probabilities <code>prior</code>, an optional initialization of centers and covariance matrices <code>init</code> (if the covariances are left blank, they will be initialized to identity matrices), and optional arguments controlling the other parameters of function, such as number of iterations and normal vs <em>t</em>. If <code>model = &quot;t&quot;</code> is chosen, the degrees of freedom <code>nu</code> must be provided, but in the future it can be estimated.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(MixMatrix)
- <span class="kw">set.seed</span>(<span class="dv">20180221</span>)
- A &lt;-<span class="st"> </span><span class="kw">rmatrixt</span>(<span class="dv">30</span>,<span class="dt">mean=</span><span class="kw">matrix</span>(<span class="dv">0</span>,<span class="dt">nrow=</span><span class="dv">3</span>,<span class="dt">ncol=</span><span class="dv">4</span>), <span class="dt">df =</span> <span class="dv">10</span>) <span class="co"># 3x4 matrices with mean 0</span>
- B &lt;-<span class="st"> </span><span class="kw">rmatrixt</span>(<span class="dv">30</span>,<span class="dt">mean=</span><span class="kw">matrix</span>(<span class="dv">1</span>,<span class="dt">nrow=</span><span class="dv">3</span>,<span class="dt">ncol=</span><span class="dv">4</span>), <span class="dt">df =</span> <span class="dv">10</span>) <span class="co"># 3x4 matrices with mean 2</span>
- C &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="kw">c</span>(A,B), <span class="dt">dim=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">60</span>)) <span class="co"># combine into one array</span>
- prior &lt;-<span class="st"> </span><span class="kw">c</span>(.<span class="dv">5</span>,.<span class="dv">5</span>) <span class="co"># equal probability prior</span>
- <span class="co"># create an intialization object, starts at the true parameters</span>
- init =<span class="st"> </span><span class="kw">list</span>(<span class="dt">centers =</span> <span class="kw">array</span>(<span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">12</span>),<span class="kw">rep</span>(<span class="dv">1</span>,<span class="dv">12</span>)), <span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">2</span>)),
-              <span class="dt">U =</span> <span class="kw">array</span>(<span class="kw">c</span>(<span class="kw">diag</span>(<span class="dv">3</span>), <span class="kw">diag</span>(<span class="dv">3</span>)), <span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">2</span>)),
-              <span class="dt">V =</span> <span class="kw">array</span>(<span class="kw">c</span>(<span class="kw">diag</span>(<span class="dv">4</span>), <span class="kw">diag</span>(<span class="dv">4</span>)), <span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>))
-             )
- <span class="co"># fit model</span>
- res&lt;-<span class="kw">matrixmixture</span>(C, <span class="dt">init =</span> init, <span class="dt">prior =</span> prior, <span class="dt">nu =</span> <span class="dv">10</span>,
-                    <span class="dt">model =</span> <span class="st">&quot;t&quot;</span>, <span class="dt">tolerance =</span> <span class="fl">1e-2</span>)
- <span class="kw">print</span>(res<span class="op">$</span>centers) <span class="co"># the final centers</span>
-<span class="co">#&gt; , , 1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;              [,1]        [,2]        [,3]        [,4]</span>
-<span class="co">#&gt; [1,] -0.005608544  0.01263007  0.03606995  0.02008999</span>
-<span class="co">#&gt; [2,] -0.036807465 -0.00922546 -0.02606685 -0.03205214</span>
-<span class="co">#&gt; [3,] -0.068637713 -0.06653189 -0.00752340 -0.04191753</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; , , 2</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;           [,1]      [,2]      [,3]      [,4]</span>
-<span class="co">#&gt; [1,] 0.9785204 0.9459763 0.9561746 0.9857805</span>
-<span class="co">#&gt; [2,] 1.0928959 0.9807877 0.8435277 1.0341407</span>
-<span class="co">#&gt; [3,] 1.1422649 1.0527232 0.9998141 1.0383794</span>
- <span class="kw">print</span>(res<span class="op">$</span>pi) <span class="co"># the final mixing proportion</span>
-<span class="co">#&gt; [1] 0.4999994 0.5000006</span>
- <span class="kw">logLik</span>(res)
-<span class="co">#&gt; 'log Lik.' -442.517 (df=54)</span>
- <span class="kw">AIC</span>(<span class="kw">logLik</span>(res))
-<span class="co">#&gt; [1] 993.0339</span>
- <span class="kw">plot</span>(res) <span class="co"># the log likelihood by iteration</span></code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">library</span>(MixMatrix)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a> <span class="kw">set.seed</span>(<span class="dv">20180221</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a> A &lt;-<span class="st"> </span><span class="kw">rmatrixt</span>(<span class="dv">30</span>,<span class="dt">mean=</span><span class="kw">matrix</span>(<span class="dv">0</span>,<span class="dt">nrow=</span><span class="dv">3</span>,<span class="dt">ncol=</span><span class="dv">4</span>), <span class="dt">df =</span> <span class="dv">10</span>) <span class="co"># 3x4 matrices with mean 0</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a> B &lt;-<span class="st"> </span><span class="kw">rmatrixt</span>(<span class="dv">30</span>,<span class="dt">mean=</span><span class="kw">matrix</span>(<span class="dv">1</span>,<span class="dt">nrow=</span><span class="dv">3</span>,<span class="dt">ncol=</span><span class="dv">4</span>), <span class="dt">df =</span> <span class="dv">10</span>) <span class="co"># 3x4 matrices with mean 2</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a> C &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="kw">c</span>(A,B), <span class="dt">dim=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">60</span>)) <span class="co"># combine into one array</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a> prior &lt;-<span class="st"> </span><span class="kw">c</span>(.<span class="dv">5</span>,.<span class="dv">5</span>) <span class="co"># equal probability prior</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a> <span class="co"># create an intialization object, starts at the true parameters</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a> init =<span class="st"> </span><span class="kw">list</span>(<span class="dt">centers =</span> <span class="kw">array</span>(<span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">12</span>),<span class="kw">rep</span>(<span class="dv">1</span>,<span class="dv">12</span>)), <span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">2</span>)),</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>              <span class="dt">U =</span> <span class="kw">array</span>(<span class="kw">c</span>(<span class="kw">diag</span>(<span class="dv">3</span>), <span class="kw">diag</span>(<span class="dv">3</span>)), <span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">2</span>)),</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>              <span class="dt">V =</span> <span class="kw">array</span>(<span class="kw">c</span>(<span class="kw">diag</span>(<span class="dv">4</span>), <span class="kw">diag</span>(<span class="dv">4</span>)), <span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>))</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>             )</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a> <span class="co"># fit model</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a> res&lt;-<span class="kw">matrixmixture</span>(C, <span class="dt">init =</span> init, <span class="dt">prior =</span> prior, <span class="dt">nu =</span> <span class="dv">10</span>,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a>                    <span class="dt">model =</span> <span class="st">&quot;t&quot;</span>, <span class="dt">tolerance =</span> <span class="fl">1e-2</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a> <span class="kw">print</span>(res<span class="op">$</span>centers) <span class="co"># the final centers</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a><span class="co">#&gt; , , 1</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a><span class="co">#&gt;              [,1]        [,2]        [,3]        [,4]</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true"></a><span class="co">#&gt; [1,] -0.005608544  0.01263007  0.03606995  0.02008999</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true"></a><span class="co">#&gt; [2,] -0.036807465 -0.00922546 -0.02606685 -0.03205214</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true"></a><span class="co">#&gt; [3,] -0.068637713 -0.06653189 -0.00752340 -0.04191753</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true"></a><span class="co">#&gt; , , 2</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true"></a><span class="co">#&gt;           [,1]      [,2]      [,3]      [,4]</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true"></a><span class="co">#&gt; [1,] 0.9785204 0.9459763 0.9561746 0.9857805</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true"></a><span class="co">#&gt; [2,] 1.0928959 0.9807877 0.8435277 1.0341407</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true"></a><span class="co">#&gt; [3,] 1.1422649 1.0527232 0.9998141 1.0383794</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true"></a> <span class="kw">print</span>(res<span class="op">$</span>pi) <span class="co"># the final mixing proportion</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true"></a><span class="co">#&gt; [1] 0.4999994 0.5000006</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true"></a> <span class="kw">logLik</span>(res)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true"></a><span class="co">#&gt; &#39;log Lik.&#39; -442.517 (df=54)</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true"></a> <span class="kw">AIC</span>(<span class="kw">logLik</span>(res))</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true"></a><span class="co">#&gt; [1] 993.0339</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true"></a> <span class="kw">plot</span>(res) <span class="co"># the log likelihood by iteration</span></span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 <p>The default method for determining convergence is based on Aitken acceleration of the log-likelihood. However, it can be set to stop based on changes in the log-likelihood instead.</p>
 </div>
 <div id="initialization-function" class="section level3">
 <h3>Initialization function</h3>
 <p>The packages also provides a helper function <code>init_matrixmixture()</code> to provide the <code>init</code> object for you. At present, it can either use the <code>kmeans()</code> function on the vectorization of the input data to provide starting centers or select random points. The <code>...</code> arguments are passed to <code>kmeans()</code> (so <code>nstart</code> of other similar arguments can be set). If a partially formed <code>init</code> object is sent to the initializer, it will complete it. However, it will not validate that, for instance, the covariance matrices are valid. Partial supply of initial centers is also supported - that is, if fewer centers than groups are provided, the remainder will be chosen by whatever method selected.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-<span class="kw">init_matrixmixture</span>(C, <span class="dt">prior =</span> <span class="kw">c</span>(.<span class="dv">5</span>,.<span class="dv">5</span>), <span class="dt">centermethod =</span> <span class="st">'kmeans'</span>)
-<span class="co">#&gt; $centers</span>
-<span class="co">#&gt; , , 1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;             [,1]       [,2]        [,3]         [,4]</span>
-<span class="co">#&gt; [1,]  0.11412574 -0.1191619 -0.04078157  0.127204662</span>
-<span class="co">#&gt; [2,] -0.09798116  0.1763393 -0.02998913  0.001676302</span>
-<span class="co">#&gt; [3,]  0.16767860 -0.1738115 -0.20268828 -0.079679047</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; , , 2</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;           [,1]      [,2]      [,3]      [,4]</span>
-<span class="co">#&gt; [1,] 1.0480976 1.0029779 1.0264273 1.0225414</span>
-<span class="co">#&gt; [2,] 0.9755583 1.0876427 1.0131553 1.2830619</span>
-<span class="co">#&gt; [3,] 0.9418708 0.9333342 0.8656007 0.9025196</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $U</span>
-<span class="co">#&gt; , , 1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;      [,1] [,2] [,3]</span>
-<span class="co">#&gt; [1,]    1    0    0</span>
-<span class="co">#&gt; [2,]    0    1    0</span>
-<span class="co">#&gt; [3,]    0    0    1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; , , 2</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;      [,1] [,2] [,3]</span>
-<span class="co">#&gt; [1,]    1    0    0</span>
-<span class="co">#&gt; [2,]    0    1    0</span>
-<span class="co">#&gt; [3,]    0    0    1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $V</span>
-<span class="co">#&gt; , , 1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;      [,1] [,2] [,3] [,4]</span>
-<span class="co">#&gt; [1,]    1    0    0    0</span>
-<span class="co">#&gt; [2,]    0    1    0    0</span>
-<span class="co">#&gt; [3,]    0    0    1    0</span>
-<span class="co">#&gt; [4,]    0    0    0    1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; , , 2</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;      [,1] [,2] [,3] [,4]</span>
-<span class="co">#&gt; [1,]    1    0    0    0</span>
-<span class="co">#&gt; [2,]    0    1    0    0</span>
-<span class="co">#&gt; [3,]    0    0    1    0</span>
-<span class="co">#&gt; [4,]    0    0    0    1</span>
-
-<span class="kw">init_matrixmixture</span>(C, <span class="dt">K =</span> <span class="dv">2</span>, <span class="dt">centermethod =</span> <span class="st">'random'</span>)
-<span class="co">#&gt; $centers</span>
-<span class="co">#&gt; , , 1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;          [,1]      [,2]      [,3]      [,4]</span>
-<span class="co">#&gt; [1,] 1.678144 1.1288934 1.0701532 0.8945011</span>
-<span class="co">#&gt; [2,] 1.452156 1.0876125 0.6176221 1.0579284</span>
-<span class="co">#&gt; [3,] 1.271707 0.8391508 1.0755241 1.3799744</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; , , 2</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;             [,1]        [,2]       [,3]        [,4]</span>
-<span class="co">#&gt; [1,] -0.13670235 -0.22542286 -0.1013062  0.08921306</span>
-<span class="co">#&gt; [2,]  0.02554019  0.07765350 -0.1971374 -0.09639281</span>
-<span class="co">#&gt; [3,] -0.47626926 -0.03061907  0.1719943 -0.17784713</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $U</span>
-<span class="co">#&gt; , , 1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;      [,1] [,2] [,3]</span>
-<span class="co">#&gt; [1,]    1    0    0</span>
-<span class="co">#&gt; [2,]    0    1    0</span>
-<span class="co">#&gt; [3,]    0    0    1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; , , 2</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;      [,1] [,2] [,3]</span>
-<span class="co">#&gt; [1,]    1    0    0</span>
-<span class="co">#&gt; [2,]    0    1    0</span>
-<span class="co">#&gt; [3,]    0    0    1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $V</span>
-<span class="co">#&gt; , , 1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;      [,1] [,2] [,3] [,4]</span>
-<span class="co">#&gt; [1,]    1    0    0    0</span>
-<span class="co">#&gt; [2,]    0    1    0    0</span>
-<span class="co">#&gt; [3,]    0    0    1    0</span>
-<span class="co">#&gt; [4,]    0    0    0    1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; , , 2</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;      [,1] [,2] [,3] [,4]</span>
-<span class="co">#&gt; [1,]    1    0    0    0</span>
-<span class="co">#&gt; [2,]    0    1    0    0</span>
-<span class="co">#&gt; [3,]    0    0    1    0</span>
-<span class="co">#&gt; [4,]    0    0    0    1</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">init_matrixmixture</span>(C, <span class="dt">prior =</span> <span class="kw">c</span>(.<span class="dv">5</span>,.<span class="dv">5</span>), <span class="dt">centermethod =</span> <span class="st">&#39;kmeans&#39;</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="co">#&gt; $centers</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="co">#&gt; , , 1</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="co">#&gt;             [,1]       [,2]        [,3]         [,4]</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a><span class="co">#&gt; [1,]  0.11412574 -0.1191619 -0.04078157  0.127204662</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="co">#&gt; [2,] -0.09798116  0.1763393 -0.02998913  0.001676302</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a><span class="co">#&gt; [3,]  0.16767860 -0.1738115 -0.20268828 -0.079679047</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a><span class="co">#&gt; , , 2</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a><span class="co">#&gt;           [,1]      [,2]      [,3]      [,4]</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a><span class="co">#&gt; [1,] 1.0480976 1.0029779 1.0264273 1.0225414</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a><span class="co">#&gt; [2,] 0.9755583 1.0876427 1.0131553 1.2830619</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a><span class="co">#&gt; [3,] 0.9418708 0.9333342 0.8656007 0.9025196</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true"></a><span class="co">#&gt; $U</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true"></a><span class="co">#&gt; , , 1</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true"></a><span class="co">#&gt;      [,1] [,2] [,3]</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true"></a><span class="co">#&gt; [1,]    1    0    0</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true"></a><span class="co">#&gt; [2,]    0    1    0</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true"></a><span class="co">#&gt; [3,]    0    0    1</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true"></a><span class="co">#&gt; , , 2</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true"></a><span class="co">#&gt;      [,1] [,2] [,3]</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true"></a><span class="co">#&gt; [1,]    1    0    0</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true"></a><span class="co">#&gt; [2,]    0    1    0</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true"></a><span class="co">#&gt; [3,]    0    0    1</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true"></a><span class="co">#&gt; $V</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true"></a><span class="co">#&gt; NULL</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true"></a><span class="kw">init_matrixmixture</span>(C, <span class="dt">K =</span> <span class="dv">2</span>, <span class="dt">centermethod =</span> <span class="st">&#39;random&#39;</span>)</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true"></a><span class="co">#&gt; $centers</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true"></a><span class="co">#&gt; , , 1</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true"></a><span class="co">#&gt;          [,1]      [,2]      [,3]      [,4]</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true"></a><span class="co">#&gt; [1,] 1.678144 1.1288934 1.0701532 0.8945011</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true"></a><span class="co">#&gt; [2,] 1.452156 1.0876125 0.6176221 1.0579284</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true"></a><span class="co">#&gt; [3,] 1.271707 0.8391508 1.0755241 1.3799744</span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true"></a><span class="co">#&gt; , , 2</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true"></a><span class="co">#&gt;             [,1]        [,2]       [,3]        [,4]</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true"></a><span class="co">#&gt; [1,] -0.13670235 -0.22542286 -0.1013062  0.08921306</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true"></a><span class="co">#&gt; [2,]  0.02554019  0.07765350 -0.1971374 -0.09639281</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true"></a><span class="co">#&gt; [3,] -0.47626926 -0.03061907  0.1719943 -0.17784713</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true"></a><span class="co">#&gt; $U</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true"></a><span class="co">#&gt; , , 1</span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true"></a><span class="co">#&gt;      [,1] [,2] [,3]</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true"></a><span class="co">#&gt; [1,]    1    0    0</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true"></a><span class="co">#&gt; [2,]    0    1    0</span></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true"></a><span class="co">#&gt; [3,]    0    0    1</span></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true"></a><span class="co">#&gt; , , 2</span></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true"></a><span class="co">#&gt;      [,1] [,2] [,3]</span></span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true"></a><span class="co">#&gt; [1,]    1    0    0</span></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true"></a><span class="co">#&gt; [2,]    0    1    0</span></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true"></a><span class="co">#&gt; [3,]    0    0    1</span></span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true"></a><span class="co">#&gt; $V</span></span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true"></a><span class="co">#&gt; NULL</span></span></code></pre></div>
 </div>
 </div>
 <div id="session-information" class="section level2">
 <h2>Session Information</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sessionInfo</span>()
-<span class="co">#&gt; R version 3.6.1 (2019-07-05)</span>
-<span class="co">#&gt; Platform: x86_64-redhat-linux-gnu (64-bit)</span>
-<span class="co">#&gt; Running under: Fedora 30 (Thirty)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Matrix products: default</span>
-<span class="co">#&gt; BLAS/LAPACK: /usr/lib64/R/lib/libRblas.so</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; locale:</span>
-<span class="co">#&gt;  [1] LC_CTYPE=en_US.utf8       LC_NUMERIC=C             </span>
-<span class="co">#&gt;  [3] LC_TIME=en_US.utf8        LC_COLLATE=C             </span>
-<span class="co">#&gt;  [5] LC_MONETARY=en_US.utf8    LC_MESSAGES=en_US.utf8   </span>
-<span class="co">#&gt;  [7] LC_PAPER=en_US.utf8       LC_NAME=C                </span>
-<span class="co">#&gt;  [9] LC_ADDRESS=C              LC_TELEPHONE=C           </span>
-<span class="co">#&gt; [11] LC_MEASUREMENT=en_US.utf8 LC_IDENTIFICATION=C      </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; attached base packages:</span>
-<span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; other attached packages:</span>
-<span class="co">#&gt; [1] magrittr_1.5    dplyr_0.8.3     ggplot2_3.2.1   MixMatrix_0.2.4</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; loaded via a namespace (and not attached):</span>
-<span class="co">#&gt;  [1] Rcpp_1.0.3        knitr_1.25        tidyselect_0.2.5 </span>
-<span class="co">#&gt;  [4] munsell_0.5.0     colorspace_1.4-1  R6_2.4.0         </span>
-<span class="co">#&gt;  [7] rlang_0.4.0       highr_0.8         stringr_1.4.0    </span>
-<span class="co">#&gt; [10] tools_3.6.1       grid_3.6.1        gtable_0.3.0     </span>
-<span class="co">#&gt; [13] xfun_0.10         withr_2.1.2       htmltools_0.4.0  </span>
-<span class="co">#&gt; [16] assertthat_0.2.1  yaml_2.2.0        lazyeval_0.2.2   </span>
-<span class="co">#&gt; [19] digest_0.6.22     CholWishart_1.1.0 tibble_2.1.3     </span>
-<span class="co">#&gt; [22] crayon_1.3.4      purrr_0.3.3       glue_1.3.1       </span>
-<span class="co">#&gt; [25] evaluate_0.14     rmarkdown_1.16    labeling_0.3     </span>
-<span class="co">#&gt; [28] stringi_1.4.3     compiler_3.6.1    pillar_1.4.2     </span>
-<span class="co">#&gt; [31] scales_1.0.0      pkgconfig_2.0.3</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">sessionInfo</span>()</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="co">#&gt; R version 4.0.5 (2021-03-31)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="co">#&gt; Platform: x86_64-redhat-linux-gnu (64-bit)</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="co">#&gt; Running under: Fedora 34 (MATE-Compiz)</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a><span class="co">#&gt; Matrix products: default</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a><span class="co">#&gt; BLAS/LAPACK: /usr/lib64/libflexiblas.so.3.0</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a><span class="co">#&gt; locale:</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a><span class="co">#&gt;  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a><span class="co">#&gt;  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=C              </span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a><span class="co">#&gt;  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   </span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a><span class="co">#&gt;  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a><span class="co">#&gt;  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a><span class="co">#&gt; [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a><span class="co">#&gt; attached base packages:</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true"></a><span class="co">#&gt; other attached packages:</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true"></a><span class="co">#&gt; [1] magrittr_2.0.1  dplyr_1.0.7     ggplot2_3.3.5   MixMatrix_0.2.6</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true"></a><span class="co">#&gt; </span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true"></a><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true"></a><span class="co">#&gt;  [1] Rcpp_1.0.7        highr_0.9         bslib_0.3.0       compiler_4.0.5   </span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true"></a><span class="co">#&gt;  [5] pillar_1.6.4      jquerylib_0.1.4   tools_4.0.5       digest_0.6.28    </span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true"></a><span class="co">#&gt;  [9] jsonlite_1.7.2    evaluate_0.14     lifecycle_1.0.1   tibble_3.1.5     </span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true"></a><span class="co">#&gt; [13] gtable_0.3.0      pkgconfig_2.0.3   rlang_0.4.12      DBI_1.1.1        </span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true"></a><span class="co">#&gt; [17] yaml_2.2.1        xfun_0.26         fastmap_1.1.0     withr_2.4.2      </span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true"></a><span class="co">#&gt; [21] stringr_1.4.0     knitr_1.34        generics_0.1.0    sass_0.4.0       </span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true"></a><span class="co">#&gt; [25] vctrs_0.3.8       tidyselect_1.1.1  grid_4.0.5        glue_1.4.2       </span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true"></a><span class="co">#&gt; [29] R6_2.5.1          fansi_0.5.0       rmarkdown_2.11    farver_2.1.0     </span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true"></a><span class="co">#&gt; [33] purrr_0.3.4       scales_1.1.1      htmltools_0.5.2   ellipsis_0.3.2   </span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true"></a><span class="co">#&gt; [37] assertthat_0.2.1  CholWishart_1.1.0 colorspace_2.0-2  labeling_0.4.2   </span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true"></a><span class="co">#&gt; [41] utf8_1.2.2        stringi_1.7.4     munsell_0.5.0     crayon_1.4.1</span></span></code></pre></div>
 </div>
 <div id="all-the-code-for-easy-copying" class="section level2">
 <h2>All the code for easy copying</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span>opts_chunk<span class="op">$</span><span class="kw">set</span>(
-  <span class="dt">collapse =</span> <span class="ot">TRUE</span>,
-  <span class="dt">comment =</span> <span class="st">&quot;#&gt;&quot;</span>
-)
-<span class="kw">library</span>(MixMatrix)
- <span class="kw">set.seed</span>(<span class="dv">20180221</span>)
- A &lt;-<span class="st"> </span><span class="kw">rmatrixt</span>(<span class="dv">30</span>,<span class="dt">mean=</span><span class="kw">matrix</span>(<span class="dv">0</span>,<span class="dt">nrow=</span><span class="dv">3</span>,<span class="dt">ncol=</span><span class="dv">4</span>), <span class="dt">df =</span> <span class="dv">10</span>) <span class="co"># 3x4 matrices with mean 0</span>
- B &lt;-<span class="st"> </span><span class="kw">rmatrixt</span>(<span class="dv">30</span>,<span class="dt">mean=</span><span class="kw">matrix</span>(<span class="dv">1</span>,<span class="dt">nrow=</span><span class="dv">3</span>,<span class="dt">ncol=</span><span class="dv">4</span>), <span class="dt">df =</span> <span class="dv">10</span>) <span class="co"># 3x4 matrices with mean 2</span>
- C &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="kw">c</span>(A,B), <span class="dt">dim=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">60</span>)) <span class="co"># combine into one array</span>
- prior &lt;-<span class="st"> </span><span class="kw">c</span>(.<span class="dv">5</span>,.<span class="dv">5</span>) <span class="co"># equal probability prior</span>
- <span class="co"># create an intialization object, starts at the true parameters</span>
- init =<span class="st"> </span><span class="kw">list</span>(<span class="dt">centers =</span> <span class="kw">array</span>(<span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">12</span>),<span class="kw">rep</span>(<span class="dv">1</span>,<span class="dv">12</span>)), <span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">2</span>)),
-              <span class="dt">U =</span> <span class="kw">array</span>(<span class="kw">c</span>(<span class="kw">diag</span>(<span class="dv">3</span>), <span class="kw">diag</span>(<span class="dv">3</span>)), <span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">2</span>)),
-              <span class="dt">V =</span> <span class="kw">array</span>(<span class="kw">c</span>(<span class="kw">diag</span>(<span class="dv">4</span>), <span class="kw">diag</span>(<span class="dv">4</span>)), <span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>))
-             )
- <span class="co"># fit model</span>
- res&lt;-<span class="kw">matrixmixture</span>(C, <span class="dt">init =</span> init, <span class="dt">prior =</span> prior, <span class="dt">nu =</span> <span class="dv">10</span>,
-                    <span class="dt">model =</span> <span class="st">&quot;t&quot;</span>, <span class="dt">tolerance =</span> <span class="fl">1e-2</span>)
- <span class="kw">print</span>(res<span class="op">$</span>centers) <span class="co"># the final centers</span>
- <span class="kw">print</span>(res<span class="op">$</span>pi) <span class="co"># the final mixing proportion</span>
- <span class="kw">logLik</span>(res)
- <span class="kw">AIC</span>(<span class="kw">logLik</span>(res))
- <span class="kw">plot</span>(res) <span class="co"># the log likelihood by iteration</span>
-
-
-<span class="kw">init_matrixmixture</span>(C, <span class="dt">prior =</span> <span class="kw">c</span>(.<span class="dv">5</span>,.<span class="dv">5</span>), <span class="dt">centermethod =</span> <span class="st">'kmeans'</span>)
-
-<span class="kw">init_matrixmixture</span>(C, <span class="dt">K =</span> <span class="dv">2</span>, <span class="dt">centermethod =</span> <span class="st">'random'</span>)
-
-<span class="kw">sessionInfo</span>()</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>knitr<span class="op">::</span>opts_chunk<span class="op">$</span><span class="kw">set</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>  <span class="dt">collapse =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>  <span class="dt">comment =</span> <span class="st">&quot;#&gt;&quot;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a><span class="kw">library</span>(MixMatrix)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a> <span class="kw">set.seed</span>(<span class="dv">20180221</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a> A &lt;-<span class="st"> </span><span class="kw">rmatrixt</span>(<span class="dv">30</span>,<span class="dt">mean=</span><span class="kw">matrix</span>(<span class="dv">0</span>,<span class="dt">nrow=</span><span class="dv">3</span>,<span class="dt">ncol=</span><span class="dv">4</span>), <span class="dt">df =</span> <span class="dv">10</span>) <span class="co"># 3x4 matrices with mean 0</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a> B &lt;-<span class="st"> </span><span class="kw">rmatrixt</span>(<span class="dv">30</span>,<span class="dt">mean=</span><span class="kw">matrix</span>(<span class="dv">1</span>,<span class="dt">nrow=</span><span class="dv">3</span>,<span class="dt">ncol=</span><span class="dv">4</span>), <span class="dt">df =</span> <span class="dv">10</span>) <span class="co"># 3x4 matrices with mean 2</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a> C &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="kw">c</span>(A,B), <span class="dt">dim=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">60</span>)) <span class="co"># combine into one array</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a> prior &lt;-<span class="st"> </span><span class="kw">c</span>(.<span class="dv">5</span>,.<span class="dv">5</span>) <span class="co"># equal probability prior</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a> <span class="co"># create an intialization object, starts at the true parameters</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a> init =<span class="st"> </span><span class="kw">list</span>(<span class="dt">centers =</span> <span class="kw">array</span>(<span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">12</span>),<span class="kw">rep</span>(<span class="dv">1</span>,<span class="dv">12</span>)), <span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">2</span>)),</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a>              <span class="dt">U =</span> <span class="kw">array</span>(<span class="kw">c</span>(<span class="kw">diag</span>(<span class="dv">3</span>), <span class="kw">diag</span>(<span class="dv">3</span>)), <span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">2</span>)),</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a>              <span class="dt">V =</span> <span class="kw">array</span>(<span class="kw">c</span>(<span class="kw">diag</span>(<span class="dv">4</span>), <span class="kw">diag</span>(<span class="dv">4</span>)), <span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>))</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a>             )</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a> <span class="co"># fit model</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true"></a> res&lt;-<span class="kw">matrixmixture</span>(C, <span class="dt">init =</span> init, <span class="dt">prior =</span> prior, <span class="dt">nu =</span> <span class="dv">10</span>,</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true"></a>                    <span class="dt">model =</span> <span class="st">&quot;t&quot;</span>, <span class="dt">tolerance =</span> <span class="fl">1e-2</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true"></a> <span class="kw">print</span>(res<span class="op">$</span>centers) <span class="co"># the final centers</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true"></a> <span class="kw">print</span>(res<span class="op">$</span>pi) <span class="co"># the final mixing proportion</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true"></a> <span class="kw">logLik</span>(res)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true"></a> <span class="kw">AIC</span>(<span class="kw">logLik</span>(res))</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true"></a> <span class="kw">plot</span>(res) <span class="co"># the log likelihood by iteration</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true"></a></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true"></a><span class="kw">init_matrixmixture</span>(C, <span class="dt">prior =</span> <span class="kw">c</span>(.<span class="dv">5</span>,.<span class="dv">5</span>), <span class="dt">centermethod =</span> <span class="st">&#39;kmeans&#39;</span>)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true"></a></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true"></a><span class="kw">init_matrixmixture</span>(C, <span class="dt">K =</span> <span class="dv">2</span>, <span class="dt">centermethod =</span> <span class="st">&#39;random&#39;</span>)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true"></a><span class="kw">sessionInfo</span>()</span></code></pre></div>
 </div>
 <div id="references" class="section level2 unnumbered">
-<h2>References</h2>
-<div id="refs" class="references">
+<h2 class="unnumbered">References</h2>
+<div id="refs" class="references hanging-indent">
 <div id="ref-ANDREWS2011520">
-<p>Andrews, Jeffrey L., Paul D. McNicholas, and Sanjeena Subedi. 2011. “Model-Based Classification via Mixtures of Multivariate T-Distributions.” <em>Computational Statistics &amp; Data Analysis</em> 55 (1): 520–29. doi:<a href="https://doi.org/10.1016/j.csda.2010.05.019">10.1016/j.csda.2010.05.019</a>.</p>
+<p>Andrews, Jeffrey L., Paul D. McNicholas, and Sanjeena Subedi. 2011. “Model-Based Classification via Mixtures of Multivariate T-Distributions.” <em>Computational Statistics &amp; Data Analysis</em> 55 (1): 520–29. <a href="https://doi.org/10.1016/j.csda.2010.05.019">https://doi.org/10.1016/j.csda.2010.05.019</a>.</p>
 </div>
 <div id="ref-fraley2002model">
-<p>Fraley, Chris, and Adrian E Raftery. 2002. “Model-Based Clustering, Discriminant Analysis, and Density Estimation.” <em>Journal of the American Statistical Association</em> 97 (458). Taylor &amp; Francis: 611–31. doi:<a href="https://doi.org/10.1198/016214502760047131">10.1198/016214502760047131</a>.</p>
+<p>Fraley, Chris, and Adrian E Raftery. 2002. “Model-Based Clustering, Discriminant Analysis, and Density Estimation.” <em>Journal of the American Statistical Association</em> 97 (458): 611–31. <a href="https://doi.org/10.1198/016214502760047131">https://doi.org/10.1198/016214502760047131</a>.</p>
 </div>
 <div id="ref-mclachlan2019finite">
-<p>McLachlan, Geoffrey J, Sharon X Lee, and Suren I Rathnayake. 2019. “Finite Mixture Models.” <em>Annual Review of Statistics and Its Application</em> 6. Annual Reviews: 355–78. doi:<a href="https://doi.org/10.1146/annurev-statistics-031017-100325">10.1146/annurev-statistics-031017-100325</a>.</p>
+<p>McLachlan, Geoffrey J, Sharon X Lee, and Suren I Rathnayake. 2019. “Finite Mixture Models.” <em>Annual Review of Statistics and Its Application</em> 6: 355–78. <a href="https://doi.org/10.1146/annurev-statistics-031017-100325">https://doi.org/10.1146/annurev-statistics-031017-100325</a>.</p>
 </div>
 <div id="ref-viroliclass2011">
-<p>Viroli, Cinzia. 2011. “Finite Mixtures of Matrix Normal Distributions for Classifying Three-Way Data.” <em>Statistics and Computing</em> 21 (4): 511–22. doi:<a href="https://doi.org/10.1007/s11222-010-9188-x">10.1007/s11222-010-9188-x</a>.</p>
+<p>Viroli, Cinzia. 2011. “Finite Mixtures of Matrix Normal Distributions for Classifying Three-Way Data.” <em>Statistics and Computing</em> 21 (4): 511–22. <a href="https://doi.org/10.1007/s11222-010-9188-x">https://doi.org/10.1007/s11222-010-9188-x</a>.</p>
 </div>
 </div>
 </div>

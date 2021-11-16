@@ -5,18 +5,34 @@
 \alias{dmatrixinvt}
 \title{Distribution functions for matrix variate inverted t distributions}
 \usage{
-rmatrixinvt(n, df, mean, L = diag(dim(as.matrix(mean))[1]),
-  R = diag(dim(as.matrix(mean))[2]), U = L \%*\% t(L), V = t(R) \%*\%
-  R, list = FALSE, array = NULL)
+rmatrixinvt(
+  n,
+  df,
+  mean,
+  L = diag(dim(as.matrix(mean))[1]),
+  R = diag(dim(as.matrix(mean))[2]),
+  U = L \%*\% t(L),
+  V = t(R) \%*\% R,
+  list = FALSE,
+  array = NULL
+)
 
-dmatrixinvt(x, df, mean = matrix(0, p, n), L = diag(p), R = diag(n),
-  U = L \%*\% t(L), V = t(R) \%*\% R, log = FALSE)
+dmatrixinvt(
+  x,
+  df,
+  mean = matrix(0, p, n),
+  L = diag(p),
+  R = diag(n),
+  U = L \%*\% t(L),
+  V = t(R) \%*\% R,
+  log = FALSE
+)
 }
 \arguments{
 \item{n}{number of observations for generation}
 
 \item{df}{degrees of freedom (\eqn{>0}, may be non-integer),
-\code{df = 0, Inf} is allowed and will return a normal distribution.}
+\verb{df = 0, Inf} is allowed and will return a normal distribution.}
 
 \item{mean}{\eqn{p \times q}{p * q} This is really a 'shift' rather than a
 mean, though the expected value will be equal to this if
@@ -49,29 +65,31 @@ If \code{list}  is \code{TRUE} , this will be ignored.}
 }
 \value{
 \code{rmatrixinvt} returns either a list of \eqn{n}
-   \eqn{p \times q}{p * q}  matrices or
-   a \eqn{p \times q \times n}{p * q * n}  array.
+\eqn{p \times q}{p * q}  matrices or
+a \eqn{p \times q \times n}{p * q * n}  array.
 
-   \code{dmatrixinvt} returns the density at  \code{x}.
+\code{dmatrixinvt} returns the density at  \code{x}.
 }
 \description{
 Generate random samples from the inverted matrix
-   variate t distribution or compute densities.
+variate t distribution or compute densities.
 }
 \examples{
 # an example of drawing from the distribution and computing the density.
-A<-rmatrixinvt(n = 2, df = 10, diag(4))
-dmatrixinvt(A[,,1], df = 10, mean = diag(4))
+A <- rmatrixinvt(n = 2, df = 10, diag(4))
+dmatrixinvt(A[, , 1], df = 10, mean = diag(4))
 }
 \references{
-Gupta, Arjun K, and Daya K Nagar. 1999. Matrix Variate Distributions.
-    Vol. 104. CRC Press. ISBN:978-1584880462
+Gupta, Arjun K, and Daya K Nagar. 1999.
+Matrix Variate Distributions.
+Vol. 104. CRC Press. ISBN:978-1584880462
 
-    Dickey, James M. 1967. “Matricvariate Generalizations of the Multivariate t
-       Distribution and the Inverted Multivariate t
-       Distribution.” Ann. Math. Statist. 38 (2): 511–18. \doi{10.1214/aoms/1177698967}
+Dickey, James M. 1967. “Matricvariate Generalizations of the Multivariate t
+Distribution and the Inverted Multivariate t
+Distribution.” Ann. Math. Statist. 38 (2): 511–18.
+\doi{10.1214/aoms/1177698967}
 }
 \seealso{
-\code{\link{rmatrixnorm}}, \code{\link{rmatrixt}},
-   and \code{\link[stats]{Distributions}}.
+\code{\link[=rmatrixnorm]{rmatrixnorm()}}, \code{\link[=rmatrixt]{rmatrixt()}},
+and \code{\link[stats:Distributions]{stats::Distributions()}}.
 }

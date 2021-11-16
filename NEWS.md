@@ -1,3 +1,15 @@
+# MixMatrix 0.2.6
+* Update to fix M_PI issue with Rcpp update.
+* Fix some non-HTTPS URLs.
+
+# MixMatrix 0.2.5
+
+* Update with DOI for associated paper.
+* Fix an issue with AR(1) and CS covariances. The way these are specified 
+means that in case of mis-specification, they may be non-monotonic if
+they are mis-specified and results are near the the boundary. 
+The functions were written such that it would not stop in this case. 
+
 # MixMatrix 0.2.4
 
 * Fixed a minor bug in DF calculation for mixture models.

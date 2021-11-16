@@ -1,13 +1,13 @@
-## ---- include = FALSE----------------------------------------------------
+## ---- include = FALSE---------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
-## ----setup---------------------------------------------------------------
+## ----setup--------------------------------------------------------------------
 library(MixMatrix)
 
-## ----mleone--------------------------------------------------------------
+## ----mleone-------------------------------------------------------------------
 set.seed(20190622)
 sigma = (1/7) * rWishart(1, 7, 1*diag(3:1))[,,1]
 A = rmatrixt(n=100,mean=matrix(c(100,0,-100,0,25,-1000),nrow=2),
@@ -15,7 +15,7 @@ A = rmatrixt(n=100,mean=matrix(c(100,0,-100,0,25,-1000),nrow=2),
 results=MLmatrixt(A, df = 7)
 print(results)
 
-## ----dontrun, eval=FALSE, echo = FALSE-----------------------------------
+## ----dontrun, eval=FALSE, echo = FALSE----------------------------------------
 #  ### Here is the long simulation
 #  library(ggplot2)
 #  
@@ -97,7 +97,7 @@ print(results)
 #  ### Here ends the long simulation
 #  
 
-## ----dftenexample, echo = FALSE, message = FALSE, warning = FALSE--------
+## ----dftenexample, echo = FALSE, message = FALSE, warning = FALSE-------------
 ##### Here is what is really run
 
 set.seed(20190621)
@@ -145,7 +145,7 @@ knitr::kable(dfdataframe %>% group_by(samplesize) %>%
 #### Here ends what is really run
 
 
-## ----genlda--------------------------------------------------------------
+## ----genlda-------------------------------------------------------------------
 A <- rmatrixt(30, mean = matrix(0, nrow=2, ncol=3), df = 10)
 B <- rmatrixt(30, mean = matrix(c(1,0), nrow=2, ncol=3), df = 10)
 C <- rmatrixt(30, mean = matrix(c(0,1), nrow=2, ncol=3), df = 10)
@@ -157,14 +157,14 @@ matlda <- matrixlda(x = ABC,grouping = groups, prior = prior,
 predict(matlda, newdata = ABC[,,c(1,31,61)])
 
 
-## ----sessioninfo---------------------------------------------------------
+## ----sessioninfo--------------------------------------------------------------
 sessionInfo()
 
-## ----getlabels, echo = FALSE---------------------------------------------
+## ----getlabels, echo = FALSE--------------------------------------------------
 labs = knitr::all_labels()
 labs = labs[!labs %in% c("setup", "toc", "getlabels", "allcode")]
 
-## ----allcode, ref.label = labs, eval = FALSE-----------------------------
+## ----allcode, ref.label = labs, eval = FALSE----------------------------------
 #  knitr::opts_chunk$set(
 #    collapse = TRUE,
 #    comment = "#>"

@@ -4,21 +4,34 @@
 \alias{matrixmixture}
 \title{Fit a matrix variate mixture model}
 \usage{
-matrixmixture(x, init = NULL, prior = NULL, K = length(prior),
-  iter = 1000, model = "normal", method = NULL, row.mean = FALSE,
-  col.mean = FALSE, tolerance = 0.1, nu = NULL, ..., verbose = 0,
-  miniter = 5, convergence = TRUE)
+matrixmixture(
+  x,
+  init = NULL,
+  prior = NULL,
+  K = length(prior),
+  iter = 1000,
+  model = "normal",
+  method = NULL,
+  row.mean = FALSE,
+  col.mean = FALSE,
+  tolerance = 0.1,
+  nu = NULL,
+  ...,
+  verbose = 0,
+  miniter = 5,
+  convergence = TRUE
+)
 }
 \arguments{
 \item{x}{data, \eqn{p \times q \times n}{p * q * n} array}
 
-\item{init}{a list containing an array of \code{K} of \eqn{p \times q}{p * q} means labeled
-\code{centers},
-and optionally \eqn{p \times p}{p * p} and \eqn{q \times q}{q * q} positive definite variance
-matrices labeled \code{U} and \code{V}.
+\item{init}{a list containing an array of \code{K} of
+\eqn{p \times q}{p * q} means labeled \code{centers},
+and optionally \eqn{p \times p}{p * p} and \eqn{q \times q}{q * q}
+positive definite variance matrices labeled \code{U} and \code{V}.
 By default, those are presumed to be identity if not provided.
-If \code{init} is missing, it will be provided using the \code{prior} or \code{K} by
-\code{init_matrixmix}.}
+If \code{init} is missing, it will be provided using the \code{prior}
+or \code{K} by \code{init_matrixmix}.}
 
 \item{prior}{prior for the \code{K} classes, a vector that adds to unity}
 
@@ -29,7 +42,8 @@ provided, the prior will be of uniform distribution among the classes.}
 
 \item{model}{whether to use the \code{normal} or \code{t} distribution.}
 
-\item{method}{what method to use to fit the distribution. Currently no options.}
+\item{method}{what method to use to fit the distribution.
+Currently no options.}
 
 \item{row.mean}{By default, \code{FALSE}. If \code{TRUE}, will fit a
 common mean within each row. If both this and \code{col.mean} are
@@ -44,42 +58,44 @@ log-likelihood by default.}
 
 \item{nu}{degrees of freedom parameter. Can be a vector of length \code{K}.}
 
-\item{...}{pass additional arguments to \code{MLmatrixnorm} or \code{MLmatrixt}}
+\item{...}{pass additional arguments to \code{MLmatrixnorm} or
+\code{MLmatrixt}}
 
-\item{verbose}{whether to print diagnostic output, by default \code{0}. Higher
-numbers output more results.}
+\item{verbose}{whether to print diagnostic output, by default \code{0}.
+Higher  numbers output more results.}
 
 \item{miniter}{minimum number of iterations}
 
-\item{convergence}{By default, \code{TRUE}. Whether to use Aitken acceleration to
-determine convergence. If false, it instead checks if the change in
+\item{convergence}{By default, \code{TRUE}, using Aitken acceleration
+to determine convergence. If false, it instead checks if the change in
 log-likelihood is less than \code{tolerance}. Aitken acceleration may
-prematurely end in the first few steps, so you may wish to set \code{miniter}
-or select \code{FALSE} if this is an issue.}
+prematurely end in the first few steps, so you may wish to set
+\code{miniter} or select \code{FALSE} if this is an issue.}
 }
 \value{
 A list of class \code{MixMatrixModel} containing the following
-    components:
+components:
 \describe{
-     \item{\code{prior}}{the prior probabilities used.}
-     \item{\code{init}}{the initialization used.}
-      \item{\code{K}}{the number of groups} 
-      \item{\code{N}}{the number of observations} 
-      \item{\code{centers}}{the group means.}
-      \item{\code{U}}{the between-row covariance matrices}
-      \item{\code{V}}{the between-column covariance matrix}
-      \item{\code{posterior}}{the posterior probabilities for each observation}
-      \item{\code{pi}}{ the final proportions}
-      \item{\code{nu}}{The degrees of freedom parameter if the t distribution
-           was used.}
-      \item{\code{convergence }}{whether the model converged}
-      \item{\code{logLik}}{a vector of the log-likelihoods
-              of each iteration ending in
-              the final log-likelihood of the model}
-      \item{\code{model}}{the model used}
-      \item{\code{method}}{the method used}
-      \item{\code{call}}{The (matched) function call.}
-   }
+\item{\code{prior}}{the prior probabilities used.}
+\item{\code{init}}{the initialization used.}
+\item{\code{K}}{the number of groups}
+\item{\code{N}}{the number of observations}
+\item{\code{centers}}{the group means.}
+\item{\code{U}}{the between-row covariance matrices}
+\item{\code{V}}{the between-column covariance matrix}
+\item{\code{posterior}}{the posterior probabilities for each
+observation}
+\item{\code{pi}}{ the final proportions}
+\item{\code{nu}}{The degrees of freedom parameter if the t distribution
+was used.}
+\item{\code{convergence }}{whether the model converged}
+\item{\code{logLik}}{a vector of the log-likelihoods
+of each iteration ending in
+the final log-likelihood of the model}
+\item{\code{model}}{the model used}
+\item{\code{method}}{the method used}
+\item{\code{call}}{The (matched) function call.}
+}
 }
 \description{
 Clustering by fitting a mixture model using EM with \code{K} groups
@@ -110,25 +126,26 @@ BIC(res) # BIC of final result
 predict(res, newdata = C[,,c(1,21)]) # predicted class membership
 }
 \references{
-Andrews, Jeffrey L., Paul D. McNicholas, and Sanjeena Subedi. 2011.
-      "Model-Based Classification via Mixtures of Multivariate
-      T-Distributions." Computational Statistics & Data Analysis 55 (1):
-      520–29. \doi{10.1016/j.csda.2010.05.019}.
+\preformatted{Andrews, Jeffrey L., Paul D. McNicholas, and Sanjeena Subedi. 2011.
+  "Model-Based Classification via Mixtures of Multivariate
+  T-Distributions." Computational Statistics & Data Analysis 55 (1):
+  520–29. \doi{10.1016/j.csda.2010.05.019}.
 
-    Fraley, Chris, and Adrian E Raftery. 2002. "Model-Based Clustering,
-       Discriminant Analysis, and Density Estimation." Journal of the
-       American Statistical Association 97 (458). Taylor & Francis: 611–31.
-       \doi{10.1198/016214502760047131}.
+Fraley, Chris, and Adrian E Raftery. 2002. "Model-Based Clustering,
+   Discriminant Analysis, and Density Estimation." Journal of the
+   American Statistical Association 97 (458). Taylor & Francis: 611–31.
+   \doi{10.1198/016214502760047131}.
 
-    McLachlan, Geoffrey J, Sharon X Lee, and Suren I Rathnayake. 2019.
-          "Finite Mixture Models." Annual Review of Statistics and Its
-          Application 6. Annual Reviews: 355–78.
-          \doi{10.1146/annurev-statistics-031017-100325}.
+McLachlan, Geoffrey J, Sharon X Lee, and Suren I Rathnayake. 2019.
+      "Finite Mixture Models." Annual Review of Statistics and Its
+      Application 6. Annual Reviews: 355–78.
+      \doi{10.1146/annurev-statistics-031017-100325}.
 
-    Viroli, Cinzia. 2011. "Finite Mixtures of Matrix Normal Distributions
-          for Classifying Three-Way Data." Statistics and Computing 21 (4):
-          511–22. \doi{10.1007/s11222-010-9188-x}.
+Viroli, Cinzia. 2011. "Finite Mixtures of Matrix Normal Distributions
+      for Classifying Three-Way Data." Statistics and Computing 21 (4):
+      511–22. \doi{10.1007/s11222-010-9188-x}.
+}
 }
 \seealso{
-\code{\link{init_matrixmixture}}
+\code{\link[=init_matrixmixture]{init_matrixmixture()}}
 }

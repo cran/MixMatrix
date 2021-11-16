@@ -4,30 +4,42 @@
 \alias{init_matrixmixture}
 \title{Initializing settings for Matrix Mixture Models}
 \usage{
-init_matrixmixture(data, prior = NULL, K = length(prior),
-  centers = NULL, U = NULL, V = NULL, centermethod = "kmeans",
-  varmethod = "identity", model = "normal", init = NULL, ...)
+init_matrixmixture(
+  data,
+  prior = NULL,
+  K = length(prior),
+  centers = NULL,
+  U = NULL,
+  V = NULL,
+  centermethod = "kmeans",
+  varmethod = "identity",
+  model = "normal",
+  init = NULL,
+  ...
+)
 }
 \arguments{
 \item{data}{data, \eqn{p \times q \times n}{p * q * n} array}
 
-\item{prior}{prior probability. One of \code{prior} and \code{K} must be
-provided. They must be consistent if both provided.}
+\item{prior}{prior probability. One of \code{prior} and \code{K}
+must be  provided. They must be consistent if both provided.}
 
 \item{K}{number of groups}
 
-\item{centers}{(optional) either a matrix or an array of \eqn{p \times p}{p * p}
+\item{centers}{(optional) either a matrix or an array of
+\eqn{p \times p}{p * p}
 matrices for use as the \code{centers} argument.
 If fewer than \code{K} are provided, the
 remainder are chosen by \code{centermethod}.}
 
-\item{U}{(optional) either a matrix or an array of  \eqn{q \times q}{q * q}
-matrices for use as the \code{U}
-argument. If a matrix is provided, it is duplicated to provide an array.
-If an array is provided, it should have \code{K} slices.}
+\item{U}{(optional) either a matrix or an array of
+\eqn{p \times p}{p * p} matrices for use as the \code{U}
+argument. If a matrix is provided, it is duplicated to provide an
+array. If an array is provided, it should have \code{K} slices.}
 
-\item{V}{(optional) either a matrix or an array of matrices for use as the \code{U}
-argument. If a matrix is provided, it is duplicated to provide an array.
+\item{V}{(optional) either a matrix or an array of matrices
+for use as the \code{V} argument. If a matrix is provided,
+it is duplicated to provide an array.
 If an array is provided, it should have \code{K} slices.}
 
 \item{centermethod}{what method to use to generate initial centers.
@@ -37,14 +49,15 @@ iterations and then converting back.
 By default, if \code{K} centers are provided, nothing will be done.}
 
 \item{varmethod}{what method to use to choose initial variance matrices.
-Currently only identity matrices are created. 
+Currently only identity matrices are created.
 By default, if \code{U} and \code{V} matrices are provided, nothing
 will be done.}
 
 \item{model}{whether to use a normal distribution or a t-distribution, not
 relevant for more initialization methods.}
 
-\item{init}{(optional) a (possibly partially-formed) list with some of the components
+\item{init}{(optional) a (possibly partially-formed) list
+with some of the components
 \code{centers}, \code{U}, and \code{V}. The function will complete the
 list and fill out missing entries.}
 
@@ -53,13 +66,15 @@ list and fill out missing entries.}
 }
 \value{
 a list suitable to use as the \code{init} argument in
-     \code{matrixmixture}:
+\code{matrixmixture}:
 \describe{
-      \item{\code{centers}}{the group means,
-            a \eqn{p \times q \times K}{p * q * K} array.}
-      \item{\code{U}}{the between-row covariance matrices, a \eqn{p \times p \times K}{p * p * K}  array}
-      \item{\code{V}}{the between-column covariance matrix, a \eqn{q \times q \times K}{q * q * K} array}
-   }
+\item{\code{centers}}{the group means,
+a \eqn{p \times q \times K}{p * q * K} array.}
+\item{\code{U}}{the between-row covariance matrices, a
+\eqn{p \times p \times K}{p * p * K}  array}
+\item{\code{V}}{the between-column covariance matrix, a
+\eqn{q \times q \times K}{q * q * K} array}
+}
 }
 \description{
 Providing this will generate a list suitable for use as the \code{init}
@@ -79,5 +94,5 @@ init = init_matrixmixture(C, prior = prior)
 # will find two centers using the "kmeans" method on the vectorized matrices
 }
 \seealso{
-\code{\link{matrixmixture}}
+\code{\link[=matrixmixture]{matrixmixture()}}
 }
