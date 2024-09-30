@@ -12,7 +12,7 @@
 
 <meta name="author" content="Geoffrey Thompson" />
 
-<meta name="date" content="2021-11-15" />
+<meta name="date" content="2024-09-30" />
 
 <title>Discriminant Analysis for Matrix Variate Distributions</title>
 
@@ -29,45 +29,31 @@ document.addEventListener('DOMContentLoaded', function(e) {
   }
 });
 </script>
-<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
-// v0.0.1
-// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
-
-document.addEventListener('DOMContentLoaded', function() {
-  const codeList = document.getElementsByClassName("sourceCode");
-  for (var i = 0; i < codeList.length; i++) {
-    var linkList = codeList[i].getElementsByTagName('a');
-    for (var j = 0; j < linkList.length; j++) {
-      if (linkList[j].innerHTML === "") {
-        linkList[j].setAttribute('aria-hidden', 'true');
-      }
-    }
-  }
-});
-</script>
 
 <style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
 
 
 <style type="text/css">
-  code {
-    white-space: pre;
-  }
-  .sourceCode {
-    overflow: visible;
-  }
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -79,55 +65,54 @@ pre > code.sourceCode { white-space: pre-wrap; }
 pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
-  { counter-reset: source-line 0; }
+{ counter-reset: source-line 0; }
 pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
+{ position: relative; left: -4em; counter-increment: source-line; }
 pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
 div.sourceCode
-  {   }
+{ }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -136,13 +121,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -346,333 +338,411 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<h1 class="title toc-ignore">Discriminant Analysis for Matrix Variate Distributions</h1>
+<h1 class="title toc-ignore">Discriminant Analysis for Matrix Variate
+Distributions</h1>
 <h4 class="author">Geoffrey Thompson</h4>
-<h4 class="date">2021-11-15</h4>
+<h4 class="date">2024-09-30</h4>
 
 
 
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">library</span>(MixMatrix)</span></code></pre></div>
-<p>In the <code>MixMatrix</code> package, there are two functions for training a linear or quadratic classifier. The usage is fairly similar to the function <code>MASS::lda()</code> or <code>MASS::qda()</code>, however it requires the input as an array and the group variable provided as a vector (that is, it cannot handle data frames or the formula interface directly, which is reasonable, as there is no immediately clear way to make that work for a collection of matrices).</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">20180222</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">library</span>(<span class="st">&#39;MixMatrix&#39;</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>A &lt;-<span class="st"> </span><span class="kw">rmatrixnorm</span>(<span class="dv">30</span>, <span class="dt">mean =</span> <span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow=</span><span class="dv">2</span>, <span class="dt">ncol=</span><span class="dv">3</span>)) <span class="co"># creating the three groups</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>B &lt;-<span class="st"> </span><span class="kw">rmatrixnorm</span>(<span class="dv">30</span>, <span class="dt">mean =</span> <span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">0</span>), <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">ncol =</span> <span class="dv">3</span>))</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>C &lt;-<span class="st"> </span><span class="kw">rmatrixnorm</span>(<span class="dv">30</span>, <span class="dt">mean =</span> <span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">ncol =</span> <span class="dv">3</span>))</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>ABC &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="kw">c</span>(A,B,C), <span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">90</span>)) <span class="co"># combining into on array</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>groups &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&quot;A&quot;</span>, <span class="dv">30</span>), <span class="kw">rep</span>(<span class="st">&quot;B&quot;</span>, <span class="dv">30</span>), <span class="kw">rep</span>(<span class="st">&quot;C&quot;</span>, <span class="dv">30</span>))) <span class="co"># labels</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>prior =<span class="st"> </span><span class="kw">c</span>(<span class="dv">30</span>, <span class="dv">30</span>, <span class="dv">30</span>) <span class="op">/</span><span class="st"> </span><span class="dv">90</span> <span class="co"># equal prior</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>matlda &lt;-<span class="st"> </span><span class="kw">matrixlda</span>(<span class="dt">x =</span> ABC, <span class="dt">grouping =</span> groups, <span class="dt">prior =</span> prior) <span class="co"># perform LDA</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>matqda &lt;-<span class="st"> </span><span class="kw">matrixqda</span>(<span class="dt">x =</span> ABC, <span class="dt">grouping =</span> groups, <span class="dt">prior =</span> prior) <span class="co"># perform QDA</span></span></code></pre></div>
-<p>This does not sphere the data or extract an SVD or Fisher discriminant scores - it is a simple linear/quadratic discriminant function based on the likelihood function.</p>
-<p>The <code>matrixlda</code> function presumes equal covariance matrices among the groups while <code>matrixqda</code> fits separate covariance for each groups.</p>
-<p>It is possible to set variance or mean restrictions from the <code>MLmatrixnorm</code> and <code>MLmatrixt</code> functions using the <code>...</code> argument. These restrictions are applied to all groups.</p>
-<p>The <code>predict</code> method for these objects works in much the same way as for <code>lda</code> or <code>qda</code> objects: provide the function and the new data, then it will return the MAP class assignments and the posterior. If no new data is provided, it will attempt to run it on the original data if it is available in the environment.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>ABC[, , <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">31</span>, <span class="dv">61</span>)] <span class="co"># true class memberships: A, B, C</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="co">#&gt; , , 1</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="co">#&gt;             [,1]       [,2]      [,3]</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="co">#&gt; [1,] -0.07020924  0.8559433 0.9827602</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a><span class="co">#&gt; [2,]  1.30097854 -0.6893054 0.2830575</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a><span class="co">#&gt; , , 2</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a><span class="co">#&gt;           [,1]     [,2]        [,3]</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a><span class="co">#&gt; [1,] 2.2374662 2.408268 -0.37053822</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a><span class="co">#&gt; [2,] 0.9653824 0.630897 -0.08850761</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a><span class="co">#&gt; , , 3</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a><span class="co">#&gt;            [,1]       [,2]      [,3]</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a><span class="co">#&gt; [1,] -1.6961217 -1.5642705 0.2045711</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true"></a><span class="co">#&gt; [2,]  0.7782369  0.1842012 0.3869149</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true"></a><span class="co">#predict the membership of the first observation of each group</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true"></a><span class="kw">predict</span>(matlda, ABC[, , <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">31</span>, <span class="dv">61</span>)])</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true"></a><span class="co">#&gt; $class</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true"></a><span class="co">#&gt; [1] B B A</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true"></a><span class="co">#&gt; Levels: A B C</span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true"></a><span class="co">#&gt; $posterior</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true"></a><span class="co">#&gt;            [,1]        [,2]       [,3]</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true"></a><span class="co">#&gt; [1,] 0.27340107 0.690217317 0.03638161</span></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true"></a><span class="co">#&gt; [2,] 0.03833953 0.949049289 0.01261118</span></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true"></a><span class="co">#&gt; [3,] 0.54647035 0.001273576 0.45225607</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true"></a><span class="co">#predict the membership of the first observation of each group</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true"></a><span class="kw">predict</span>(matqda,  ABC[, , <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">31</span>, <span class="dv">61</span>)])</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true"></a><span class="co">#&gt; $class</span></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true"></a><span class="co">#&gt; [1] B B A</span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true"></a><span class="co">#&gt; Levels: A B C</span></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true"></a><span class="co">#&gt; $posterior</span></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true"></a><span class="co">#&gt;            [,1]        [,2]       [,3]</span></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true"></a><span class="co">#&gt; [1,] 0.24302341 0.735815885 0.02116070</span></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true"></a><span class="co">#&gt; [2,] 0.03295848 0.963641160 0.00340036</span></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true"></a><span class="co">#&gt; [3,] 0.54611977 0.007871269 0.44600896</span></span></code></pre></div>
-<p>In this example, points from classes A, B, and C were selected and they ended up being classified as B, B, and A. The QDA and LDA rules had only minor disagreements, which is to be expected when they do truly have the same covariances.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(MixMatrix)</span></code></pre></div>
+<p>In the <code>MixMatrix</code> package, there are two functions for
+training a linear or quadratic classifier. The usage is fairly similar
+to the function <code>MASS::lda()</code> or <code>MASS::qda()</code>,
+however it requires the input as an array and the group variable
+provided as a vector (that is, it cannot handle data frames or the
+formula interface directly, which is reasonable, as there is no
+immediately clear way to make that work for a collection of
+matrices).</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20180222</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&#39;MixMatrix&#39;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>A <span class="ot">&lt;-</span> <span class="fu">rmatrixnorm</span>(<span class="dv">30</span>, <span class="at">mean =</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow=</span><span class="dv">2</span>, <span class="at">ncol=</span><span class="dv">3</span>)) <span class="co"># creating the three groups</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="fu">rmatrixnorm</span>(<span class="dv">30</span>, <span class="at">mean =</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">3</span>))</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>C <span class="ot">&lt;-</span> <span class="fu">rmatrixnorm</span>(<span class="dv">30</span>, <span class="at">mean =</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">3</span>))</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>ABC <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="fu">c</span>(A,B,C), <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">90</span>)) <span class="co"># combining into on array</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>groups <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;A&quot;</span>, <span class="dv">30</span>), <span class="fu">rep</span>(<span class="st">&quot;B&quot;</span>, <span class="dv">30</span>), <span class="fu">rep</span>(<span class="st">&quot;C&quot;</span>, <span class="dv">30</span>))) <span class="co"># labels</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>prior <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">30</span>, <span class="dv">30</span>) <span class="sc">/</span> <span class="dv">90</span> <span class="co"># equal prior</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>matlda <span class="ot">&lt;-</span> <span class="fu">matrixlda</span>(<span class="at">x =</span> ABC, <span class="at">grouping =</span> groups, <span class="at">prior =</span> prior) <span class="co"># perform LDA</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>matqda <span class="ot">&lt;-</span> <span class="fu">matrixqda</span>(<span class="at">x =</span> ABC, <span class="at">grouping =</span> groups, <span class="at">prior =</span> prior) <span class="co"># perform QDA</span></span></code></pre></div>
+<p>This does not sphere the data or extract an SVD or Fisher
+discriminant scores - it is a simple linear/quadratic discriminant
+function based on the likelihood function.</p>
+<p>The <code>matrixlda</code> function presumes equal covariance
+matrices among the groups while <code>matrixqda</code> fits separate
+covariance for each groups.</p>
+<p>It is possible to set variance or mean restrictions from the
+<code>MLmatrixnorm</code> and <code>MLmatrixt</code> functions using the
+<code>...</code> argument. These restrictions are applied to all
+groups.</p>
+<p>The <code>predict</code> method for these objects works in much the
+same way as for <code>lda</code> or <code>qda</code> objects: provide
+the function and the new data, then it will return the MAP class
+assignments and the posterior. If no new data is provided, it will
+attempt to run it on the original data if it is available in the
+environment.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>ABC[, , <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">31</span>, <span class="dv">61</span>)] <span class="co"># true class memberships: A, B, C</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co">#&gt; , , 1</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt;             [,1]       [,2]      [,3]</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt; [1,] -0.07020924  0.8559433 0.9827602</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt; [2,]  1.30097854 -0.6893054 0.2830575</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt; , , 2</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#&gt;           [,1]     [,2]        [,3]</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt; [1,] 2.2374662 2.408268 -0.37053822</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co">#&gt; [2,] 0.9653824 0.630897 -0.08850761</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt; , , 3</span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt;            [,1]       [,2]      [,3]</span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt; [1,] -1.6961217 -1.5642705 0.2045711</span></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#&gt; [2,]  0.7782369  0.1842012 0.3869149</span></span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co">#predict the membership of the first observation of each group</span></span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="fu">predict</span>(matlda, ABC[, , <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">31</span>, <span class="dv">61</span>)])</span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a><span class="co">#&gt; $class</span></span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a><span class="co">#&gt; [1] B B A</span></span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a><span class="co">#&gt; Levels: A B C</span></span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a><span class="co">#&gt; $posterior</span></span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a><span class="co">#&gt;            [,1]        [,2]       [,3]</span></span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a><span class="co">#&gt; [1,] 0.27340107 0.690217317 0.03638161</span></span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a><span class="co">#&gt; [2,] 0.03833953 0.949049289 0.01261118</span></span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a><span class="co">#&gt; [3,] 0.54647035 0.001273576 0.45225607</span></span>
+<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a><span class="co">#predict the membership of the first observation of each group</span></span>
+<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a><span class="fu">predict</span>(matqda,  ABC[, , <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">31</span>, <span class="dv">61</span>)])</span>
+<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a><span class="co">#&gt; $class</span></span>
+<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a><span class="co">#&gt; [1] B B A</span></span>
+<span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a><span class="co">#&gt; Levels: A B C</span></span>
+<span id="cb3-35"><a href="#cb3-35" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-36"><a href="#cb3-36" tabindex="-1"></a><span class="co">#&gt; $posterior</span></span>
+<span id="cb3-37"><a href="#cb3-37" tabindex="-1"></a><span class="co">#&gt;            [,1]        [,2]       [,3]</span></span>
+<span id="cb3-38"><a href="#cb3-38" tabindex="-1"></a><span class="co">#&gt; [1,] 0.24302341 0.735815885 0.02116070</span></span>
+<span id="cb3-39"><a href="#cb3-39" tabindex="-1"></a><span class="co">#&gt; [2,] 0.03295848 0.963641160 0.00340036</span></span>
+<span id="cb3-40"><a href="#cb3-40" tabindex="-1"></a><span class="co">#&gt; [3,] 0.54611977 0.007871269 0.44600896</span></span></code></pre></div>
+<p>In this example, points from classes A, B, and C were selected and
+they ended up being classified as B, B, and A. The QDA and LDA rules had
+only minor disagreements, which is to be expected when they do truly
+have the same covariances.</p>
 <div id="details-of-the-modeling-choices" class="section level2">
 <h2>Details of the modeling choices</h2>
-<p>Suppose there are two populations, <span class="math inline">\(\pi_1\)</span> and <span class="math inline">\(\pi_2\)</span> with prior probabilities of belonging to these classes, <span class="math inline">\(p_1\)</span> and <span class="math inline">\(p_2\)</span>. Define a function, <span class="math inline">\(c(1|2)\)</span> as the cost of misclassifying a member of population <span class="math inline">\(\pi_2\)</span> as a member of class <span class="math inline">\(1\)</span> (and vice versa). Further, define <span class="math inline">\(P(1|2)\)</span> as the probability of classifying a member of population <span class="math inline">\(\pi_2\)</span> as a member of class <span class="math inline">\(1\)</span> (and vice versa). Then we define the <em>expected cost of misclassification</em> as:</p>
-<p><span class="math display">\[ECM = c(2|1)P(2|1)p_1 + c(1|2)P(1|2)p_2 \]</span></p>
+<p>Suppose there are two populations, <span class="math inline">\(\pi_1\)</span> and <span class="math inline">\(\pi_2\)</span> with prior probabilities of
+belonging to these classes, <span class="math inline">\(p_1\)</span> and
+<span class="math inline">\(p_2\)</span>. Define a function, <span class="math inline">\(c(1|2)\)</span> as the cost of misclassifying a
+member of population <span class="math inline">\(\pi_2\)</span> as a
+member of class <span class="math inline">\(1\)</span> (and vice versa).
+Further, define <span class="math inline">\(P(1|2)\)</span> as the
+probability of classifying a member of population <span class="math inline">\(\pi_2\)</span> as a member of class <span class="math inline">\(1\)</span> (and vice versa). Then we define the
+<em>expected cost of misclassification</em> as:</p>
+<p><span class="math display">\[ECM = c(2|1)P(2|1)p_1 + c(1|2)P(1|2)p_2
+\]</span></p>
 </div>
 <div id="classification-rule" class="section level2">
 <h2>Classification Rule</h2>
 <p>A reasonable classification rule based on ECM is the following:</p>
 <p>Classify as class <span class="math inline">\(1\)</span> if:</p>
-<p><span class="math display">\[ \frac{f_1(x)}{f_2(x)} \geq \frac{c(1|2) p_2}{c(2|1)p_1} \]</span></p>
-<p>Where <span class="math inline">\(f_i(x)\)</span> is the probability density function for group <span class="math inline">\(\pi_i\)</span> evaluated at <span class="math inline">\(x\)</span>.</p>
+<p><span class="math display">\[ \frac{f_1(x)}{f_2(x)} \geq \frac{c(1|2)
+p_2}{c(2|1)p_1} \]</span></p>
+<p>Where <span class="math inline">\(f_i(x)\)</span> is the probability
+density function for group <span class="math inline">\(\pi_i\)</span>
+evaluated at <span class="math inline">\(x\)</span>.</p>
 </div>
 <div id="matrix-variate-normal-populations" class="section level2">
 <h2>Matrix Variate Normal Populations</h2>
-<p>Recall the probability density function for a matrix variate normal distribution:</p>
-<p><span class="math display">\[f(\mathbf{X};\mathbf{M}, \mathbf{U}, \mathbf{V}) = \frac{\exp\left( -\frac{1}{2} \, \mathrm{tr}\left[ \mathbf{V}^{-1} (\mathbf{X} - \mathbf{M})^{T} \mathbf{U}^{-1} (\mathbf{X} - \mathbf{M}) \right] \right)}{(2\pi)^{np/2} |\mathbf{V}|^{n/2} |\mathbf{U}|^{p/2}} \]</span></p>
-<p><span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{M}\)</span> are <span class="math inline">\(n \times p\)</span>, <span class="math inline">\(\mathbf{U}\)</span> is <span class="math inline">\(n \times n\)</span> and describes the covariance relationship between the rows, and <span class="math inline">\(\mathbf{V}\)</span> is <span class="math inline">\(p \times p\)</span> and describes the covariance relationship between the columns.</p>
+<p>Recall the probability density function for a matrix variate normal
+distribution:</p>
+<p><span class="math display">\[f(\mathbf{X};\mathbf{M}, \mathbf{U},
+\mathbf{V}) = \frac{\exp\left( -\frac{1}{2} \, \mathrm{tr}\left[
+\mathbf{V}^{-1} (\mathbf{X} - \mathbf{M})^{T} \mathbf{U}^{-1}
+(\mathbf{X} - \mathbf{M}) \right] \right)}{(2\pi)^{np/2}
+|\mathbf{V}|^{n/2} |\mathbf{U}|^{p/2}} \]</span></p>
+<p><span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{M}\)</span> are <span class="math inline">\(n \times p\)</span>, <span class="math inline">\(\mathbf{U}\)</span> is <span class="math inline">\(n \times n\)</span> and describes the covariance
+relationship between the rows, and <span class="math inline">\(\mathbf{V}\)</span> is <span class="math inline">\(p \times p\)</span> and describes the covariance
+relationship between the columns.</p>
 </div>
 <div id="estimated-minimum-ecm-rule-for-two-matrix-variate-normal-populations" class="section level2">
-<h2>Estimated Minimum ECM Rule for Two Matrix Variate Normal Populations</h2>
+<h2>Estimated Minimum ECM Rule for Two Matrix Variate Normal
+Populations</h2>
 <p>A decision rule for this case:</p>
 <p><span class="math display">\[\begin{eqnarray}
-R(\mathbf{X}) &amp; = &amp; \mathrm{trace}\big[ -\frac{1}{2}(\mathbf{V}_1^{-1} \mathbf{X}^{T} \mathbf{U}_1^{-1} \mathbf{X} - \mathbf{V}_2^{-1} \mathbf{X}^{T} \mathbf{U}_2^{-1} \mathbf{X}) \\
-&amp; &amp; +(\mathbf{V}_1^{-1} \mathbf{M}_1^{T} \mathbf{U}_1^{-1} - \mathbf{V}_2^{-1} \mathbf{M}_2^{T} \mathbf{U}_2^{-1}) \mathbf{X} \\
-&amp; &amp; -\frac{1}{2}(\mathbf{V}_1^{-1} \mathbf{M}_1^{T} \mathbf{U}_1^{-1} \mathbf{M}_1 - \mathbf{V}_2^{-1} \mathbf{M}_2^{T} \mathbf{U}_2^{-1} \mathbf{M}_2) \big] \\
-&amp; &amp; -\frac{1}{2}(p (\log|\mathbf{U}\_1|-\log|\mathbf{U}\_2|)+ n(\log|\mathbf{V}\_1|-\log|\mathbf{V}\_2|) )  
+R(\mathbf{X}) &amp; = &amp; \mathrm{trace}\big[
+-\frac{1}{2}(\mathbf{V}_1^{-1} \mathbf{X}^{T} \mathbf{U}_1^{-1}
+\mathbf{X} - \mathbf{V}_2^{-1} \mathbf{X}^{T} \mathbf{U}_2^{-1}
+\mathbf{X}) \\
+&amp; &amp; +(\mathbf{V}_1^{-1} \mathbf{M}_1^{T} \mathbf{U}_1^{-1} -
+\mathbf{V}_2^{-1} \mathbf{M}_2^{T} \mathbf{U}_2^{-1}) \mathbf{X} \\
+&amp; &amp; -\frac{1}{2}(\mathbf{V}_1^{-1} \mathbf{M}_1^{T}
+\mathbf{U}_1^{-1} \mathbf{M}_1 - \mathbf{V}_2^{-1} \mathbf{M}_2^{T}
+\mathbf{U}_2^{-1} \mathbf{M}_2) \big] \\
+&amp; &amp; -\frac{1}{2}(p (\log|\mathbf{U}\_1|-\log|\mathbf{U}\_2|)+
+n(\log|\mathbf{V}\_1|-\log|\mathbf{V}\_2|) )  
 \end{eqnarray}\]</span></p>
 </div>
 <div id="how-to-classify-based-on-this" class="section level2">
 <h2>How to classify based on this:</h2>
-<p>If <span class="math inline">\(R(\mathbf{X}) \geq \log(c(1|2)p_2) - \log(c(2|1)p_1)\)</span>, assign <span class="math inline">\(\mathbf{X}\)</span> to group <span class="math inline">\(1\)</span>, otherwise assign to group <span class="math inline">\(2\)</span>.</p>
-<p>In the multivariate case, this is equivalent to the LDA/QDA rules - term (1) is the quadratic form which vanishes in case of equal covariances between groups, term (2) is the LDA term, and terms (3) and (4) are constants which depend on the parameters and not <span class="math inline">\(\mathrm{X}\)</span>.</p>
-<p>Typically, the models we have used have implicitly used an equal probability prior and an equal cost of misclassification, but other inputs can be specified. In case of equal priors and equal cost of misclassification, this term is 0.</p>
+<p>If <span class="math inline">\(R(\mathbf{X}) \geq \log(c(1|2)p_2) -
+\log(c(2|1)p_1)\)</span>, assign <span class="math inline">\(\mathbf{X}\)</span> to group <span class="math inline">\(1\)</span>, otherwise assign to group <span class="math inline">\(2\)</span>.</p>
+<p>In the multivariate case, this is equivalent to the LDA/QDA rules -
+term (1) is the quadratic form which vanishes in case of equal
+covariances between groups, term (2) is the LDA term, and terms (3) and
+(4) are constants which depend on the parameters and not <span class="math inline">\(\mathrm{X}\)</span>.</p>
+<p>Typically, the models we have used have implicitly used an equal
+probability prior and an equal cost of misclassification, but other
+inputs can be specified. In case of equal priors and equal cost of
+misclassification, this term is 0.</p>
 </div>
 <div id="if-there-are-equal-covariances" class="section level2">
 <h2>If there are equal covariances:</h2>
-<p>If the two groups have the same covariances, then this simplifies. The classification rule is then: <span class="math display">\[\begin{eqnarray}
-R(\mathbf{X}) &amp; = &amp; \mathrm{trace}\big[ (\mathbf{V}^{-1} (\mathbf{M}_1 -\mathbf{M}_2)^{T}\mathbf{U}^{-1}) \mathbf{X} \\
-&amp; &amp; -\frac{1}{2}(\mathbf{V}^{-1} \mathbf{M}_1^{T} \mathbf{U}^{-1} \mathbf{M}_1 - \mathbf{V}^{-1} \mathbf{M}_2^{T} \mathbf{U}^{-1} \mathbf{M}_2) \big] \\
+<p>If the two groups have the same covariances, then this simplifies.
+The classification rule is then: <span class="math display">\[\begin{eqnarray}
+R(\mathbf{X}) &amp; = &amp; \mathrm{trace}\big[ (\mathbf{V}^{-1}
+(\mathbf{M}_1 -\mathbf{M}_2)^{T}\mathbf{U}^{-1}) \mathbf{X} \\
+&amp; &amp; -\frac{1}{2}(\mathbf{V}^{-1} \mathbf{M}_1^{T}
+\mathbf{U}^{-1} \mathbf{M}_1 - \mathbf{V}^{-1} \mathbf{M}_2^{T}
+\mathbf{U}^{-1} \mathbf{M}_2) \big] \\
 &amp; \geq &amp; \log(c(1|2)p_2) - \log(c(2|1)p_1)
 \end{eqnarray}\]</span></p>
-<p>Classify to group <span class="math inline">\(1\)</span> if the last term is true. Note this is linear in <span class="math inline">\(\mathbf{X}\)</span>. This is directly analogous to LDA in the multivariate case.</p>
+<p>Classify to group <span class="math inline">\(1\)</span> if the last
+term is true. Note this is linear in <span class="math inline">\(\mathbf{X}\)</span>. This is directly analogous to
+LDA in the multivariate case.</p>
 </div>
 <div id="generalizing-to-multiple-classes" class="section level2">
 <h2>Generalizing to multiple classes</h2>
-<p>The factor <span class="math inline">\(R\)</span> for each group <span class="math inline">\(g\)</span> in a QDA setting is:</p>
+<p>The factor <span class="math inline">\(R\)</span> for each group
+<span class="math inline">\(g\)</span> in a QDA setting is:</p>
 <p><span class="math display">\[\begin{eqnarray}
-R_g(\mathbf{X}) &amp; = &amp; \mathrm{trace}\big[ -\frac{1}{2}(\mathbf{V}_g^{-1} \mathbf{X}^{T} \mathbf{U}_g^{-1} \mathbf{X} +(\mathbf{V}_g^{-1} \mathbf{M}_g^{T} \mathbf{U}_g^{-1}) \mathbf{X} -\frac{1}{2}(\mathbf{V}_g^{-1} \mathbf{M}_g^{T} \mathbf{U}_g^{-1} \mathbf{M}_g) \big] \\
-&amp; &amp; -\frac{1}{2}(p (\log|\mathbf{U}\_g|)+ n(\log|\mathbf{V}\_g|) ) + \log p_g
-\end{eqnarray}\]</span> When <span class="math inline">\(U_i = U_j\)</span> for all groups <span class="math inline">\(i,j\)</span>, several of these terms cancel. The posterior probability is:</p>
-<p><span class="math display">\[ P(\mathbf{X} \in g) = \frac{ \exp (R_g (\mathbf{X}))}{\sum_i \exp (R_i(\mathbf{X}))} \]</span> with the bottom sum being over all groups <span class="math inline">\(i\)</span>.</p>
+R_g(\mathbf{X}) &amp; = &amp; \mathrm{trace}\big[
+-\frac{1}{2}(\mathbf{V}_g^{-1} \mathbf{X}^{T} \mathbf{U}_g^{-1}
+\mathbf{X} +(\mathbf{V}_g^{-1} \mathbf{M}_g^{T} \mathbf{U}_g^{-1})
+\mathbf{X} -\frac{1}{2}(\mathbf{V}_g^{-1} \mathbf{M}_g^{T}
+\mathbf{U}_g^{-1} \mathbf{M}_g) \big] \\
+&amp; &amp; -\frac{1}{2}(p (\log|\mathbf{U}\_g|)+ n(\log|\mathbf{V}\_g|)
+) + \log p_g
+\end{eqnarray}\]</span> When <span class="math inline">\(U_i =
+U_j\)</span> for all groups <span class="math inline">\(i,j\)</span>,
+several of these terms cancel. The posterior probability is:</p>
+<p><span class="math display">\[ P(\mathbf{X} \in g) = \frac{ \exp (R_g
+(\mathbf{X}))}{\sum_i \exp (R_i(\mathbf{X}))} \]</span> with the bottom
+sum being over all groups <span class="math inline">\(i\)</span>.</p>
 </div>
 <div id="structure-of-the-objects" class="section level2">
 <h2>Structure of the objects</h2>
-<p>The objects returned by <code>matrixlda</code> and <code>matrixqda</code> are S3 classes. See below example output:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>matlda</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="co">#&gt; $prior</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="co">#&gt;         A         B         C </span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="co">#&gt; 0.3333333 0.3333333 0.3333333 </span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a><span class="co">#&gt; $counts</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a><span class="co">#&gt;  A  B  C </span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a><span class="co">#&gt; 30 30 30 </span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a><span class="co">#&gt; $means</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a><span class="co">#&gt; , , 1</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a><span class="co">#&gt;            [,1]        [,2]       [,3]</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a><span class="co">#&gt; [1,] 0.08629672 -0.06362916 -0.3045685</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a><span class="co">#&gt; [2,] 0.03851982 -0.01375580  0.3978759</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a><span class="co">#&gt; , , 2</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a><span class="co">#&gt;           [,1]       [,2]       [,3]</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true"></a><span class="co">#&gt; [1,] 1.2872487  1.1199220 1.01282774</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true"></a><span class="co">#&gt; [2,] 0.3044151 -0.3797203 0.06539076</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true"></a><span class="co">#&gt; , , 3</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true"></a><span class="co">#&gt;            [,1]       [,2]       [,3]</span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true"></a><span class="co">#&gt; [1,] 0.07377351 -0.3278233 -0.3031961</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true"></a><span class="co">#&gt; [2,] 0.92568372  1.3738475  0.9353985</span></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true"></a><span class="co">#&gt; $scaling</span></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true"></a><span class="co">#&gt; [1] 1.002299</span></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true"></a><span class="co">#&gt; $U</span></span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true"></a><span class="co">#&gt;            [,1]       [,2]</span></span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true"></a><span class="co">#&gt; [1,] 1.00000000 0.03243759</span></span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true"></a><span class="co">#&gt; [2,] 0.03243759 0.97819549</span></span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true"></a><span class="co">#&gt; $V</span></span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true"></a><span class="co">#&gt;             [,1]        [,2]        [,3]</span></span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true"></a><span class="co">#&gt; [1,]  1.00000000  0.01988966 -0.04879263</span></span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true"></a><span class="co">#&gt; [2,]  0.01988966  0.93839973 -0.04563610</span></span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true"></a><span class="co">#&gt; [3,] -0.04879263 -0.04563610  0.93321444</span></span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true"></a><span class="co">#&gt; $lev</span></span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;A&quot; &quot;B&quot; &quot;C&quot;</span></span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true"></a><span class="co">#&gt; $N</span></span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true"></a><span class="co">#&gt; [1] 90</span></span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true"></a><span class="co">#&gt; $method</span></span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;normal&quot;</span></span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true"></a><span class="co">#&gt; $nu</span></span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true"></a><span class="co">#&gt; NULL</span></span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true"></a><span class="co">#&gt; $call</span></span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true"></a><span class="co">#&gt; matrixlda(x = ABC, grouping = groups, prior = prior)</span></span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true"></a><span class="co">#&gt; attr(,&quot;class&quot;)</span></span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;matrixlda&quot;</span></span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true"></a>matqda</span>
-<span id="cb4-62"><a href="#cb4-62" aria-hidden="true"></a><span class="co">#&gt; $prior</span></span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true"></a><span class="co">#&gt;         A         B         C </span></span>
-<span id="cb4-64"><a href="#cb4-64" aria-hidden="true"></a><span class="co">#&gt; 0.3333333 0.3333333 0.3333333 </span></span>
-<span id="cb4-65"><a href="#cb4-65" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-66"><a href="#cb4-66" aria-hidden="true"></a><span class="co">#&gt; $counts</span></span>
-<span id="cb4-67"><a href="#cb4-67" aria-hidden="true"></a><span class="co">#&gt;  A  B  C </span></span>
-<span id="cb4-68"><a href="#cb4-68" aria-hidden="true"></a><span class="co">#&gt; 30 30 30 </span></span>
-<span id="cb4-69"><a href="#cb4-69" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-70"><a href="#cb4-70" aria-hidden="true"></a><span class="co">#&gt; $means</span></span>
-<span id="cb4-71"><a href="#cb4-71" aria-hidden="true"></a><span class="co">#&gt; , , 1</span></span>
-<span id="cb4-72"><a href="#cb4-72" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-73"><a href="#cb4-73" aria-hidden="true"></a><span class="co">#&gt;            [,1]        [,2]       [,3]</span></span>
-<span id="cb4-74"><a href="#cb4-74" aria-hidden="true"></a><span class="co">#&gt; [1,] 0.08629672 -0.06362916 -0.3045685</span></span>
-<span id="cb4-75"><a href="#cb4-75" aria-hidden="true"></a><span class="co">#&gt; [2,] 0.03851982 -0.01375580  0.3978759</span></span>
-<span id="cb4-76"><a href="#cb4-76" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-77"><a href="#cb4-77" aria-hidden="true"></a><span class="co">#&gt; , , 2</span></span>
-<span id="cb4-78"><a href="#cb4-78" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-79"><a href="#cb4-79" aria-hidden="true"></a><span class="co">#&gt;           [,1]       [,2]       [,3]</span></span>
-<span id="cb4-80"><a href="#cb4-80" aria-hidden="true"></a><span class="co">#&gt; [1,] 1.2872487  1.1199220 1.01282774</span></span>
-<span id="cb4-81"><a href="#cb4-81" aria-hidden="true"></a><span class="co">#&gt; [2,] 0.3044151 -0.3797203 0.06539076</span></span>
-<span id="cb4-82"><a href="#cb4-82" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-83"><a href="#cb4-83" aria-hidden="true"></a><span class="co">#&gt; , , 3</span></span>
-<span id="cb4-84"><a href="#cb4-84" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-85"><a href="#cb4-85" aria-hidden="true"></a><span class="co">#&gt;            [,1]       [,2]       [,3]</span></span>
-<span id="cb4-86"><a href="#cb4-86" aria-hidden="true"></a><span class="co">#&gt; [1,] 0.07377351 -0.3278233 -0.3031961</span></span>
-<span id="cb4-87"><a href="#cb4-87" aria-hidden="true"></a><span class="co">#&gt; [2,] 0.92568372  1.3738475  0.9353985</span></span>
-<span id="cb4-88"><a href="#cb4-88" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-89"><a href="#cb4-89" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-90"><a href="#cb4-90" aria-hidden="true"></a><span class="co">#&gt; $U</span></span>
-<span id="cb4-91"><a href="#cb4-91" aria-hidden="true"></a><span class="co">#&gt; , , 1</span></span>
-<span id="cb4-92"><a href="#cb4-92" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-93"><a href="#cb4-93" aria-hidden="true"></a><span class="co">#&gt;            [,1]       [,2]</span></span>
-<span id="cb4-94"><a href="#cb4-94" aria-hidden="true"></a><span class="co">#&gt; [1,] 1.00000000 0.02620514</span></span>
-<span id="cb4-95"><a href="#cb4-95" aria-hidden="true"></a><span class="co">#&gt; [2,] 0.02620514 0.95989647</span></span>
-<span id="cb4-96"><a href="#cb4-96" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-97"><a href="#cb4-97" aria-hidden="true"></a><span class="co">#&gt; , , 2</span></span>
-<span id="cb4-98"><a href="#cb4-98" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-99"><a href="#cb4-99" aria-hidden="true"></a><span class="co">#&gt;            [,1]       [,2]</span></span>
-<span id="cb4-100"><a href="#cb4-100" aria-hidden="true"></a><span class="co">#&gt; [1,]  1.0000000 -0.0173514</span></span>
-<span id="cb4-101"><a href="#cb4-101" aria-hidden="true"></a><span class="co">#&gt; [2,] -0.0173514  0.9456145</span></span>
-<span id="cb4-102"><a href="#cb4-102" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-103"><a href="#cb4-103" aria-hidden="true"></a><span class="co">#&gt; , , 3</span></span>
-<span id="cb4-104"><a href="#cb4-104" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-105"><a href="#cb4-105" aria-hidden="true"></a><span class="co">#&gt;          [,1]     [,2]</span></span>
-<span id="cb4-106"><a href="#cb4-106" aria-hidden="true"></a><span class="co">#&gt; [1,] 1.000000 0.129851</span></span>
-<span id="cb4-107"><a href="#cb4-107" aria-hidden="true"></a><span class="co">#&gt; [2,] 0.129851 1.061265</span></span>
-<span id="cb4-108"><a href="#cb4-108" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-109"><a href="#cb4-109" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-110"><a href="#cb4-110" aria-hidden="true"></a><span class="co">#&gt; $V</span></span>
-<span id="cb4-111"><a href="#cb4-111" aria-hidden="true"></a><span class="co">#&gt; , , 1</span></span>
-<span id="cb4-112"><a href="#cb4-112" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-113"><a href="#cb4-113" aria-hidden="true"></a><span class="co">#&gt;             [,1]        [,2]        [,3]</span></span>
-<span id="cb4-114"><a href="#cb4-114" aria-hidden="true"></a><span class="co">#&gt; [1,]  1.05498245 -0.07418973  0.09476411</span></span>
-<span id="cb4-115"><a href="#cb4-115" aria-hidden="true"></a><span class="co">#&gt; [2,] -0.07418973  0.98800103 -0.04390729</span></span>
-<span id="cb4-116"><a href="#cb4-116" aria-hidden="true"></a><span class="co">#&gt; [3,]  0.09476411 -0.04390729  0.79903040</span></span>
-<span id="cb4-117"><a href="#cb4-117" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-118"><a href="#cb4-118" aria-hidden="true"></a><span class="co">#&gt; , , 2</span></span>
-<span id="cb4-119"><a href="#cb4-119" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-120"><a href="#cb4-120" aria-hidden="true"></a><span class="co">#&gt;             [,1]       [,2]        [,3]</span></span>
-<span id="cb4-121"><a href="#cb4-121" aria-hidden="true"></a><span class="co">#&gt; [1,]  1.09941477 0.12678075 -0.03952663</span></span>
-<span id="cb4-122"><a href="#cb4-122" aria-hidden="true"></a><span class="co">#&gt; [2,]  0.12678075 0.94606849  0.03910645</span></span>
-<span id="cb4-123"><a href="#cb4-123" aria-hidden="true"></a><span class="co">#&gt; [3,] -0.03952663 0.03910645  0.85913748</span></span>
-<span id="cb4-124"><a href="#cb4-124" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-125"><a href="#cb4-125" aria-hidden="true"></a><span class="co">#&gt; , , 3</span></span>
-<span id="cb4-126"><a href="#cb4-126" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-127"><a href="#cb4-127" aria-hidden="true"></a><span class="co">#&gt;              [,1]         [,2]       [,3]</span></span>
-<span id="cb4-128"><a href="#cb4-128" aria-hidden="true"></a><span class="co">#&gt; [1,]  0.833193637  0.008466708 -0.2084547</span></span>
-<span id="cb4-129"><a href="#cb4-129" aria-hidden="true"></a><span class="co">#&gt; [2,]  0.008466708  0.875328749 -0.1142510</span></span>
-<span id="cb4-130"><a href="#cb4-130" aria-hidden="true"></a><span class="co">#&gt; [3,] -0.208454704 -0.114250988  1.1520533</span></span>
-<span id="cb4-131"><a href="#cb4-131" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-132"><a href="#cb4-132" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-133"><a href="#cb4-133" aria-hidden="true"></a><span class="co">#&gt; $lev</span></span>
-<span id="cb4-134"><a href="#cb4-134" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;A&quot; &quot;B&quot; &quot;C&quot;</span></span>
-<span id="cb4-135"><a href="#cb4-135" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-136"><a href="#cb4-136" aria-hidden="true"></a><span class="co">#&gt; $N</span></span>
-<span id="cb4-137"><a href="#cb4-137" aria-hidden="true"></a><span class="co">#&gt; [1] 90</span></span>
-<span id="cb4-138"><a href="#cb4-138" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-139"><a href="#cb4-139" aria-hidden="true"></a><span class="co">#&gt; $method</span></span>
-<span id="cb4-140"><a href="#cb4-140" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;normal&quot;</span></span>
-<span id="cb4-141"><a href="#cb4-141" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-142"><a href="#cb4-142" aria-hidden="true"></a><span class="co">#&gt; $nu</span></span>
-<span id="cb4-143"><a href="#cb4-143" aria-hidden="true"></a><span class="co">#&gt; NULL</span></span>
-<span id="cb4-144"><a href="#cb4-144" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-145"><a href="#cb4-145" aria-hidden="true"></a><span class="co">#&gt; $call</span></span>
-<span id="cb4-146"><a href="#cb4-146" aria-hidden="true"></a><span class="co">#&gt; matrixqda(x = ABC, grouping = groups, prior = prior)</span></span>
-<span id="cb4-147"><a href="#cb4-147" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb4-148"><a href="#cb4-148" aria-hidden="true"></a><span class="co">#&gt; attr(,&quot;class&quot;)</span></span>
-<span id="cb4-149"><a href="#cb4-149" aria-hidden="true"></a><span class="co">#&gt; [1] &quot;matrixqda&quot;</span></span></code></pre></div>
+<p>The objects returned by <code>matrixlda</code> and
+<code>matrixqda</code> are S3 classes. See below example output:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>matlda</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">#&gt; $prior</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt;         A         B         C </span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt; 0.3333333 0.3333333 0.3333333 </span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt; $counts</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt;  A  B  C </span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; 30 30 30 </span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt; $means</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt; , , 1</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt;            [,1]        [,2]       [,3]</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt; [1,] 0.08629672 -0.06362916 -0.3045685</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; [2,] 0.03851982 -0.01375580  0.3978759</span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; , , 2</span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt;           [,1]       [,2]       [,3]</span></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co">#&gt; [1,] 1.2872487  1.1199220 1.01282774</span></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co">#&gt; [2,] 0.3044151 -0.3797203 0.06539076</span></span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a><span class="co">#&gt; , , 3</span></span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a><span class="co">#&gt;            [,1]       [,2]       [,3]</span></span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a><span class="co">#&gt; [1,] 0.07377351 -0.3278233 -0.3031961</span></span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a><span class="co">#&gt; [2,] 0.92568372  1.3738475  0.9353985</span></span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a><span class="co">#&gt; $scaling</span></span>
+<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a><span class="co">#&gt; [1] 1.002299</span></span>
+<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a><span class="co">#&gt; $U</span></span>
+<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a><span class="co">#&gt;            [,1]       [,2]</span></span>
+<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a><span class="co">#&gt; [1,] 1.00000000 0.03243759</span></span>
+<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a><span class="co">#&gt; [2,] 0.03243759 0.97819549</span></span>
+<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a><span class="co">#&gt; $V</span></span>
+<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a><span class="co">#&gt;             [,1]        [,2]        [,3]</span></span>
+<span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a><span class="co">#&gt; [1,]  1.00000000  0.01988966 -0.04879263</span></span>
+<span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a><span class="co">#&gt; [2,]  0.01988966  0.93839973 -0.04563610</span></span>
+<span id="cb4-42"><a href="#cb4-42" tabindex="-1"></a><span class="co">#&gt; [3,] -0.04879263 -0.04563610  0.93321444</span></span>
+<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a><span class="co">#&gt; $lev</span></span>
+<span id="cb4-45"><a href="#cb4-45" tabindex="-1"></a><span class="co">#&gt; [1] &quot;A&quot; &quot;B&quot; &quot;C&quot;</span></span>
+<span id="cb4-46"><a href="#cb4-46" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-47"><a href="#cb4-47" tabindex="-1"></a><span class="co">#&gt; $N</span></span>
+<span id="cb4-48"><a href="#cb4-48" tabindex="-1"></a><span class="co">#&gt; [1] 90</span></span>
+<span id="cb4-49"><a href="#cb4-49" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-50"><a href="#cb4-50" tabindex="-1"></a><span class="co">#&gt; $method</span></span>
+<span id="cb4-51"><a href="#cb4-51" tabindex="-1"></a><span class="co">#&gt; [1] &quot;normal&quot;</span></span>
+<span id="cb4-52"><a href="#cb4-52" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-53"><a href="#cb4-53" tabindex="-1"></a><span class="co">#&gt; $nu</span></span>
+<span id="cb4-54"><a href="#cb4-54" tabindex="-1"></a><span class="co">#&gt; NULL</span></span>
+<span id="cb4-55"><a href="#cb4-55" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-56"><a href="#cb4-56" tabindex="-1"></a><span class="co">#&gt; $call</span></span>
+<span id="cb4-57"><a href="#cb4-57" tabindex="-1"></a><span class="co">#&gt; matrixlda(x = ABC, grouping = groups, prior = prior)</span></span>
+<span id="cb4-58"><a href="#cb4-58" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-59"><a href="#cb4-59" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;class&quot;)</span></span>
+<span id="cb4-60"><a href="#cb4-60" tabindex="-1"></a><span class="co">#&gt; [1] &quot;matrixlda&quot;</span></span>
+<span id="cb4-61"><a href="#cb4-61" tabindex="-1"></a></span>
+<span id="cb4-62"><a href="#cb4-62" tabindex="-1"></a>matqda</span>
+<span id="cb4-63"><a href="#cb4-63" tabindex="-1"></a><span class="co">#&gt; $prior</span></span>
+<span id="cb4-64"><a href="#cb4-64" tabindex="-1"></a><span class="co">#&gt;         A         B         C </span></span>
+<span id="cb4-65"><a href="#cb4-65" tabindex="-1"></a><span class="co">#&gt; 0.3333333 0.3333333 0.3333333 </span></span>
+<span id="cb4-66"><a href="#cb4-66" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-67"><a href="#cb4-67" tabindex="-1"></a><span class="co">#&gt; $counts</span></span>
+<span id="cb4-68"><a href="#cb4-68" tabindex="-1"></a><span class="co">#&gt;  A  B  C </span></span>
+<span id="cb4-69"><a href="#cb4-69" tabindex="-1"></a><span class="co">#&gt; 30 30 30 </span></span>
+<span id="cb4-70"><a href="#cb4-70" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-71"><a href="#cb4-71" tabindex="-1"></a><span class="co">#&gt; $means</span></span>
+<span id="cb4-72"><a href="#cb4-72" tabindex="-1"></a><span class="co">#&gt; , , 1</span></span>
+<span id="cb4-73"><a href="#cb4-73" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-74"><a href="#cb4-74" tabindex="-1"></a><span class="co">#&gt;            [,1]        [,2]       [,3]</span></span>
+<span id="cb4-75"><a href="#cb4-75" tabindex="-1"></a><span class="co">#&gt; [1,] 0.08629672 -0.06362916 -0.3045685</span></span>
+<span id="cb4-76"><a href="#cb4-76" tabindex="-1"></a><span class="co">#&gt; [2,] 0.03851982 -0.01375580  0.3978759</span></span>
+<span id="cb4-77"><a href="#cb4-77" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-78"><a href="#cb4-78" tabindex="-1"></a><span class="co">#&gt; , , 2</span></span>
+<span id="cb4-79"><a href="#cb4-79" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-80"><a href="#cb4-80" tabindex="-1"></a><span class="co">#&gt;           [,1]       [,2]       [,3]</span></span>
+<span id="cb4-81"><a href="#cb4-81" tabindex="-1"></a><span class="co">#&gt; [1,] 1.2872487  1.1199220 1.01282774</span></span>
+<span id="cb4-82"><a href="#cb4-82" tabindex="-1"></a><span class="co">#&gt; [2,] 0.3044151 -0.3797203 0.06539076</span></span>
+<span id="cb4-83"><a href="#cb4-83" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-84"><a href="#cb4-84" tabindex="-1"></a><span class="co">#&gt; , , 3</span></span>
+<span id="cb4-85"><a href="#cb4-85" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-86"><a href="#cb4-86" tabindex="-1"></a><span class="co">#&gt;            [,1]       [,2]       [,3]</span></span>
+<span id="cb4-87"><a href="#cb4-87" tabindex="-1"></a><span class="co">#&gt; [1,] 0.07377351 -0.3278233 -0.3031961</span></span>
+<span id="cb4-88"><a href="#cb4-88" tabindex="-1"></a><span class="co">#&gt; [2,] 0.92568372  1.3738475  0.9353985</span></span>
+<span id="cb4-89"><a href="#cb4-89" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-90"><a href="#cb4-90" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-91"><a href="#cb4-91" tabindex="-1"></a><span class="co">#&gt; $U</span></span>
+<span id="cb4-92"><a href="#cb4-92" tabindex="-1"></a><span class="co">#&gt; , , 1</span></span>
+<span id="cb4-93"><a href="#cb4-93" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-94"><a href="#cb4-94" tabindex="-1"></a><span class="co">#&gt;            [,1]       [,2]</span></span>
+<span id="cb4-95"><a href="#cb4-95" tabindex="-1"></a><span class="co">#&gt; [1,] 1.00000000 0.02620514</span></span>
+<span id="cb4-96"><a href="#cb4-96" tabindex="-1"></a><span class="co">#&gt; [2,] 0.02620514 0.95989647</span></span>
+<span id="cb4-97"><a href="#cb4-97" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-98"><a href="#cb4-98" tabindex="-1"></a><span class="co">#&gt; , , 2</span></span>
+<span id="cb4-99"><a href="#cb4-99" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-100"><a href="#cb4-100" tabindex="-1"></a><span class="co">#&gt;            [,1]       [,2]</span></span>
+<span id="cb4-101"><a href="#cb4-101" tabindex="-1"></a><span class="co">#&gt; [1,]  1.0000000 -0.0173514</span></span>
+<span id="cb4-102"><a href="#cb4-102" tabindex="-1"></a><span class="co">#&gt; [2,] -0.0173514  0.9456145</span></span>
+<span id="cb4-103"><a href="#cb4-103" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-104"><a href="#cb4-104" tabindex="-1"></a><span class="co">#&gt; , , 3</span></span>
+<span id="cb4-105"><a href="#cb4-105" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-106"><a href="#cb4-106" tabindex="-1"></a><span class="co">#&gt;          [,1]     [,2]</span></span>
+<span id="cb4-107"><a href="#cb4-107" tabindex="-1"></a><span class="co">#&gt; [1,] 1.000000 0.129851</span></span>
+<span id="cb4-108"><a href="#cb4-108" tabindex="-1"></a><span class="co">#&gt; [2,] 0.129851 1.061265</span></span>
+<span id="cb4-109"><a href="#cb4-109" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-110"><a href="#cb4-110" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-111"><a href="#cb4-111" tabindex="-1"></a><span class="co">#&gt; $V</span></span>
+<span id="cb4-112"><a href="#cb4-112" tabindex="-1"></a><span class="co">#&gt; , , 1</span></span>
+<span id="cb4-113"><a href="#cb4-113" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-114"><a href="#cb4-114" tabindex="-1"></a><span class="co">#&gt;             [,1]        [,2]        [,3]</span></span>
+<span id="cb4-115"><a href="#cb4-115" tabindex="-1"></a><span class="co">#&gt; [1,]  1.05498245 -0.07418973  0.09476411</span></span>
+<span id="cb4-116"><a href="#cb4-116" tabindex="-1"></a><span class="co">#&gt; [2,] -0.07418973  0.98800103 -0.04390729</span></span>
+<span id="cb4-117"><a href="#cb4-117" tabindex="-1"></a><span class="co">#&gt; [3,]  0.09476411 -0.04390729  0.79903040</span></span>
+<span id="cb4-118"><a href="#cb4-118" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-119"><a href="#cb4-119" tabindex="-1"></a><span class="co">#&gt; , , 2</span></span>
+<span id="cb4-120"><a href="#cb4-120" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-121"><a href="#cb4-121" tabindex="-1"></a><span class="co">#&gt;             [,1]       [,2]        [,3]</span></span>
+<span id="cb4-122"><a href="#cb4-122" tabindex="-1"></a><span class="co">#&gt; [1,]  1.09941477 0.12678075 -0.03952663</span></span>
+<span id="cb4-123"><a href="#cb4-123" tabindex="-1"></a><span class="co">#&gt; [2,]  0.12678075 0.94606849  0.03910645</span></span>
+<span id="cb4-124"><a href="#cb4-124" tabindex="-1"></a><span class="co">#&gt; [3,] -0.03952663 0.03910645  0.85913748</span></span>
+<span id="cb4-125"><a href="#cb4-125" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-126"><a href="#cb4-126" tabindex="-1"></a><span class="co">#&gt; , , 3</span></span>
+<span id="cb4-127"><a href="#cb4-127" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-128"><a href="#cb4-128" tabindex="-1"></a><span class="co">#&gt;              [,1]         [,2]       [,3]</span></span>
+<span id="cb4-129"><a href="#cb4-129" tabindex="-1"></a><span class="co">#&gt; [1,]  0.833193637  0.008466708 -0.2084547</span></span>
+<span id="cb4-130"><a href="#cb4-130" tabindex="-1"></a><span class="co">#&gt; [2,]  0.008466708  0.875328749 -0.1142510</span></span>
+<span id="cb4-131"><a href="#cb4-131" tabindex="-1"></a><span class="co">#&gt; [3,] -0.208454704 -0.114250988  1.1520533</span></span>
+<span id="cb4-132"><a href="#cb4-132" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-133"><a href="#cb4-133" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-134"><a href="#cb4-134" tabindex="-1"></a><span class="co">#&gt; $lev</span></span>
+<span id="cb4-135"><a href="#cb4-135" tabindex="-1"></a><span class="co">#&gt; [1] &quot;A&quot; &quot;B&quot; &quot;C&quot;</span></span>
+<span id="cb4-136"><a href="#cb4-136" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-137"><a href="#cb4-137" tabindex="-1"></a><span class="co">#&gt; $N</span></span>
+<span id="cb4-138"><a href="#cb4-138" tabindex="-1"></a><span class="co">#&gt; [1] 90</span></span>
+<span id="cb4-139"><a href="#cb4-139" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-140"><a href="#cb4-140" tabindex="-1"></a><span class="co">#&gt; $method</span></span>
+<span id="cb4-141"><a href="#cb4-141" tabindex="-1"></a><span class="co">#&gt; [1] &quot;normal&quot;</span></span>
+<span id="cb4-142"><a href="#cb4-142" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-143"><a href="#cb4-143" tabindex="-1"></a><span class="co">#&gt; $nu</span></span>
+<span id="cb4-144"><a href="#cb4-144" tabindex="-1"></a><span class="co">#&gt; NULL</span></span>
+<span id="cb4-145"><a href="#cb4-145" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-146"><a href="#cb4-146" tabindex="-1"></a><span class="co">#&gt; $call</span></span>
+<span id="cb4-147"><a href="#cb4-147" tabindex="-1"></a><span class="co">#&gt; matrixqda(x = ABC, grouping = groups, prior = prior)</span></span>
+<span id="cb4-148"><a href="#cb4-148" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-149"><a href="#cb4-149" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;class&quot;)</span></span>
+<span id="cb4-150"><a href="#cb4-150" tabindex="-1"></a><span class="co">#&gt; [1] &quot;matrixqda&quot;</span></span></code></pre></div>
 </div>
 <div id="session-info" class="section level2">
 <h2>Session info</h2>
 <p>This vignette was built using <code>rmarkdown</code>.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">sessionInfo</span>()</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="co">#&gt; R version 4.0.5 (2021-03-31)</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="co">#&gt; Platform: x86_64-redhat-linux-gnu (64-bit)</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a><span class="co">#&gt; Running under: Fedora 34 (MATE-Compiz)</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a><span class="co">#&gt; Matrix products: default</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a><span class="co">#&gt; BLAS/LAPACK: /usr/lib64/libflexiblas.so.3.0</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a><span class="co">#&gt; locale:</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a><span class="co">#&gt;  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a><span class="co">#&gt;  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=C              </span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a><span class="co">#&gt;  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   </span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a><span class="co">#&gt;  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a><span class="co">#&gt;  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a><span class="co">#&gt; [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true"></a><span class="co">#&gt; attached base packages:</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true"></a><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true"></a><span class="co">#&gt; other attached packages:</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true"></a><span class="co">#&gt; [1] MixMatrix_0.2.6</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true"></a><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true"></a><span class="co">#&gt;  [1] Rcpp_1.0.7      digest_0.6.28   R6_2.5.1        jsonlite_1.7.2 </span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true"></a><span class="co">#&gt;  [5] magrittr_2.0.1  evaluate_0.14   rlang_0.4.12    stringi_1.7.4  </span></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true"></a><span class="co">#&gt;  [9] jquerylib_0.1.4 bslib_0.3.0     rmarkdown_2.11  tools_4.0.5    </span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true"></a><span class="co">#&gt; [13] stringr_1.4.0   xfun_0.26       yaml_2.2.1      fastmap_1.1.0  </span></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true"></a><span class="co">#&gt; [17] compiler_4.0.5  htmltools_0.5.2 knitr_1.34      sass_0.4.0</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co">#&gt; R version 4.4.1 (2024-06-14)</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co">#&gt; Platform: x86_64-redhat-linux-gnu</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt; Running under: Fedora Linux 40 (Xfce)</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; Matrix products: default</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; BLAS/LAPACK: FlexiBLAS OPENBLAS-OPENMP;  LAPACK version 3.11.0</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; locale:</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt;  [1] LC_CTYPE=en_US.utf8       LC_NUMERIC=C             </span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt;  [3] LC_TIME=en_US.utf8        LC_COLLATE=C             </span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt;  [5] LC_MONETARY=en_US.utf8    LC_MESSAGES=en_US.utf8   </span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt;  [7] LC_PAPER=en_US.utf8       LC_NAME=C                </span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt;  [9] LC_ADDRESS=C              LC_TELEPHONE=C           </span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt; [11] LC_MEASUREMENT=en_US.utf8 LC_IDENTIFICATION=C      </span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co">#&gt; time zone: America/Chicago</span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="co">#&gt; tzcode source: system (glibc)</span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="co">#&gt; attached base packages:</span></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a><span class="co">#&gt; other attached packages:</span></span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a><span class="co">#&gt; [1] MixMatrix_0.2.8</span></span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a><span class="co">#&gt;  [1] digest_0.6.37     R6_2.5.1          fastmap_1.2.0     xfun_0.47        </span></span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a><span class="co">#&gt;  [5] glue_1.7.0        cachem_1.1.0      knitr_1.48        htmltools_0.5.8.1</span></span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a><span class="co">#&gt;  [9] rmarkdown_2.28    lifecycle_1.0.4   cli_3.6.3         sass_0.4.9       </span></span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a><span class="co">#&gt; [13] jquerylib_0.1.4   compiler_4.4.1    tools_4.4.1       evaluate_1.0.0   </span></span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a><span class="co">#&gt; [17] bslib_0.8.0       Rcpp_1.0.13       yaml_2.3.10       rlang_1.1.4      </span></span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a><span class="co">#&gt; [21] jsonlite_1.8.9</span></span></code></pre></div>
 </div>
 <div id="all-the-code-for-easy-copying" class="section level2">
 <h2>All the code for easy copying</h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>knitr<span class="op">::</span>opts_chunk<span class="op">$</span><span class="kw">set</span>(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>  <span class="dt">collapse =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>  <span class="dt">comment =</span> <span class="st">&quot;#&gt;&quot;</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">20180222</span>)</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a><span class="kw">library</span>(<span class="st">&#39;MixMatrix&#39;</span>)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>A &lt;-<span class="st"> </span><span class="kw">rmatrixnorm</span>(<span class="dv">30</span>, <span class="dt">mean =</span> <span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow=</span><span class="dv">2</span>, <span class="dt">ncol=</span><span class="dv">3</span>)) <span class="co"># creating the three groups</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>B &lt;-<span class="st"> </span><span class="kw">rmatrixnorm</span>(<span class="dv">30</span>, <span class="dt">mean =</span> <span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">0</span>), <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">ncol =</span> <span class="dv">3</span>))</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>C &lt;-<span class="st"> </span><span class="kw">rmatrixnorm</span>(<span class="dv">30</span>, <span class="dt">mean =</span> <span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">ncol =</span> <span class="dv">3</span>))</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>ABC &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="kw">c</span>(A,B,C), <span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">90</span>)) <span class="co"># combining into on array</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a>groups &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&quot;A&quot;</span>, <span class="dv">30</span>), <span class="kw">rep</span>(<span class="st">&quot;B&quot;</span>, <span class="dv">30</span>), <span class="kw">rep</span>(<span class="st">&quot;C&quot;</span>, <span class="dv">30</span>))) <span class="co"># labels</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a>prior =<span class="st"> </span><span class="kw">c</span>(<span class="dv">30</span>, <span class="dv">30</span>, <span class="dv">30</span>) <span class="op">/</span><span class="st"> </span><span class="dv">90</span> <span class="co"># equal prior</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a>matlda &lt;-<span class="st"> </span><span class="kw">matrixlda</span>(<span class="dt">x =</span> ABC, <span class="dt">grouping =</span> groups, <span class="dt">prior =</span> prior) <span class="co"># perform LDA</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true"></a>matqda &lt;-<span class="st"> </span><span class="kw">matrixqda</span>(<span class="dt">x =</span> ABC, <span class="dt">grouping =</span> groups, <span class="dt">prior =</span> prior) <span class="co"># perform QDA</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true"></a>ABC[, , <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">31</span>, <span class="dv">61</span>)] <span class="co"># true class memberships: A, B, C</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true"></a><span class="co">#predict the membership of the first observation of each group</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true"></a><span class="kw">predict</span>(matlda, ABC[, , <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">31</span>, <span class="dv">61</span>)])</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true"></a><span class="co">#predict the membership of the first observation of each group</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true"></a><span class="kw">predict</span>(matqda,  ABC[, , <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">31</span>, <span class="dv">61</span>)])</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true"></a></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true"></a>matlda</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true"></a></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true"></a>matqda</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true"></a></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true"></a><span class="kw">sessionInfo</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="at">collapse =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="at">comment =</span> <span class="st">&quot;#&gt;&quot;</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>)</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20180222</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&#39;MixMatrix&#39;</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>A <span class="ot">&lt;-</span> <span class="fu">rmatrixnorm</span>(<span class="dv">30</span>, <span class="at">mean =</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow=</span><span class="dv">2</span>, <span class="at">ncol=</span><span class="dv">3</span>)) <span class="co"># creating the three groups</span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="fu">rmatrixnorm</span>(<span class="dv">30</span>, <span class="at">mean =</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">3</span>))</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>C <span class="ot">&lt;-</span> <span class="fu">rmatrixnorm</span>(<span class="dv">30</span>, <span class="at">mean =</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">3</span>))</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>ABC <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="fu">c</span>(A,B,C), <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">90</span>)) <span class="co"># combining into on array</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>groups <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;A&quot;</span>, <span class="dv">30</span>), <span class="fu">rep</span>(<span class="st">&quot;B&quot;</span>, <span class="dv">30</span>), <span class="fu">rep</span>(<span class="st">&quot;C&quot;</span>, <span class="dv">30</span>))) <span class="co"># labels</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>prior <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">30</span>, <span class="dv">30</span>) <span class="sc">/</span> <span class="dv">90</span> <span class="co"># equal prior</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>matlda <span class="ot">&lt;-</span> <span class="fu">matrixlda</span>(<span class="at">x =</span> ABC, <span class="at">grouping =</span> groups, <span class="at">prior =</span> prior) <span class="co"># perform LDA</span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>matqda <span class="ot">&lt;-</span> <span class="fu">matrixqda</span>(<span class="at">x =</span> ABC, <span class="at">grouping =</span> groups, <span class="at">prior =</span> prior) <span class="co"># perform QDA</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>ABC[, , <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">31</span>, <span class="dv">61</span>)] <span class="co"># true class memberships: A, B, C</span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#predict the membership of the first observation of each group</span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="fu">predict</span>(matlda, ABC[, , <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">31</span>, <span class="dv">61</span>)])</span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#predict the membership of the first observation of each group</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="fu">predict</span>(matqda,  ABC[, , <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">31</span>, <span class="dv">61</span>)])</span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a>matlda</span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a>matqda</span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a></span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
 </div>
 
 

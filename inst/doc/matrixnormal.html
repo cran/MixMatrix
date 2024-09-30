@@ -12,7 +12,7 @@
 
 <meta name="author" content="Geoffrey Thompson" />
 
-<meta name="date" content="2021-11-15" />
+<meta name="date" content="2024-09-30" />
 
 <title>Matrix Variate Normal Distributions with MixMatrix</title>
 
@@ -29,45 +29,31 @@ document.addEventListener('DOMContentLoaded', function(e) {
   }
 });
 </script>
-<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
-// v0.0.1
-// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
-
-document.addEventListener('DOMContentLoaded', function() {
-  const codeList = document.getElementsByClassName("sourceCode");
-  for (var i = 0; i < codeList.length; i++) {
-    var linkList = codeList[i].getElementsByTagName('a');
-    for (var j = 0; j < linkList.length; j++) {
-      if (linkList[j].innerHTML === "") {
-        linkList[j].setAttribute('aria-hidden', 'true');
-      }
-    }
-  }
-});
-</script>
 
 <style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
 
 
 <style type="text/css">
-  code {
-    white-space: pre;
-  }
-  .sourceCode {
-    overflow: visible;
-  }
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -79,55 +65,54 @@ pre > code.sourceCode { white-space: pre-wrap; }
 pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
-  { counter-reset: source-line 0; }
+{ counter-reset: source-line 0; }
 pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
+{ position: relative; left: -4em; counter-increment: source-line; }
 pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
 div.sourceCode
-  {   }
+{ }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -136,13 +121,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -153,6 +145,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
+<style type="text/css">
+
+div.csl-bib-body { }
+div.csl-entry {
+clear: both;
+}
+.hanging div.csl-entry {
+margin-left:2em;
+text-indent:-2em;
+}
+div.csl-left-margin {
+min-width:2em;
+float:left;
+}
+div.csl-right-inline {
+margin-left:2em;
+padding-left:1em;
+}
+div.csl-indent {
+margin-left: 2em;
+}
+</style>
 
 <style type="text/css">body {
 background-color: #fff;
@@ -346,355 +360,447 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<h1 class="title toc-ignore">Matrix Variate Normal Distributions with MixMatrix</h1>
+<h1 class="title toc-ignore">Matrix Variate Normal Distributions with
+MixMatrix</h1>
 <h4 class="author">Geoffrey Thompson</h4>
-<h4 class="date">2021-11-15</h4>
+<h4 class="date">2024-09-30</h4>
 
 
 
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">library</span>(MixMatrix)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(MixMatrix)</span></code></pre></div>
 <div id="matrix-variate-distributions" class="section level2">
 <h2>Matrix Variate Distributions</h2>
-<p>Suppose there is a two-dimensional grid of observations: each observation is randomly distributed somehow, perhaps each spot on the grid has its own mean, there’s a covariance relation across the rows that doesn’t vary across the columns and a covariance relation across the columns that doesn’t vary across the rows. One case where this might come up is a multivariate time series: at each point in time we are dealing with a multivariate observation (perhaps normally distributed or not) and then there is a covariance structure across time to account for. We may be interested in drawing from such distributions, calculating densities, or estimating parameters based on observations. This package presents some functions for doing so in the case of matrix variate normal distributions. For more details about matrix variate distributions in general and matrix variate normal distributions in particular, see <span class="citation">Gupta and Nagar (<a href="#ref-gupta1999matrix" role="doc-biblioref">1999</a>)</span>, whose results I rely on for much of this presentation.</p>
+<p>Suppose there is a two-dimensional grid of observations: each
+observation is randomly distributed somehow, perhaps each spot on the
+grid has its own mean, there’s a covariance relation across the rows
+that doesn’t vary across the columns and a covariance relation across
+the columns that doesn’t vary across the rows. One case where this might
+come up is a multivariate time series: at each point in time we are
+dealing with a multivariate observation (perhaps normally distributed or
+not) and then there is a covariance structure across time to account
+for. We may be interested in drawing from such distributions,
+calculating densities, or estimating parameters based on observations.
+This package presents some functions for doing so in the case of matrix
+variate normal distributions. For more details about matrix variate
+distributions in general and matrix variate normal distributions in
+particular, see <span class="citation">Gupta and Nagar (<a href="#ref-gupta1999matrix">1999</a>)</span>, whose results I rely on
+for much of this presentation.</p>
 </div>
 <div id="matrix-variate-normal-distributions" class="section level2">
 <h2>Matrix Variate Normal Distributions</h2>
-<p>A random matrix <span class="math inline">\(\mathbf{X}\)</span> <span class="math inline">\((p \times n)\)</span> with a matrix variate normal distribution is parameterized by a mean matrix <span class="math inline">\(\mathbf{M}\)</span> <span class="math inline">\((p \times n)\)</span> and covariance matrices <span class="math inline">\(\mathbf{U}\)</span> <span class="math inline">\((p \times p)\)</span> (determining covariance among rows) and <span class="math inline">\(\mathbf{V}\)</span> <span class="math inline">\((n \times n)\)</span> (determining covariance among columns) and has the following probability density function (<span class="citation">Wikipedia (<a href="#ref-Matrix_normal_distribution" role="doc-biblioref">2018</a>)</span>): <span class="math display">\[p(\mathbf{X}\mid\mathbf{M}, \mathbf{U}, \mathbf{V}) = \frac{\exp\left( -\frac{1}{2} \, \mathrm{tr}\left[ \mathbf{V}^{-1} (\mathbf{X} - \mathbf{M})^{T} \mathbf{U}^{-1} (\mathbf{X} - \mathbf{M}) \right] \right)}{(2\pi)^{np/2} |\mathbf{V}|^{n/2} |\mathbf{U}|^{p/2}} \]</span> Here is a useful fact for drawing observations from a matrix variate normal distribution: suppose <span class="math inline">\(\mathbf{X}\)</span> is distributed as a matrix variate normal distribution with mean matrix <span class="math inline">\(\mathbf{0}\)</span> and covariance matrices <span class="math inline">\(\mathbf{I_n}\)</span> and <span class="math inline">\(\mathbf{I_p}\)</span>. Then for a mean matrix <span class="math inline">\(\mathbf{M}\)</span> and linear transformations <span class="math inline">\(\mathbf{L}\)</span> and <span class="math inline">\(\mathbf{R}\)</span> of appropriate dimensions, if <span class="math display">\[Y = \mathbf{M} + \mathbf{L}\mathbf{X}\mathbf{R}\]</span> then <span class="math inline">\(\mathbf{Y}\)</span> is matrix variate normally distributed with parameters <span class="math inline">\(\mathbf{M}, \mathbf{LL}^T, \mathbf{R}^T\mathbf{R}\)</span>.</p>
-<p>Matrix variate random variables can then be generated by specifying <span class="math inline">\(\mathbf{M}\)</span> and <span class="math inline">\(\mathbf{L}\)</span> and <span class="math inline">\(\mathbf{R}\)</span> or by specifying <span class="math inline">\(\mathbf{U}\)</span> and <span class="math inline">\(\mathbf{V}\)</span>. If the covariance matrices are provided, then Cholesky decomposition is performed to create the <span class="math inline">\(\mathbf{L}\)</span> and <span class="math inline">\(\mathbf{R}\)</span> matrices. If <span class="math inline">\(\mathbf{L}\)</span> and <span class="math inline">\(\mathbf{R}\)</span> matrices are provided, they are used to create <span class="math inline">\(\mathbf{U}\)</span> and <span class="math inline">\(\mathbf{V}\)</span> matrices which are then decomposed. If these are not specified, the variances are presumed to be identity matrices by default and the means are presumed to be zero. If <span class="math inline">\(\mathbf{L}\)</span> or <span class="math inline">\(\mathbf{R}\)</span> are not full rank linear transformations, degenerate matrix normal distributions can be produced.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">20180203</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">6</span>),<span class="dt">nrow=</span><span class="dv">3</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>x</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="co">#&gt;             [,1]      [,2]</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="co">#&gt; [1,]  0.04234611 1.7072872</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a><span class="co">#&gt; [2,] -1.05186238 0.2182058</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a><span class="co">#&gt; [3,]  0.36199161 0.6759820</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">20180203</span>)</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>y &lt;-<span class="st"> </span><span class="kw">rmatrixnorm</span>(<span class="dt">n =</span> <span class="dv">1</span>, <span class="dt">mean=</span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">6</span>),<span class="dt">nrow=</span><span class="dv">3</span>))</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>y</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a><span class="co">#&gt;             [,1]      [,2]</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a><span class="co">#&gt; [1,]  0.04234611 1.7072872</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a><span class="co">#&gt; [2,] -1.05186238 0.2182058</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a><span class="co">#&gt; [3,]  0.36199161 0.6759820</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a>U &lt;-<span class="st"> </span><span class="dv">5</span> <span class="op">*</span><span class="st"> </span><span class="kw">diag</span>(<span class="dv">3</span>) <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a>V &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">0</span>,.<span class="dv">1</span>),<span class="dt">nrow=</span><span class="dv">2</span>)</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a>mu =<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>,<span class="dt">nrow=</span><span class="dv">3</span>)</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">20180203</span>)</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true"></a>z &lt;-<span class="st"> </span><span class="kw">rmatrixnorm</span>(<span class="dt">n =</span> <span class="dv">1</span>, <span class="dt">mean=</span>mu,<span class="dt">U=</span>U,<span class="dt">V=</span>V)</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true"></a>z</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true"></a><span class="co">#&gt;           [,1]     [,2]</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true"></a><span class="co">#&gt; [1,]  1.146691 5.322459</span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true"></a><span class="co">#&gt; [2,] -1.568345 5.387067</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true"></a><span class="co">#&gt; [3,]  3.734947 6.755212</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true"></a>mu <span class="op">+</span><span class="st"> </span><span class="kw">t</span>(<span class="kw">chol</span>(U)) <span class="op">%*%</span><span class="st"> </span>y <span class="op">%*%</span><span class="st"> </span><span class="kw">chol</span>(V)</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true"></a><span class="co">#&gt;           [,1]     [,2]</span></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true"></a><span class="co">#&gt; [1,]  1.146691 5.322459</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true"></a><span class="co">#&gt; [2,] -1.568345 5.387067</span></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true"></a><span class="co">#&gt; [3,]  3.734947 6.755212</span></span></code></pre></div>
-<p>When <span class="math inline">\(n=1\)</span>, by default this returns a matrix. For <span class="math inline">\(n&gt;1\)</span>, by default, it will return a three-dimensional array indexed by the last coordinate (array convention similar to <code>rWishart</code>).</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">20180203</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">rmatrixnorm</span>(<span class="dt">n =</span> <span class="dv">1</span>, <span class="dt">mean=</span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">6</span>),<span class="dt">nrow=</span><span class="dv">3</span>))</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>x</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="co">#&gt;             [,1]      [,2]</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="co">#&gt; [1,]  0.04234611 1.7072872</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a><span class="co">#&gt; [2,] -1.05186238 0.2182058</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="co">#&gt; [3,]  0.36199161 0.6759820</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">20180203</span>)</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a>y &lt;-<span class="st"> </span><span class="kw">rmatrixnorm</span>(<span class="dt">n =</span> <span class="dv">100</span>, <span class="dt">mean=</span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">6</span>),<span class="dt">nrow=</span><span class="dv">3</span>),<span class="dt">list =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>y[[<span class="dv">1</span>]]</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a><span class="co">#&gt;             [,1]      [,2]</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a><span class="co">#&gt; [1,]  0.04234611 1.7072872</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a><span class="co">#&gt; [2,] -1.05186238 0.2182058</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a><span class="co">#&gt; [3,]  0.36199161 0.6759820</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">20180203</span>)</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a>z &lt;-<span class="st"> </span><span class="kw">rmatrixnorm</span>(<span class="dt">n =</span> <span class="dv">100</span>, <span class="dt">mean=</span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">6</span>),<span class="dt">nrow=</span><span class="dv">3</span>),<span class="dt">array =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a>z[ , , <span class="dv">1</span>]</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true"></a><span class="co">#&gt;             [,1]      [,2]</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true"></a><span class="co">#&gt; [1,]  0.04234611 1.7072872</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true"></a><span class="co">#&gt; [2,] -1.05186238 0.2182058</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true"></a><span class="co">#&gt; [3,]  0.36199161 0.6759820</span></span></code></pre></div>
-<p>Densities are computed in much the same way as for other distributions. The defaults for the mean parameters are 0 and identity for the variance matrices. The <code>log</code> parameter sets whether to return the density on the log scale - by default this is <code>FALSE</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">20180202</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>A =<span class="st"> </span><span class="kw">rmatrixnorm</span>(<span class="dt">n=</span><span class="dv">1</span>,<span class="dt">mean=</span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">100</span>,<span class="dv">0</span>,<span class="op">-</span><span class="dv">100</span>,<span class="dv">0</span>,<span class="dv">25</span>,<span class="op">-</span><span class="dv">1000</span>),<span class="dt">nrow=</span><span class="dv">2</span>),</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="dt">L=</span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">0</span>,.<span class="dv">1</span>),<span class="dt">nrow=</span><span class="dv">2</span>))</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="kw">dmatrixnorm</span>(A,<span class="dt">mean=</span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">100</span>,<span class="dv">0</span>,<span class="op">-</span><span class="dv">100</span>,<span class="dv">0</span>,<span class="dv">25</span>,<span class="op">-</span><span class="dv">1000</span>),<span class="dt">nrow=</span><span class="dv">2</span>),</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>  <span class="dt">L=</span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">0</span>,.<span class="dv">1</span>),<span class="dt">nrow=</span><span class="dv">2</span>),<span class="dt">log=</span><span class="ot">TRUE</span> )</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a><span class="co">#&gt; [1] -4.36614</span></span></code></pre></div>
+<p>A random matrix <span class="math inline">\(\mathbf{X}\)</span> <span class="math inline">\((p \times n)\)</span> with a matrix variate normal
+distribution is parameterized by a mean matrix <span class="math inline">\(\mathbf{M}\)</span> <span class="math inline">\((p
+\times n)\)</span> and covariance matrices <span class="math inline">\(\mathbf{U}\)</span> <span class="math inline">\((p
+\times p)\)</span> (determining covariance among rows) and <span class="math inline">\(\mathbf{V}\)</span> <span class="math inline">\((n
+\times n)\)</span> (determining covariance among columns) and has the
+following probability density function (<span class="citation">Wikipedia
+(<a href="#ref-Matrix_normal_distribution">2018</a>)</span>): <span class="math display">\[p(\mathbf{X}\mid\mathbf{M}, \mathbf{U},
+\mathbf{V}) = \frac{\exp\left( -\frac{1}{2} \, \mathrm{tr}\left[
+\mathbf{V}^{-1} (\mathbf{X} - \mathbf{M})^{T} \mathbf{U}^{-1}
+(\mathbf{X} - \mathbf{M}) \right] \right)}{(2\pi)^{np/2}
+|\mathbf{V}|^{n/2} |\mathbf{U}|^{p/2}} \]</span> Here is a useful fact
+for drawing observations from a matrix variate normal distribution:
+suppose <span class="math inline">\(\mathbf{X}\)</span> is distributed
+as a matrix variate normal distribution with mean matrix <span class="math inline">\(\mathbf{0}\)</span> and covariance matrices <span class="math inline">\(\mathbf{I_n}\)</span> and <span class="math inline">\(\mathbf{I_p}\)</span>. Then for a mean matrix
+<span class="math inline">\(\mathbf{M}\)</span> and linear
+transformations <span class="math inline">\(\mathbf{L}\)</span> and
+<span class="math inline">\(\mathbf{R}\)</span> of appropriate
+dimensions, if <span class="math display">\[Y = \mathbf{M} +
+\mathbf{L}\mathbf{X}\mathbf{R}\]</span> then <span class="math inline">\(\mathbf{Y}\)</span> is matrix variate normally
+distributed with parameters <span class="math inline">\(\mathbf{M},
+\mathbf{LL}^T, \mathbf{R}^T\mathbf{R}\)</span>.</p>
+<p>Matrix variate random variables can then be generated by specifying
+<span class="math inline">\(\mathbf{M}\)</span> and <span class="math inline">\(\mathbf{L}\)</span> and <span class="math inline">\(\mathbf{R}\)</span> or by specifying <span class="math inline">\(\mathbf{U}\)</span> and <span class="math inline">\(\mathbf{V}\)</span>. If the covariance matrices
+are provided, then Cholesky decomposition is performed to create the
+<span class="math inline">\(\mathbf{L}\)</span> and <span class="math inline">\(\mathbf{R}\)</span> matrices. If <span class="math inline">\(\mathbf{L}\)</span> and <span class="math inline">\(\mathbf{R}\)</span> matrices are provided, they
+are used to create <span class="math inline">\(\mathbf{U}\)</span> and
+<span class="math inline">\(\mathbf{V}\)</span> matrices which are then
+decomposed. If these are not specified, the variances are presumed to be
+identity matrices by default and the means are presumed to be zero. If
+<span class="math inline">\(\mathbf{L}\)</span> or <span class="math inline">\(\mathbf{R}\)</span> are not full rank linear
+transformations, degenerate matrix normal distributions can be
+produced.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20180203</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">6</span>),<span class="at">nrow=</span><span class="dv">3</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>x</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#&gt;             [,1]      [,2]</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co">#&gt; [1,]  0.04234611 1.7072872</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#&gt; [2,] -1.05186238 0.2182058</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co">#&gt; [3,]  0.36199161 0.6759820</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20180203</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rmatrixnorm</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">mean=</span><span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">6</span>),<span class="at">nrow=</span><span class="dv">3</span>))</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>y</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co">#&gt;             [,1]      [,2]</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co">#&gt; [1,]  0.04234611 1.7072872</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="co">#&gt; [2,] -1.05186238 0.2182058</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="co">#&gt; [3,]  0.36199161 0.6759820</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>U <span class="ot">&lt;-</span> <span class="dv">5</span> <span class="sc">*</span> <span class="fu">diag</span>(<span class="dv">3</span>) <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>V <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">0</span>,.<span class="dv">1</span>),<span class="at">nrow=</span><span class="dv">2</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,<span class="at">nrow=</span><span class="dv">3</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20180203</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">rmatrixnorm</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">mean=</span>mu,<span class="at">U=</span>U,<span class="at">V=</span>V)</span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>z</span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="co">#&gt;           [,1]     [,2]</span></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="co">#&gt; [1,]  1.146691 5.322459</span></span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="co">#&gt; [2,] -1.568345 5.387067</span></span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a><span class="co">#&gt; [3,]  3.734947 6.755212</span></span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a>mu <span class="sc">+</span> <span class="fu">t</span>(<span class="fu">chol</span>(U)) <span class="sc">%*%</span> y <span class="sc">%*%</span> <span class="fu">chol</span>(V)</span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="co">#&gt;           [,1]     [,2]</span></span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="co">#&gt; [1,]  1.146691 5.322459</span></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="co">#&gt; [2,] -1.568345 5.387067</span></span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="co">#&gt; [3,]  3.734947 6.755212</span></span></code></pre></div>
+<p>When <span class="math inline">\(n=1\)</span>, by default this
+returns a matrix. For <span class="math inline">\(n&gt;1\)</span>, by
+default, it will return a three-dimensional array indexed by the last
+coordinate (array convention similar to <code>rWishart</code>).</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20180203</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rmatrixnorm</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">mean=</span><span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">6</span>),<span class="at">nrow=</span><span class="dv">3</span>))</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>x</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt;             [,1]      [,2]</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt; [1,]  0.04234611 1.7072872</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt; [2,] -1.05186238 0.2182058</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; [3,]  0.36199161 0.6759820</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20180203</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rmatrixnorm</span>(<span class="at">n =</span> <span class="dv">100</span>, <span class="at">mean=</span><span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">6</span>),<span class="at">nrow=</span><span class="dv">3</span>),<span class="at">list =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>y[[<span class="dv">1</span>]]</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt;             [,1]      [,2]</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co">#&gt; [1,]  0.04234611 1.7072872</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#&gt; [2,] -1.05186238 0.2182058</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt; [3,]  0.36199161 0.6759820</span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20180203</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">rmatrixnorm</span>(<span class="at">n =</span> <span class="dv">100</span>, <span class="at">mean=</span><span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">6</span>),<span class="at">nrow=</span><span class="dv">3</span>),<span class="at">array =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a>z[ , , <span class="dv">1</span>]</span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#&gt;             [,1]      [,2]</span></span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co">#&gt; [1,]  0.04234611 1.7072872</span></span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="co">#&gt; [2,] -1.05186238 0.2182058</span></span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a><span class="co">#&gt; [3,]  0.36199161 0.6759820</span></span></code></pre></div>
+<p>Densities are computed in much the same way as for other
+distributions. The defaults for the mean parameters are 0 and identity
+for the variance matrices. The <code>log</code> parameter sets whether
+to return the density on the log scale - by default this is
+<code>FALSE</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20180202</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>A <span class="ot">=</span> <span class="fu">rmatrixnorm</span>(<span class="at">n=</span><span class="dv">1</span>,<span class="at">mean=</span><span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">100</span>,<span class="dv">0</span>,<span class="sc">-</span><span class="dv">100</span>,<span class="dv">0</span>,<span class="dv">25</span>,<span class="sc">-</span><span class="dv">1000</span>),<span class="at">nrow=</span><span class="dv">2</span>),</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="at">L=</span><span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">0</span>,.<span class="dv">1</span>),<span class="at">nrow=</span><span class="dv">2</span>))</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="fu">dmatrixnorm</span>(A,<span class="at">mean=</span><span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">100</span>,<span class="dv">0</span>,<span class="sc">-</span><span class="dv">100</span>,<span class="dv">0</span>,<span class="dv">25</span>,<span class="sc">-</span><span class="dv">1000</span>),<span class="at">nrow=</span><span class="dv">2</span>),</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="at">L=</span><span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">0</span>,.<span class="dv">1</span>),<span class="at">nrow=</span><span class="dv">2</span>),<span class="at">log=</span><span class="cn">TRUE</span> )</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt; [1] -4.36614</span></span></code></pre></div>
 </div>
 <div id="parameter-estimation-for-matrix-variate-normal-distributions" class="section level2">
 <h2>Parameter estimation for matrix variate normal distributions</h2>
-<p>Maximum likelihood estimation is possible for the matrix variate normal distribution (see <span class="citation">Dutilleul (<a href="#ref-dutilleul1999mle" role="doc-biblioref">1999</a>)</span> or <span class="citation">Glanz and Carvalho (<a href="#ref-2013arXiv13096609G" role="doc-biblioref">2013</a>)</span> for details). The pair of variance matrices are only identifiable up to a constant, so this function sets the first element of <span class="math inline">\(\mathbf{U}\)</span> to <span class="math inline">\(1\)</span>. There is a closed-form solution for the mean matrix and the <span class="math inline">\(\mathbf{U}\)</span> and <span class="math inline">\(\mathbf{V}\)</span> have an iterative solution.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">20180202</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>A =<span class="st"> </span><span class="kw">rmatrixnorm</span>(<span class="dt">n=</span><span class="dv">100</span>,<span class="dt">mean=</span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">100</span>,<span class="dv">0</span>,<span class="op">-</span><span class="dv">100</span>,<span class="dv">0</span>,<span class="dv">25</span>,<span class="op">-</span><span class="dv">1000</span>),<span class="dt">nrow=</span><span class="dv">2</span>),</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>   <span class="dt">L=</span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">0</span>,.<span class="dv">1</span>),<span class="dt">nrow=</span><span class="dv">2</span>),<span class="dt">list=</span><span class="ot">TRUE</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>results=<span class="kw">MLmatrixnorm</span>(A)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a><span class="kw">print</span>(results)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a><span class="co">#&gt; $mean</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a><span class="co">#&gt;            [,1]         [,2]      [,3]</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a><span class="co">#&gt; [1,] 99.7692446 -100.2587675   25.0921</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a><span class="co">#&gt; [2,] -0.1010964   -0.1537989 -999.9448</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a><span class="co">#&gt; $U</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a><span class="co">#&gt;           [,1]      [,2]</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a><span class="co">#&gt; [1,] 1.0000000 0.5011833</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a><span class="co">#&gt; [2,] 0.5011833 0.2542832</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a><span class="co">#&gt; $V</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true"></a><span class="co">#&gt;             [,1]        [,2]         [,3]</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true"></a><span class="co">#&gt; [1,] 1.000000000  0.08886027  0.003307182</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true"></a><span class="co">#&gt; [2,] 0.088860275  0.99216701 -0.048960852</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true"></a><span class="co">#&gt; [3,] 0.003307182 -0.04896085  0.808693731</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true"></a><span class="co">#&gt; $var</span></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true"></a><span class="co">#&gt; [1] 3.984766</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true"></a><span class="co">#&gt; $iter</span></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true"></a><span class="co">#&gt; [1] 5</span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true"></a><span class="co">#&gt; $tol</span></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true"></a><span class="co">#&gt; [1] 9.830401e-11</span></span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true"></a><span class="co">#&gt; $logLik</span></span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true"></a><span class="co">#&gt; [1] -415.1583 -376.4587 -376.4574 -376.4574 -376.4574</span></span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true"></a><span class="co">#&gt; $convergence</span></span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true"></a><span class="co">#&gt; [1] TRUE</span></span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true"></a><span class="co">#&gt; $call</span></span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true"></a><span class="co">#&gt; MLmatrixnorm(data = A)</span></span></code></pre></div>
-<p>There are two restrictions possible for the mean matrices: <code>row.mean = TRUE</code> will force a common mean within a row and <code>col.mean = TRUE</code> will force a common mean within a column. Setting both will ensure a constant mean for the entire system. Restrictions on <span class="math inline">\(\mathbf{U}\)</span> and <span class="math inline">\(\mathbf{V}\)</span> are possible with <code>row.variance</code> and <code>col.variance</code> commands.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>results.fixrows =<span class="st"> </span><span class="kw">MLmatrixnorm</span>(A, <span class="dt">row.mean =</span> <span class="ot">TRUE</span>, <span class="dt">max.iter =</span> <span class="dv">5</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="co">#&gt; Warning in MLmatrixnorm(A, row.mean = TRUE, max.iter = 5): Failed to converge</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="kw">print</span>(results.fixrows)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="co">#&gt; $mean</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a><span class="co">#&gt;            [,1]       [,2]       [,3]</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a><span class="co">#&gt; [1,]    8.20086    8.20086    8.20086</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a><span class="co">#&gt; [2,] -333.39989 -333.39989 -333.39989</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a><span class="co">#&gt; $U</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a><span class="co">#&gt;           [,1]      [,2]</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a><span class="co">#&gt; [1,] 1.0000000 0.4732438</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a><span class="co">#&gt; [2,] 0.4732438 0.2752951</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true"></a><span class="co">#&gt; $V</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true"></a><span class="co">#&gt;           [,1]      [,2]      [,3]</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true"></a><span class="co">#&gt; [1,]  1.000000  1.287832 -2.287827</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true"></a><span class="co">#&gt; [2,]  1.287832  1.717146 -3.004973</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true"></a><span class="co">#&gt; [3,] -2.287827 -3.004973  5.292803</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true"></a><span class="co">#&gt; $var</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true"></a><span class="co">#&gt; [1] 441310.5</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true"></a><span class="co">#&gt; $iter</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true"></a><span class="co">#&gt; [1] 5</span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true"></a><span class="co">#&gt; $tol</span></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true"></a><span class="co">#&gt; [1] 2.815079e+12</span></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true"></a><span class="co">#&gt; $logLik</span></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true"></a><span class="co">#&gt; [1] -3125.019 -3093.986 -3062.230 -3030.199 -2998.804</span></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true"></a><span class="co">#&gt; $convergence</span></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true"></a><span class="co">#&gt; [1] FALSE</span></span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true"></a><span class="co">#&gt; $call</span></span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true"></a><span class="co">#&gt; MLmatrixnorm(data = A, row.mean = TRUE, max.iter = 5)</span></span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true"></a><span class="co"># this failure is expected with misspecification! The number of iterations is also </span></span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true"></a><span class="co"># fixed to be low so the vignette compiles quickly.</span></span></code></pre></div>
-<p>Currently the options for variance restrictions are to impose an AR(1) structure by providing the <code>AR(1)</code> option, a compound symmetry structure by providing the <code>CS</code> option, to impose a correlation matrix structure by specifying <code>correlation</code> or <code>corr</code>, or to impose an identical and independent structure by specifying <code>Independent</code> or <code>I</code>. This works by using <code>uniroot</code> to find the appropriate <span class="math inline">\(\rho\)</span> which sets the derivative of the log-likelihood to zero for the <code>AR</code> and <code>CS</code> options - it is not fast but if this is the true structure it will be better in some sense than an unstructured variance matrix. The <span class="math inline">\(\rho\)</span> parameter should be <span class="math inline">\(&gt;0\)</span> and is forced to be non-negative. If the data behaves incompatibly with those restrictions, the function will provide a warning and exit with the current model fit.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="co"># tolerance and maximum iterations are limited here to make the vignette compile faster</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>B =<span class="st"> </span><span class="kw">rmatrixnorm</span>(<span class="dt">n =</span> <span class="dv">50</span>, <span class="dt">mean =</span> <span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">15</span>,<span class="dt">nrow =</span> <span class="dv">5</span>), </span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>                <span class="dt">U =</span> <span class="dv">3</span><span class="op">*</span>stats<span class="op">::</span><span class="kw">toeplitz</span>(.<span class="dv">6</span><span class="op">^</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)))</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a><span class="kw">MLmatrixnorm</span>(B, <span class="dt">row.variance =</span> <span class="st">&quot;AR(1)&quot;</span>, <span class="dt">tol =</span> <span class="fl">1e-5</span>)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a><span class="co">#&gt; $mean</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a><span class="co">#&gt;           [,1]     [,2]     [,3]</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a><span class="co">#&gt; [1,] 0.9879945 5.976905 10.88718</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a><span class="co">#&gt; [2,] 1.8732469 6.852212 12.18793</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a><span class="co">#&gt; [3,] 2.9224880 7.939933 13.30729</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a><span class="co">#&gt; [4,] 4.2194033 9.036333 14.06759</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a><span class="co">#&gt; [5,] 5.2340302 9.857787 14.63149</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true"></a><span class="co">#&gt; $U</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true"></a><span class="co">#&gt;           [,1]      [,2]      [,3]      [,4]      [,5]</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true"></a><span class="co">#&gt; [1,] 1.0000000 0.5839991 0.3410550 0.1991758 0.1163185</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true"></a><span class="co">#&gt; [2,] 0.5839991 1.0000000 0.5839991 0.3410550 0.1991758</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true"></a><span class="co">#&gt; [3,] 0.3410550 0.5839991 1.0000000 0.5839991 0.3410550</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true"></a><span class="co">#&gt; [4,] 0.1991758 0.3410550 0.5839991 1.0000000 0.5839991</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true"></a><span class="co">#&gt; [5,] 0.1163185 0.1991758 0.3410550 0.5839991 1.0000000</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true"></a><span class="co">#&gt; $V</span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true"></a><span class="co">#&gt;              [,1]         [,2]        [,3]</span></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true"></a><span class="co">#&gt; [1,] 1.0000000000 0.0001430499 0.005716386</span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true"></a><span class="co">#&gt; [2,] 0.0001430499 0.8494982020 0.035590626</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true"></a><span class="co">#&gt; [3,] 0.0057163858 0.0355906255 0.979331742</span></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true"></a><span class="co">#&gt; $var</span></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true"></a><span class="co">#&gt; [1] 1.853556</span></span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true"></a><span class="co">#&gt; $iter</span></span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true"></a><span class="co">#&gt; [1] 12</span></span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true"></a><span class="co">#&gt; $tol</span></span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true"></a><span class="co">#&gt; [1] 8.864026e-06</span></span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true"></a><span class="co">#&gt; $logLik</span></span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true"></a><span class="co">#&gt;  [1] -1156.249 -1149.718 -1148.332 -1147.872 -1147.712 -1147.651 -1147.627</span></span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true"></a><span class="co">#&gt;  [8] -1147.617 -1147.614 -1147.612 -1147.611 -1147.611</span></span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true"></a><span class="co">#&gt; $convergence</span></span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true"></a><span class="co">#&gt; [1] TRUE</span></span>
-<span id="cb7-43"><a href="#cb7-43" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb7-44"><a href="#cb7-44" aria-hidden="true"></a><span class="co">#&gt; $call</span></span>
-<span id="cb7-45"><a href="#cb7-45" aria-hidden="true"></a><span class="co">#&gt; MLmatrixnorm(data = B, row.variance = &quot;AR(1)&quot;, tol = 1e-05)</span></span>
-<span id="cb7-46"><a href="#cb7-46" aria-hidden="true"></a><span class="kw">MLmatrixnorm</span>(B, <span class="dt">tol =</span> <span class="fl">1e-5</span>)</span>
-<span id="cb7-47"><a href="#cb7-47" aria-hidden="true"></a><span class="co">#&gt; $mean</span></span>
-<span id="cb7-48"><a href="#cb7-48" aria-hidden="true"></a><span class="co">#&gt;           [,1]     [,2]     [,3]</span></span>
-<span id="cb7-49"><a href="#cb7-49" aria-hidden="true"></a><span class="co">#&gt; [1,] 0.9879945 5.976905 10.88718</span></span>
-<span id="cb7-50"><a href="#cb7-50" aria-hidden="true"></a><span class="co">#&gt; [2,] 1.8732469 6.852212 12.18793</span></span>
-<span id="cb7-51"><a href="#cb7-51" aria-hidden="true"></a><span class="co">#&gt; [3,] 2.9224880 7.939933 13.30729</span></span>
-<span id="cb7-52"><a href="#cb7-52" aria-hidden="true"></a><span class="co">#&gt; [4,] 4.2194033 9.036333 14.06759</span></span>
-<span id="cb7-53"><a href="#cb7-53" aria-hidden="true"></a><span class="co">#&gt; [5,] 5.2340302 9.857787 14.63149</span></span>
-<span id="cb7-54"><a href="#cb7-54" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb7-55"><a href="#cb7-55" aria-hidden="true"></a><span class="co">#&gt; $U</span></span>
-<span id="cb7-56"><a href="#cb7-56" aria-hidden="true"></a><span class="co">#&gt;           [,1]      [,2]      [,3]      [,4]      [,5]</span></span>
-<span id="cb7-57"><a href="#cb7-57" aria-hidden="true"></a><span class="co">#&gt; [1,] 1.0000000 0.5088212 0.3116836 0.2418073 0.1278731</span></span>
-<span id="cb7-58"><a href="#cb7-58" aria-hidden="true"></a><span class="co">#&gt; [2,] 0.5088212 0.9878158 0.6383707 0.3910373 0.3114872</span></span>
-<span id="cb7-59"><a href="#cb7-59" aria-hidden="true"></a><span class="co">#&gt; [3,] 0.3116836 0.6383707 1.1270834 0.6297656 0.4495454</span></span>
-<span id="cb7-60"><a href="#cb7-60" aria-hidden="true"></a><span class="co">#&gt; [4,] 0.2418073 0.3910373 0.6297656 1.0046405 0.6505338</span></span>
-<span id="cb7-61"><a href="#cb7-61" aria-hidden="true"></a><span class="co">#&gt; [5,] 0.1278731 0.3114872 0.4495454 0.6505338 1.0516576</span></span>
-<span id="cb7-62"><a href="#cb7-62" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb7-63"><a href="#cb7-63" aria-hidden="true"></a><span class="co">#&gt; $V</span></span>
-<span id="cb7-64"><a href="#cb7-64" aria-hidden="true"></a><span class="co">#&gt;             [,1]        [,2]        [,3]</span></span>
-<span id="cb7-65"><a href="#cb7-65" aria-hidden="true"></a><span class="co">#&gt; [1,] 1.000000000 0.005092835 0.009893861</span></span>
-<span id="cb7-66"><a href="#cb7-66" aria-hidden="true"></a><span class="co">#&gt; [2,] 0.005092835 0.836800036 0.034013446</span></span>
-<span id="cb7-67"><a href="#cb7-67" aria-hidden="true"></a><span class="co">#&gt; [3,] 0.009893861 0.034013446 0.972453799</span></span>
-<span id="cb7-68"><a href="#cb7-68" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb7-69"><a href="#cb7-69" aria-hidden="true"></a><span class="co">#&gt; $var</span></span>
-<span id="cb7-70"><a href="#cb7-70" aria-hidden="true"></a><span class="co">#&gt; [1] 1.8111</span></span>
-<span id="cb7-71"><a href="#cb7-71" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb7-72"><a href="#cb7-72" aria-hidden="true"></a><span class="co">#&gt; $iter</span></span>
-<span id="cb7-73"><a href="#cb7-73" aria-hidden="true"></a><span class="co">#&gt; [1] 4</span></span>
-<span id="cb7-74"><a href="#cb7-74" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb7-75"><a href="#cb7-75" aria-hidden="true"></a><span class="co">#&gt; $tol</span></span>
-<span id="cb7-76"><a href="#cb7-76" aria-hidden="true"></a><span class="co">#&gt; [1] 2.457002e-06</span></span>
-<span id="cb7-77"><a href="#cb7-77" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb7-78"><a href="#cb7-78" aria-hidden="true"></a><span class="co">#&gt; $logLik</span></span>
-<span id="cb7-79"><a href="#cb7-79" aria-hidden="true"></a><span class="co">#&gt; [1] -1145.534 -1143.775 -1143.767 -1143.766</span></span>
-<span id="cb7-80"><a href="#cb7-80" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb7-81"><a href="#cb7-81" aria-hidden="true"></a><span class="co">#&gt; $convergence</span></span>
-<span id="cb7-82"><a href="#cb7-82" aria-hidden="true"></a><span class="co">#&gt; [1] TRUE</span></span>
-<span id="cb7-83"><a href="#cb7-83" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb7-84"><a href="#cb7-84" aria-hidden="true"></a><span class="co">#&gt; $call</span></span>
-<span id="cb7-85"><a href="#cb7-85" aria-hidden="true"></a><span class="co">#&gt; MLmatrixnorm(data = B, tol = 1e-05)</span></span></code></pre></div>
-<p>In order to fit parameters for an <span class="math inline">\(n \times p\)</span> matrix variate normal distribution, at least <span class="math inline">\(\max (n/p,p/n) + 1\)</span> observations are needed. Maximum likelihood estimates are unique if there are more than <span class="math inline">\(\max(p,n)\)</span> observations.</p>
-<p>The function expects data in a format produced by the <code>rmatrixnorm</code> function. The results are only the parameter estimates and do not include measures of uncertainty.</p>
+<p>Maximum likelihood estimation is possible for the matrix variate
+normal distribution (see <span class="citation">Dutilleul (<a href="#ref-dutilleul1999mle">1999</a>)</span> or <span class="citation">Glanz and Carvalho (<a href="#ref-2013arXiv13096609G">2013</a>)</span> for details). The pair
+of variance matrices are only identifiable up to a constant, so this
+function sets the first element of <span class="math inline">\(\mathbf{U}\)</span> to <span class="math inline">\(1\)</span>. There is a closed-form solution for
+the mean matrix and the <span class="math inline">\(\mathbf{U}\)</span>
+and <span class="math inline">\(\mathbf{V}\)</span> have an iterative
+solution.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20180202</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>A <span class="ot">=</span> <span class="fu">rmatrixnorm</span>(<span class="at">n=</span><span class="dv">100</span>,<span class="at">mean=</span><span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">100</span>,<span class="dv">0</span>,<span class="sc">-</span><span class="dv">100</span>,<span class="dv">0</span>,<span class="dv">25</span>,<span class="sc">-</span><span class="dv">1000</span>),<span class="at">nrow=</span><span class="dv">2</span>),</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>   <span class="at">L=</span><span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">0</span>,.<span class="dv">1</span>),<span class="at">nrow=</span><span class="dv">2</span>),<span class="at">list=</span><span class="cn">TRUE</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>results<span class="ot">=</span><span class="fu">MLmatrixnorm</span>(A)</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="fu">print</span>(results)</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; $mean</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt;            [,1]         [,2]      [,3]</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; [1,] 99.7692446 -100.2587675   25.0921</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; [2,] -0.1010964   -0.1537989 -999.9448</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; $U</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt;           [,1]      [,2]</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; [1,] 1.0000000 0.5011833</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; [2,] 0.5011833 0.2542832</span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt; $V</span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co">#&gt;             [,1]        [,2]         [,3]</span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="co">#&gt; [1,] 1.000000000  0.08886027  0.003307182</span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="co">#&gt; [2,] 0.088860275  0.99216701 -0.048960852</span></span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="co">#&gt; [3,] 0.003307182 -0.04896085  0.808693731</span></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a><span class="co">#&gt; $var</span></span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a><span class="co">#&gt; [1] 3.984766</span></span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a><span class="co">#&gt; $iter</span></span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a><span class="co">#&gt; [1] 5</span></span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a><span class="co">#&gt; $tol</span></span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a><span class="co">#&gt; [1] 9.830401e-11</span></span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a><span class="co">#&gt; $logLik</span></span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a><span class="co">#&gt; [1] -415.1583 -376.4587 -376.4574 -376.4574 -376.4574</span></span>
+<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a><span class="co">#&gt; $convergence</span></span>
+<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb5-36"><a href="#cb5-36" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-37"><a href="#cb5-37" tabindex="-1"></a><span class="co">#&gt; $call</span></span>
+<span id="cb5-38"><a href="#cb5-38" tabindex="-1"></a><span class="co">#&gt; MLmatrixnorm(data = A)</span></span></code></pre></div>
+<p>There are two restrictions possible for the mean matrices:
+<code>row.mean = TRUE</code> will force a common mean within a row and
+<code>col.mean = TRUE</code> will force a common mean within a column.
+Setting both will ensure a constant mean for the entire system.
+Restrictions on <span class="math inline">\(\mathbf{U}\)</span> and
+<span class="math inline">\(\mathbf{V}\)</span> are possible with
+<code>row.variance</code> and <code>col.variance</code> commands.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>results.fixrows <span class="ot">=</span> <span class="fu">MLmatrixnorm</span>(A, <span class="at">row.mean =</span> <span class="cn">TRUE</span>, <span class="at">max.iter =</span> <span class="dv">5</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co">#&gt; Warning in MLmatrixnorm(A, row.mean = TRUE, max.iter = 5): Failed to converge</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="fu">print</span>(results.fixrows)</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co">#&gt; $mean</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co">#&gt;            [,1]       [,2]       [,3]</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt; [1,]    8.20086    8.20086    8.20086</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#&gt; [2,] -333.39989 -333.39989 -333.39989</span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt; $U</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">#&gt;           [,1]      [,2]</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt; [1,] 1.0000000 0.4732438</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt; [2,] 0.4732438 0.2752951</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt; $V</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt;           [,1]      [,2]      [,3]</span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt; [1,]  1.000000  1.287832 -2.287827</span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt; [2,]  1.287832  1.717146 -3.004973</span></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt; [3,] -2.287827 -3.004973  5.292803</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co">#&gt; $var</span></span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="co">#&gt; [1] 441310.5</span></span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a><span class="co">#&gt; $iter</span></span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a><span class="co">#&gt; [1] 5</span></span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a><span class="co">#&gt; $tol</span></span>
+<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a><span class="co">#&gt; [1] 2.815079e+12</span></span>
+<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a><span class="co">#&gt; $logLik</span></span>
+<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a><span class="co">#&gt; [1] -3125.019 -3093.986 -3062.230 -3030.199 -2998.804</span></span>
+<span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a><span class="co">#&gt; $convergence</span></span>
+<span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a><span class="co">#&gt; [1] FALSE</span></span>
+<span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a><span class="co">#&gt; $call</span></span>
+<span id="cb6-36"><a href="#cb6-36" tabindex="-1"></a><span class="co">#&gt; MLmatrixnorm(data = A, row.mean = TRUE, max.iter = 5)</span></span>
+<span id="cb6-37"><a href="#cb6-37" tabindex="-1"></a><span class="co"># this failure is expected with misspecification! The number of iterations is also </span></span>
+<span id="cb6-38"><a href="#cb6-38" tabindex="-1"></a><span class="co"># fixed to be low so the vignette compiles quickly.</span></span></code></pre></div>
+<p>Currently the options for variance restrictions are to impose an
+AR(1) structure by providing the <code>AR(1)</code> option, a compound
+symmetry structure by providing the <code>CS</code> option, to impose a
+correlation matrix structure by specifying <code>correlation</code> or
+<code>corr</code>, or to impose an identical and independent structure
+by specifying <code>Independent</code> or <code>I</code>. This works by
+using <code>uniroot</code> to find the appropriate <span class="math inline">\(\rho\)</span> which sets the derivative of the
+log-likelihood to zero for the <code>AR</code> and <code>CS</code>
+options - it is not fast but if this is the true structure it will be
+better in some sense than an unstructured variance matrix. The <span class="math inline">\(\rho\)</span> parameter should be <span class="math inline">\(&gt;0\)</span> and is forced to be non-negative.
+If the data behaves incompatibly with those restrictions, the function
+will provide a warning and exit with the current model fit.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># tolerance and maximum iterations are limited here to make the vignette compile faster</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>B <span class="ot">=</span> <span class="fu">rmatrixnorm</span>(<span class="at">n =</span> <span class="dv">50</span>, <span class="at">mean =</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>,<span class="at">nrow =</span> <span class="dv">5</span>), </span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>                <span class="at">U =</span> <span class="dv">3</span><span class="sc">*</span>stats<span class="sc">::</span><span class="fu">toeplitz</span>(.<span class="dv">6</span><span class="sc">^</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)))</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="fu">MLmatrixnorm</span>(B, <span class="at">row.variance =</span> <span class="st">&quot;AR(1)&quot;</span>, <span class="at">tol =</span> <span class="fl">1e-5</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt; $mean</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt;           [,1]     [,2]     [,3]</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt; [1,] 0.9879945 5.976905 10.88718</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co">#&gt; [2,] 1.8732469 6.852212 12.18793</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co">#&gt; [3,] 2.9224880 7.939933 13.30729</span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt; [4,] 4.2194033 9.036333 14.06759</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co">#&gt; [5,] 5.2340302 9.857787 14.63149</span></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="co">#&gt; $U</span></span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="co">#&gt;           [,1]      [,2]      [,3]      [,4]      [,5]</span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="co">#&gt; [1,] 1.0000000 0.5839991 0.3410550 0.1991758 0.1163185</span></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="co">#&gt; [2,] 0.5839991 1.0000000 0.5839991 0.3410550 0.1991758</span></span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a><span class="co">#&gt; [3,] 0.3410550 0.5839991 1.0000000 0.5839991 0.3410550</span></span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a><span class="co">#&gt; [4,] 0.1991758 0.3410550 0.5839991 1.0000000 0.5839991</span></span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a><span class="co">#&gt; [5,] 0.1163185 0.1991758 0.3410550 0.5839991 1.0000000</span></span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a><span class="co">#&gt; $V</span></span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a><span class="co">#&gt;              [,1]         [,2]        [,3]</span></span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a><span class="co">#&gt; [1,] 1.0000000000 0.0001430499 0.005716386</span></span>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a><span class="co">#&gt; [2,] 0.0001430499 0.8494982020 0.035590626</span></span>
+<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a><span class="co">#&gt; [3,] 0.0057163858 0.0355906255 0.979331742</span></span>
+<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-28"><a href="#cb7-28" tabindex="-1"></a><span class="co">#&gt; $var</span></span>
+<span id="cb7-29"><a href="#cb7-29" tabindex="-1"></a><span class="co">#&gt; [1] 1.853556</span></span>
+<span id="cb7-30"><a href="#cb7-30" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-31"><a href="#cb7-31" tabindex="-1"></a><span class="co">#&gt; $iter</span></span>
+<span id="cb7-32"><a href="#cb7-32" tabindex="-1"></a><span class="co">#&gt; [1] 12</span></span>
+<span id="cb7-33"><a href="#cb7-33" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-34"><a href="#cb7-34" tabindex="-1"></a><span class="co">#&gt; $tol</span></span>
+<span id="cb7-35"><a href="#cb7-35" tabindex="-1"></a><span class="co">#&gt; [1] 8.864026e-06</span></span>
+<span id="cb7-36"><a href="#cb7-36" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-37"><a href="#cb7-37" tabindex="-1"></a><span class="co">#&gt; $logLik</span></span>
+<span id="cb7-38"><a href="#cb7-38" tabindex="-1"></a><span class="co">#&gt;  [1] -1156.249 -1149.718 -1148.332 -1147.872 -1147.712 -1147.651 -1147.627</span></span>
+<span id="cb7-39"><a href="#cb7-39" tabindex="-1"></a><span class="co">#&gt;  [8] -1147.617 -1147.614 -1147.612 -1147.611 -1147.611</span></span>
+<span id="cb7-40"><a href="#cb7-40" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-41"><a href="#cb7-41" tabindex="-1"></a><span class="co">#&gt; $convergence</span></span>
+<span id="cb7-42"><a href="#cb7-42" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb7-43"><a href="#cb7-43" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-44"><a href="#cb7-44" tabindex="-1"></a><span class="co">#&gt; $call</span></span>
+<span id="cb7-45"><a href="#cb7-45" tabindex="-1"></a><span class="co">#&gt; MLmatrixnorm(data = B, row.variance = &quot;AR(1)&quot;, tol = 1e-05)</span></span>
+<span id="cb7-46"><a href="#cb7-46" tabindex="-1"></a><span class="fu">MLmatrixnorm</span>(B, <span class="at">tol =</span> <span class="fl">1e-5</span>)</span>
+<span id="cb7-47"><a href="#cb7-47" tabindex="-1"></a><span class="co">#&gt; $mean</span></span>
+<span id="cb7-48"><a href="#cb7-48" tabindex="-1"></a><span class="co">#&gt;           [,1]     [,2]     [,3]</span></span>
+<span id="cb7-49"><a href="#cb7-49" tabindex="-1"></a><span class="co">#&gt; [1,] 0.9879945 5.976905 10.88718</span></span>
+<span id="cb7-50"><a href="#cb7-50" tabindex="-1"></a><span class="co">#&gt; [2,] 1.8732469 6.852212 12.18793</span></span>
+<span id="cb7-51"><a href="#cb7-51" tabindex="-1"></a><span class="co">#&gt; [3,] 2.9224880 7.939933 13.30729</span></span>
+<span id="cb7-52"><a href="#cb7-52" tabindex="-1"></a><span class="co">#&gt; [4,] 4.2194033 9.036333 14.06759</span></span>
+<span id="cb7-53"><a href="#cb7-53" tabindex="-1"></a><span class="co">#&gt; [5,] 5.2340302 9.857787 14.63149</span></span>
+<span id="cb7-54"><a href="#cb7-54" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-55"><a href="#cb7-55" tabindex="-1"></a><span class="co">#&gt; $U</span></span>
+<span id="cb7-56"><a href="#cb7-56" tabindex="-1"></a><span class="co">#&gt;           [,1]      [,2]      [,3]      [,4]      [,5]</span></span>
+<span id="cb7-57"><a href="#cb7-57" tabindex="-1"></a><span class="co">#&gt; [1,] 1.0000000 0.5088212 0.3116836 0.2418073 0.1278731</span></span>
+<span id="cb7-58"><a href="#cb7-58" tabindex="-1"></a><span class="co">#&gt; [2,] 0.5088212 0.9878158 0.6383707 0.3910373 0.3114872</span></span>
+<span id="cb7-59"><a href="#cb7-59" tabindex="-1"></a><span class="co">#&gt; [3,] 0.3116836 0.6383707 1.1270834 0.6297656 0.4495454</span></span>
+<span id="cb7-60"><a href="#cb7-60" tabindex="-1"></a><span class="co">#&gt; [4,] 0.2418073 0.3910373 0.6297656 1.0046405 0.6505338</span></span>
+<span id="cb7-61"><a href="#cb7-61" tabindex="-1"></a><span class="co">#&gt; [5,] 0.1278731 0.3114872 0.4495454 0.6505338 1.0516576</span></span>
+<span id="cb7-62"><a href="#cb7-62" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-63"><a href="#cb7-63" tabindex="-1"></a><span class="co">#&gt; $V</span></span>
+<span id="cb7-64"><a href="#cb7-64" tabindex="-1"></a><span class="co">#&gt;             [,1]        [,2]        [,3]</span></span>
+<span id="cb7-65"><a href="#cb7-65" tabindex="-1"></a><span class="co">#&gt; [1,] 1.000000000 0.005092835 0.009893861</span></span>
+<span id="cb7-66"><a href="#cb7-66" tabindex="-1"></a><span class="co">#&gt; [2,] 0.005092835 0.836800036 0.034013446</span></span>
+<span id="cb7-67"><a href="#cb7-67" tabindex="-1"></a><span class="co">#&gt; [3,] 0.009893861 0.034013446 0.972453799</span></span>
+<span id="cb7-68"><a href="#cb7-68" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-69"><a href="#cb7-69" tabindex="-1"></a><span class="co">#&gt; $var</span></span>
+<span id="cb7-70"><a href="#cb7-70" tabindex="-1"></a><span class="co">#&gt; [1] 1.8111</span></span>
+<span id="cb7-71"><a href="#cb7-71" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-72"><a href="#cb7-72" tabindex="-1"></a><span class="co">#&gt; $iter</span></span>
+<span id="cb7-73"><a href="#cb7-73" tabindex="-1"></a><span class="co">#&gt; [1] 4</span></span>
+<span id="cb7-74"><a href="#cb7-74" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-75"><a href="#cb7-75" tabindex="-1"></a><span class="co">#&gt; $tol</span></span>
+<span id="cb7-76"><a href="#cb7-76" tabindex="-1"></a><span class="co">#&gt; [1] 2.457002e-06</span></span>
+<span id="cb7-77"><a href="#cb7-77" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-78"><a href="#cb7-78" tabindex="-1"></a><span class="co">#&gt; $logLik</span></span>
+<span id="cb7-79"><a href="#cb7-79" tabindex="-1"></a><span class="co">#&gt; [1] -1145.534 -1143.775 -1143.767 -1143.766</span></span>
+<span id="cb7-80"><a href="#cb7-80" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-81"><a href="#cb7-81" tabindex="-1"></a><span class="co">#&gt; $convergence</span></span>
+<span id="cb7-82"><a href="#cb7-82" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb7-83"><a href="#cb7-83" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-84"><a href="#cb7-84" tabindex="-1"></a><span class="co">#&gt; $call</span></span>
+<span id="cb7-85"><a href="#cb7-85" tabindex="-1"></a><span class="co">#&gt; MLmatrixnorm(data = B, tol = 1e-05)</span></span></code></pre></div>
+<p>In order to fit parameters for an <span class="math inline">\(n
+\times p\)</span> matrix variate normal distribution, at least <span class="math inline">\(\max (n/p,p/n) + 1\)</span> observations are
+needed. Maximum likelihood estimates are unique if there are more than
+<span class="math inline">\(\max(p,n)\)</span> observations.</p>
+<p>The function expects data in a format produced by the
+<code>rmatrixnorm</code> function. The results are only the parameter
+estimates and do not include measures of uncertainty.</p>
 </div>
 <div id="session-information" class="section level2">
 <h2>Session Information</h2>
 <p>This vignette was compiled with <code>rmarkdown</code>.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">sessionInfo</span>()</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="co">#&gt; R version 4.0.5 (2021-03-31)</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a><span class="co">#&gt; Platform: x86_64-redhat-linux-gnu (64-bit)</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a><span class="co">#&gt; Running under: Fedora 34 (MATE-Compiz)</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a><span class="co">#&gt; Matrix products: default</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a><span class="co">#&gt; BLAS/LAPACK: /usr/lib64/libflexiblas.so.3.0</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a><span class="co">#&gt; locale:</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a><span class="co">#&gt;  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a><span class="co">#&gt;  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=C              </span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a><span class="co">#&gt;  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   </span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true"></a><span class="co">#&gt;  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true"></a><span class="co">#&gt;  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true"></a><span class="co">#&gt; [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true"></a><span class="co">#&gt; attached base packages:</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true"></a><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true"></a><span class="co">#&gt; other attached packages:</span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true"></a><span class="co">#&gt; [1] magrittr_2.0.1  dplyr_1.0.7     ggplot2_3.3.5   MixMatrix_0.2.6</span></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true"></a><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true"></a><span class="co">#&gt;  [1] Rcpp_1.0.7        highr_0.9         bslib_0.3.0       compiler_4.0.5   </span></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true"></a><span class="co">#&gt;  [5] pillar_1.6.4      jquerylib_0.1.4   tools_4.0.5       digest_0.6.28    </span></span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true"></a><span class="co">#&gt;  [9] jsonlite_1.7.2    evaluate_0.14     lifecycle_1.0.1   tibble_3.1.5     </span></span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true"></a><span class="co">#&gt; [13] gtable_0.3.0      pkgconfig_2.0.3   rlang_0.4.12      DBI_1.1.1        </span></span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true"></a><span class="co">#&gt; [17] yaml_2.2.1        xfun_0.26         fastmap_1.1.0     withr_2.4.2      </span></span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true"></a><span class="co">#&gt; [21] stringr_1.4.0     knitr_1.34        generics_0.1.0    sass_0.4.0       </span></span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true"></a><span class="co">#&gt; [25] vctrs_0.3.8       tidyselect_1.1.1  grid_4.0.5        glue_1.4.2       </span></span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true"></a><span class="co">#&gt; [29] R6_2.5.1          fansi_0.5.0       rmarkdown_2.11    farver_2.1.0     </span></span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true"></a><span class="co">#&gt; [33] purrr_0.3.4       scales_1.1.1      htmltools_0.5.2   ellipsis_0.3.2   </span></span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true"></a><span class="co">#&gt; [37] assertthat_0.2.1  CholWishart_1.1.0 colorspace_2.0-2  labeling_0.4.2   </span></span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true"></a><span class="co">#&gt; [41] utf8_1.2.2        stringi_1.7.4     munsell_0.5.0     crayon_1.4.1</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="co">#&gt; R version 4.4.1 (2024-06-14)</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt; Platform: x86_64-redhat-linux-gnu</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt; Running under: Fedora Linux 40 (Xfce)</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt; Matrix products: default</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; BLAS/LAPACK: FlexiBLAS OPENBLAS-OPENMP;  LAPACK version 3.11.0</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; locale:</span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt;  [1] LC_CTYPE=en_US.utf8       LC_NUMERIC=C             </span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co">#&gt;  [3] LC_TIME=en_US.utf8        LC_COLLATE=C             </span></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co">#&gt;  [5] LC_MONETARY=en_US.utf8    LC_MESSAGES=en_US.utf8   </span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co">#&gt;  [7] LC_PAPER=en_US.utf8       LC_NAME=C                </span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="co">#&gt;  [9] LC_ADDRESS=C              LC_TELEPHONE=C           </span></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="co">#&gt; [11] LC_MEASUREMENT=en_US.utf8 LC_IDENTIFICATION=C      </span></span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="co">#&gt; time zone: America/Chicago</span></span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="co">#&gt; tzcode source: system (glibc)</span></span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="co">#&gt; attached base packages:</span></span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a><span class="co">#&gt; other attached packages:</span></span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a><span class="co">#&gt; [1] magrittr_2.0.3  dplyr_1.1.4     ggplot2_3.5.1   MixMatrix_0.2.8</span></span>
+<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
+<span id="cb8-27"><a href="#cb8-27" tabindex="-1"></a><span class="co">#&gt;  [1] vctrs_0.6.5         CholWishart_1.1.2.1 cli_3.6.3          </span></span>
+<span id="cb8-28"><a href="#cb8-28" tabindex="-1"></a><span class="co">#&gt;  [4] knitr_1.48          rlang_1.1.4         xfun_0.47          </span></span>
+<span id="cb8-29"><a href="#cb8-29" tabindex="-1"></a><span class="co">#&gt;  [7] highr_0.11          generics_0.1.3      jsonlite_1.8.9     </span></span>
+<span id="cb8-30"><a href="#cb8-30" tabindex="-1"></a><span class="co">#&gt; [10] labeling_0.4.3      glue_1.7.0          colorspace_2.1-1   </span></span>
+<span id="cb8-31"><a href="#cb8-31" tabindex="-1"></a><span class="co">#&gt; [13] htmltools_0.5.8.1   sass_0.4.9          fansi_1.0.6        </span></span>
+<span id="cb8-32"><a href="#cb8-32" tabindex="-1"></a><span class="co">#&gt; [16] scales_1.3.0        rmarkdown_2.28      grid_4.4.1         </span></span>
+<span id="cb8-33"><a href="#cb8-33" tabindex="-1"></a><span class="co">#&gt; [19] evaluate_1.0.0      munsell_0.5.1       jquerylib_0.1.4    </span></span>
+<span id="cb8-34"><a href="#cb8-34" tabindex="-1"></a><span class="co">#&gt; [22] tibble_3.2.1        fastmap_1.2.0       yaml_2.3.10        </span></span>
+<span id="cb8-35"><a href="#cb8-35" tabindex="-1"></a><span class="co">#&gt; [25] lifecycle_1.0.4     compiler_4.4.1      pkgconfig_2.0.3    </span></span>
+<span id="cb8-36"><a href="#cb8-36" tabindex="-1"></a><span class="co">#&gt; [28] Rcpp_1.0.13         farver_2.1.2        digest_0.6.37      </span></span>
+<span id="cb8-37"><a href="#cb8-37" tabindex="-1"></a><span class="co">#&gt; [31] R6_2.5.1            tidyselect_1.2.1    utf8_1.2.4         </span></span>
+<span id="cb8-38"><a href="#cb8-38" tabindex="-1"></a><span class="co">#&gt; [34] pillar_1.9.0        bslib_0.8.0         withr_3.0.1        </span></span>
+<span id="cb8-39"><a href="#cb8-39" tabindex="-1"></a><span class="co">#&gt; [37] tools_4.4.1         gtable_0.3.5        cachem_1.1.0</span></span></code></pre></div>
 </div>
 <div id="all-the-code-for-easy-copying" class="section level2">
 <h2>All the code for easy copying</h2>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a>knitr<span class="op">::</span>opts_chunk<span class="op">$</span><span class="kw">set</span>(</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>  <span class="dt">collapse =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>  <span class="dt">comment =</span> <span class="st">&quot;#&gt;&quot;</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">20180203</span>)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">6</span>),<span class="dt">nrow=</span><span class="dv">3</span>)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a>x</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">20180203</span>)</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a>y &lt;-<span class="st"> </span><span class="kw">rmatrixnorm</span>(<span class="dt">n =</span> <span class="dv">1</span>, <span class="dt">mean=</span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">6</span>),<span class="dt">nrow=</span><span class="dv">3</span>))</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a>y</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a>U &lt;-<span class="st"> </span><span class="dv">5</span> <span class="op">*</span><span class="st"> </span><span class="kw">diag</span>(<span class="dv">3</span>) <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true"></a>V &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">0</span>,.<span class="dv">1</span>),<span class="dt">nrow=</span><span class="dv">2</span>)</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a>mu =<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>,<span class="dt">nrow=</span><span class="dv">3</span>)</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">20180203</span>)</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true"></a>z &lt;-<span class="st"> </span><span class="kw">rmatrixnorm</span>(<span class="dt">n =</span> <span class="dv">1</span>, <span class="dt">mean=</span>mu,<span class="dt">U=</span>U,<span class="dt">V=</span>V)</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true"></a>z</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true"></a>mu <span class="op">+</span><span class="st"> </span><span class="kw">t</span>(<span class="kw">chol</span>(U)) <span class="op">%*%</span><span class="st"> </span>y <span class="op">%*%</span><span class="st"> </span><span class="kw">chol</span>(V)</span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true"></a></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">20180203</span>)</span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">rmatrixnorm</span>(<span class="dt">n =</span> <span class="dv">1</span>, <span class="dt">mean=</span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">6</span>),<span class="dt">nrow=</span><span class="dv">3</span>))</span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true"></a>x</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">20180203</span>)</span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true"></a>y &lt;-<span class="st"> </span><span class="kw">rmatrixnorm</span>(<span class="dt">n =</span> <span class="dv">100</span>, <span class="dt">mean=</span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">6</span>),<span class="dt">nrow=</span><span class="dv">3</span>),<span class="dt">list =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true"></a>y[[<span class="dv">1</span>]]</span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">20180203</span>)</span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true"></a>z &lt;-<span class="st"> </span><span class="kw">rmatrixnorm</span>(<span class="dt">n =</span> <span class="dv">100</span>, <span class="dt">mean=</span><span class="kw">matrix</span>(<span class="kw">rep</span>(<span class="dv">0</span>,<span class="dv">6</span>),<span class="dt">nrow=</span><span class="dv">3</span>),<span class="dt">array =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true"></a>z[ , , <span class="dv">1</span>]</span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true"></a></span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">20180202</span>)</span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true"></a>A =<span class="st"> </span><span class="kw">rmatrixnorm</span>(<span class="dt">n=</span><span class="dv">1</span>,<span class="dt">mean=</span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">100</span>,<span class="dv">0</span>,<span class="op">-</span><span class="dv">100</span>,<span class="dv">0</span>,<span class="dv">25</span>,<span class="op">-</span><span class="dv">1000</span>),<span class="dt">nrow=</span><span class="dv">2</span>),</span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true"></a><span class="dt">L=</span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">0</span>,.<span class="dv">1</span>),<span class="dt">nrow=</span><span class="dv">2</span>))</span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true"></a><span class="kw">dmatrixnorm</span>(A,<span class="dt">mean=</span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">100</span>,<span class="dv">0</span>,<span class="op">-</span><span class="dv">100</span>,<span class="dv">0</span>,<span class="dv">25</span>,<span class="op">-</span><span class="dv">1000</span>),<span class="dt">nrow=</span><span class="dv">2</span>),</span>
-<span id="cb9-33"><a href="#cb9-33" aria-hidden="true"></a>  <span class="dt">L=</span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">0</span>,.<span class="dv">1</span>),<span class="dt">nrow=</span><span class="dv">2</span>),<span class="dt">log=</span><span class="ot">TRUE</span> )</span>
-<span id="cb9-34"><a href="#cb9-34" aria-hidden="true"></a></span>
-<span id="cb9-35"><a href="#cb9-35" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">20180202</span>)</span>
-<span id="cb9-36"><a href="#cb9-36" aria-hidden="true"></a>A =<span class="st"> </span><span class="kw">rmatrixnorm</span>(<span class="dt">n=</span><span class="dv">100</span>,<span class="dt">mean=</span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">100</span>,<span class="dv">0</span>,<span class="op">-</span><span class="dv">100</span>,<span class="dv">0</span>,<span class="dv">25</span>,<span class="op">-</span><span class="dv">1000</span>),<span class="dt">nrow=</span><span class="dv">2</span>),</span>
-<span id="cb9-37"><a href="#cb9-37" aria-hidden="true"></a>   <span class="dt">L=</span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">0</span>,.<span class="dv">1</span>),<span class="dt">nrow=</span><span class="dv">2</span>),<span class="dt">list=</span><span class="ot">TRUE</span>)</span>
-<span id="cb9-38"><a href="#cb9-38" aria-hidden="true"></a>results=<span class="kw">MLmatrixnorm</span>(A)</span>
-<span id="cb9-39"><a href="#cb9-39" aria-hidden="true"></a><span class="kw">print</span>(results)</span>
-<span id="cb9-40"><a href="#cb9-40" aria-hidden="true"></a>results.fixrows =<span class="st"> </span><span class="kw">MLmatrixnorm</span>(A, <span class="dt">row.mean =</span> <span class="ot">TRUE</span>, <span class="dt">max.iter =</span> <span class="dv">5</span>)</span>
-<span id="cb9-41"><a href="#cb9-41" aria-hidden="true"></a><span class="kw">print</span>(results.fixrows)</span>
-<span id="cb9-42"><a href="#cb9-42" aria-hidden="true"></a><span class="co"># this failure is expected with misspecification! The number of iterations is also </span></span>
-<span id="cb9-43"><a href="#cb9-43" aria-hidden="true"></a><span class="co"># fixed to be low so the vignette compiles quickly.</span></span>
-<span id="cb9-44"><a href="#cb9-44" aria-hidden="true"></a><span class="co"># tolerance and maximum iterations are limited here to make the vignette compile faster</span></span>
-<span id="cb9-45"><a href="#cb9-45" aria-hidden="true"></a></span>
-<span id="cb9-46"><a href="#cb9-46" aria-hidden="true"></a>B =<span class="st"> </span><span class="kw">rmatrixnorm</span>(<span class="dt">n =</span> <span class="dv">50</span>, <span class="dt">mean =</span> <span class="kw">matrix</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">15</span>,<span class="dt">nrow =</span> <span class="dv">5</span>), </span>
-<span id="cb9-47"><a href="#cb9-47" aria-hidden="true"></a>                <span class="dt">U =</span> <span class="dv">3</span><span class="op">*</span>stats<span class="op">::</span><span class="kw">toeplitz</span>(.<span class="dv">6</span><span class="op">^</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)))</span>
-<span id="cb9-48"><a href="#cb9-48" aria-hidden="true"></a><span class="kw">MLmatrixnorm</span>(B, <span class="dt">row.variance =</span> <span class="st">&quot;AR(1)&quot;</span>, <span class="dt">tol =</span> <span class="fl">1e-5</span>)</span>
-<span id="cb9-49"><a href="#cb9-49" aria-hidden="true"></a><span class="kw">MLmatrixnorm</span>(B, <span class="dt">tol =</span> <span class="fl">1e-5</span>)</span>
-<span id="cb9-50"><a href="#cb9-50" aria-hidden="true"></a></span>
-<span id="cb9-51"><a href="#cb9-51" aria-hidden="true"></a><span class="kw">sessionInfo</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>  <span class="at">collapse =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  <span class="at">comment =</span> <span class="st">&quot;#&gt;&quot;</span></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>)</span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20180203</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">6</span>),<span class="at">nrow=</span><span class="dv">3</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>x</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20180203</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rmatrixnorm</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">mean=</span><span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">6</span>),<span class="at">nrow=</span><span class="dv">3</span>))</span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>y</span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>U <span class="ot">&lt;-</span> <span class="dv">5</span> <span class="sc">*</span> <span class="fu">diag</span>(<span class="dv">3</span>) <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a>V <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">0</span>,.<span class="dv">1</span>),<span class="at">nrow=</span><span class="dv">2</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a>mu <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,<span class="at">nrow=</span><span class="dv">3</span>)</span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20180203</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">rmatrixnorm</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">mean=</span>mu,<span class="at">U=</span>U,<span class="at">V=</span>V)</span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a>z</span>
+<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a>mu <span class="sc">+</span> <span class="fu">t</span>(<span class="fu">chol</span>(U)) <span class="sc">%*%</span> y <span class="sc">%*%</span> <span class="fu">chol</span>(V)</span>
+<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a></span>
+<span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20180203</span>)</span>
+<span id="cb9-20"><a href="#cb9-20" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rmatrixnorm</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">mean=</span><span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">6</span>),<span class="at">nrow=</span><span class="dv">3</span>))</span>
+<span id="cb9-21"><a href="#cb9-21" tabindex="-1"></a>x</span>
+<span id="cb9-22"><a href="#cb9-22" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20180203</span>)</span>
+<span id="cb9-23"><a href="#cb9-23" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rmatrixnorm</span>(<span class="at">n =</span> <span class="dv">100</span>, <span class="at">mean=</span><span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">6</span>),<span class="at">nrow=</span><span class="dv">3</span>),<span class="at">list =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-24"><a href="#cb9-24" tabindex="-1"></a>y[[<span class="dv">1</span>]]</span>
+<span id="cb9-25"><a href="#cb9-25" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20180203</span>)</span>
+<span id="cb9-26"><a href="#cb9-26" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">rmatrixnorm</span>(<span class="at">n =</span> <span class="dv">100</span>, <span class="at">mean=</span><span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">6</span>),<span class="at">nrow=</span><span class="dv">3</span>),<span class="at">array =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-27"><a href="#cb9-27" tabindex="-1"></a>z[ , , <span class="dv">1</span>]</span>
+<span id="cb9-28"><a href="#cb9-28" tabindex="-1"></a></span>
+<span id="cb9-29"><a href="#cb9-29" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20180202</span>)</span>
+<span id="cb9-30"><a href="#cb9-30" tabindex="-1"></a>A <span class="ot">=</span> <span class="fu">rmatrixnorm</span>(<span class="at">n=</span><span class="dv">1</span>,<span class="at">mean=</span><span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">100</span>,<span class="dv">0</span>,<span class="sc">-</span><span class="dv">100</span>,<span class="dv">0</span>,<span class="dv">25</span>,<span class="sc">-</span><span class="dv">1000</span>),<span class="at">nrow=</span><span class="dv">2</span>),</span>
+<span id="cb9-31"><a href="#cb9-31" tabindex="-1"></a><span class="at">L=</span><span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">0</span>,.<span class="dv">1</span>),<span class="at">nrow=</span><span class="dv">2</span>))</span>
+<span id="cb9-32"><a href="#cb9-32" tabindex="-1"></a><span class="fu">dmatrixnorm</span>(A,<span class="at">mean=</span><span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">100</span>,<span class="dv">0</span>,<span class="sc">-</span><span class="dv">100</span>,<span class="dv">0</span>,<span class="dv">25</span>,<span class="sc">-</span><span class="dv">1000</span>),<span class="at">nrow=</span><span class="dv">2</span>),</span>
+<span id="cb9-33"><a href="#cb9-33" tabindex="-1"></a>  <span class="at">L=</span><span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">0</span>,.<span class="dv">1</span>),<span class="at">nrow=</span><span class="dv">2</span>),<span class="at">log=</span><span class="cn">TRUE</span> )</span>
+<span id="cb9-34"><a href="#cb9-34" tabindex="-1"></a></span>
+<span id="cb9-35"><a href="#cb9-35" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">20180202</span>)</span>
+<span id="cb9-36"><a href="#cb9-36" tabindex="-1"></a>A <span class="ot">=</span> <span class="fu">rmatrixnorm</span>(<span class="at">n=</span><span class="dv">100</span>,<span class="at">mean=</span><span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">100</span>,<span class="dv">0</span>,<span class="sc">-</span><span class="dv">100</span>,<span class="dv">0</span>,<span class="dv">25</span>,<span class="sc">-</span><span class="dv">1000</span>),<span class="at">nrow=</span><span class="dv">2</span>),</span>
+<span id="cb9-37"><a href="#cb9-37" tabindex="-1"></a>   <span class="at">L=</span><span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">0</span>,.<span class="dv">1</span>),<span class="at">nrow=</span><span class="dv">2</span>),<span class="at">list=</span><span class="cn">TRUE</span>)</span>
+<span id="cb9-38"><a href="#cb9-38" tabindex="-1"></a>results<span class="ot">=</span><span class="fu">MLmatrixnorm</span>(A)</span>
+<span id="cb9-39"><a href="#cb9-39" tabindex="-1"></a><span class="fu">print</span>(results)</span>
+<span id="cb9-40"><a href="#cb9-40" tabindex="-1"></a>results.fixrows <span class="ot">=</span> <span class="fu">MLmatrixnorm</span>(A, <span class="at">row.mean =</span> <span class="cn">TRUE</span>, <span class="at">max.iter =</span> <span class="dv">5</span>)</span>
+<span id="cb9-41"><a href="#cb9-41" tabindex="-1"></a><span class="fu">print</span>(results.fixrows)</span>
+<span id="cb9-42"><a href="#cb9-42" tabindex="-1"></a><span class="co"># this failure is expected with misspecification! The number of iterations is also </span></span>
+<span id="cb9-43"><a href="#cb9-43" tabindex="-1"></a><span class="co"># fixed to be low so the vignette compiles quickly.</span></span>
+<span id="cb9-44"><a href="#cb9-44" tabindex="-1"></a><span class="co"># tolerance and maximum iterations are limited here to make the vignette compile faster</span></span>
+<span id="cb9-45"><a href="#cb9-45" tabindex="-1"></a></span>
+<span id="cb9-46"><a href="#cb9-46" tabindex="-1"></a>B <span class="ot">=</span> <span class="fu">rmatrixnorm</span>(<span class="at">n =</span> <span class="dv">50</span>, <span class="at">mean =</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>,<span class="at">nrow =</span> <span class="dv">5</span>), </span>
+<span id="cb9-47"><a href="#cb9-47" tabindex="-1"></a>                <span class="at">U =</span> <span class="dv">3</span><span class="sc">*</span>stats<span class="sc">::</span><span class="fu">toeplitz</span>(.<span class="dv">6</span><span class="sc">^</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)))</span>
+<span id="cb9-48"><a href="#cb9-48" tabindex="-1"></a><span class="fu">MLmatrixnorm</span>(B, <span class="at">row.variance =</span> <span class="st">&quot;AR(1)&quot;</span>, <span class="at">tol =</span> <span class="fl">1e-5</span>)</span>
+<span id="cb9-49"><a href="#cb9-49" tabindex="-1"></a><span class="fu">MLmatrixnorm</span>(B, <span class="at">tol =</span> <span class="fl">1e-5</span>)</span>
+<span id="cb9-50"><a href="#cb9-50" tabindex="-1"></a></span>
+<span id="cb9-51"><a href="#cb9-51" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
 </div>
 <div id="references" class="section level2 unnumbered">
 <h2 class="unnumbered">References</h2>
-<div id="refs" class="references hanging-indent">
-<div id="ref-dutilleul1999mle">
-<p>Dutilleul, Pierre. 1999. “The Mle Algorithm for the Matrix Normal Distribution.” <em>Journal of Statistical Computation and Simulation</em> 64 (2): 105–23.</p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-dutilleul1999mle" class="csl-entry">
+Dutilleul, Pierre. 1999. <span>“The MLE Algorithm for the Matrix Normal
+Distribution.”</span> <em>Journal of Statistical Computation and
+Simulation</em> 64 (2): 105–23.
 </div>
-<div id="ref-2013arXiv13096609G">
-<p>Glanz, H., and L. Carvalho. 2013. “An Expectation-Maximization Algorithm for the Matrix Normal Distribution.” <em>ArXiv E-Prints</em>, September. <a href="https://arxiv.org/abs/1309.6609">https://arxiv.org/abs/1309.6609</a>.</p>
+<div id="ref-2013arXiv13096609G" class="csl-entry">
+Glanz, H., and L. Carvalho. 2013. <span>“<span class="nocase">An
+Expectation-Maximization Algorithm for the Matrix Normal
+Distribution</span>.”</span> <em>ArXiv e-Prints</em>, September. <a href="https://arxiv.org/abs/1309.6609">https://arxiv.org/abs/1309.6609</a>.
 </div>
-<div id="ref-gupta1999matrix">
-<p>Gupta, Arjun K, and Daya K Nagar. 1999. <em>Matrix Variate Distributions</em>. Vol. 104. CRC Press.</p>
+<div id="ref-gupta1999matrix" class="csl-entry">
+Gupta, Arjun K, and Daya K Nagar. 1999. <em>Matrix Variate
+Distributions</em>. Vol. 104. CRC Press.
 </div>
-<div id="ref-Matrix_normal_distribution">
-<p>Wikipedia. 2018. “Matrix normal distribution — Wikipedia, the Free Encyclopedia.” <a href="https://en.wikipedia.org/w/index.php?title=Matrix%20normal%20distribution&amp;oldid=757552257">https://en.wikipedia.org/w/index.php?title=Matrix%20normal%20distribution&amp;oldid=757552257</a>.</p>
+<div id="ref-Matrix_normal_distribution" class="csl-entry">
+Wikipedia. 2018. <span>“<span class="nocase">Matrix normal
+distribution</span> — <span>W</span>ikipedia<span>,</span> the Free
+Encyclopedia.”</span> <a href="https://en.wikipedia.org/w/index.php?title=Matrix%20normal%20distribution&amp;oldid=757552257" class="uri">https://en.wikipedia.org/w/index.php?title=Matrix%20normal%20distribution&amp;oldid=757552257</a>.
 </div>
 </div>
 </div>
